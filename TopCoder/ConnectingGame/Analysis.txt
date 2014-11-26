@@ -1,0 +1,9 @@
+	The question is if it exist a station no 4-connected way from left to right and up to down.
+	The thought is to find two 8-connected ways from left to right and from up to down at the same time.
+	It's really similar to a max-flow problem!
+	But it has two source and two target...
+	As observation, we can find that, if there is a solution,then there must be four adjacent grids like this:
+	AB
+	CD
+	Then our problem is simplify as this: Find four 8-connected no intersect ways from the four grids to up,down,left,right board separately. This can be solved by algorithm max-flow.
+	Time complex: O(n*m*MaxFlow(n*m*3+6)).
