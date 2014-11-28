@@ -2,4 +2,4 @@
 	Here comes the solution:
 	Enumerate the start leaf and the end leaf, or the two start leaves,
 then we can get a possible answer,and the set of start leaves who will not influence the answer,and from the set we do a spfa function,to check if every edge is covered between the certain time.
-	time complex: O(n^3).
+	Time complex: O(n^3).

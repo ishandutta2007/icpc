@@ -6,4 +6,4 @@
 	AB
 	CD
 	Then our problem is simplify as this: Find four 8-connected no intersect ways from the four grids to up,down,left,right board separately. This can be solved by algorithm max-flow.
-	Time complex: O(n*m*MaxFlow(n*m*3+6)).
+	Time complex: O(n*m*MaxFlow(n*m*4+6)).
