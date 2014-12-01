@@ -1,4 +1,4 @@
 	If there is only two dimension, we can solve it by sort and Fenwick-Tree,with time complex O(nlogn).
 	We can split each query into 8 cube query through the origin.
-	This problem has four dimension (x,y,z,and time), so we can use divide skill to solve two dimension, and solve the other two by Fenwick-Tree.
+	This problem has four dimension (x,y,z,and time), so we can use divide skill to solve two dimension, and solve the other two by sort and Fenwick-Tree.
 	Time complex: O(nlogn^3).
