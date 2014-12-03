@@ -1,4 +1,3 @@
 	Preculculation and meet-in-the-middle.
 	Optimizing and optimizing.
-	Then u can pass the system test :).
 	Time complex: O(n^2+2^(m/2)*(m/2)!).
