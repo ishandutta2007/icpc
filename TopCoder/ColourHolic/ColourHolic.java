@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class ColourHolic {
-	public int countSequences(int[] n) {
+	public int countSequences(int[] A) {
 		return 0;
 	}
 
