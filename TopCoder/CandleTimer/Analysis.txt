@@ -1,5 +1,9 @@
-	Through the observation, The last candle is either a leaf or the middle of two leaves. So the answer is so small that can be enumerated.
-	Here comes the solution:
-	Enumerate the start leaf and the end leaf, or the two start leaves,
-then we can get a possible answer,and the set of start leaves who will not influence the answer.From the set we do a spfa function,to check if every edge is covered between the certain time.
-	Time complex: O(n^3).
+Through the observation, The last candle is either a leaf or the middle of 
+two leaves. So the answer is so small that can be enumerated.
+
+Here comes the solution: Enumerate the start leaf and the end leaf, or the 
+two start leaves, then we can get a possible answer,and the set of start 
+leaves who will not influence the answer. From the set we do a spfa function,
+to check if every edge is covered between the certain time.
+
+Time complex: O(n^3).
