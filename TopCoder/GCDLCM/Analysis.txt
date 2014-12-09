@@ -1,5 +1,5 @@
-	First, Decompose all the numbers in C[],we can get at most 9*200 prime numbers.
-	Then we can check every prime number respectively.
-	Note that GCD equals to min(), LCM equals to max().
-	Just solve the subproblem by 2-sat.
-	Time complex: O(m^3).
+First, Decompose all the numbers in C[],we can get at most 9*200 prime 
+numbers. Then we can check every prime number respectively. Note that GCD 
+equals to min(), LCM equals to max().  Just solve the subproblem by 2-sat.
+
+Time complex: O(m^3).
