@@ -1,2 +1,4 @@
-	Enumerate the border point,use polar-angle-sort and two-point skills to enumerate the line, then calculate the answer, this is trivial.
-	Time complex: O(n^2logn).
+Enumerate the border point,use polar-angle-sort and two-point skills to 
+enumerate the line, then calculate the answer, this is trivial.
+
+Time complex: O(n^2logn).
