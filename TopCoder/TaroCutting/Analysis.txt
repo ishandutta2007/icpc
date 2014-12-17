@@ -1,0 +1,5 @@
+As observation, we can find that every tree will only be cut one time.
+So the min-cost-max-flow algorithm is comming up.
+There is a model only need n+time+m+2 nodes and O(n^2) edges,this is 
+good enough to pass the system test.
+Time complex: O(CostFlow(n+time+m+2,n^2)).
