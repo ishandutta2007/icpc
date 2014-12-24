@@ -1,0 +1,3 @@
+Yet a simply data structure problem.
+Just use Link-Cut-Tree.
+Time Complex: O(nlogn).
