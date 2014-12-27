@@ -1,0 +1,36 @@
+-- Example 0
+2
+HSH
+SHS
+
+2
+-- Example 1
+2
+HH
+HH
+
+0
+-- Example 2
+2
+HHHHH
+HSHSH
+
+1
+-- Example 3
+2
+S
+S
+
+-1
+-- Example 4
+2
+HSHHSHSHSHHHSHSHSH
+SSSSHSSHSHSHHSSSSH
+
+8
+-- Example 5
+2
+HS
+HS
+
+1
