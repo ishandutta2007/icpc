@@ -1,0 +1,6 @@
+Consider each column as a elem,we can reduce this problem into one-dimen-
+sional: given three kind of numbers,arrange them so that any two adjacent
+has different color,count how many sequence match this demand.
+Then,use combination skills to solve it.
+Time complex: O(m).
+
