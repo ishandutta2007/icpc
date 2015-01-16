@@ -1,0 +1,9 @@
+This problem is similar to srm597-hard.
+Now we have four numbers a,b,c,and d.
+Consider enum g: merge a and b into g parts.This can be done in O(a+b)
+using the method mentioned in srm597-hard. Then the problem is reduced
+to three numnbers. Now it's actually a srm597-hard.
+Time complex: O((a+b)^2).
+
+Extend:
+Using this idea, can we solve a n number problem in O(sum_{A[0~n-3]}^(n-2))?
