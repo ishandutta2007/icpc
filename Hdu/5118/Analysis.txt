@@ -1,6 +1,0 @@
-Just use persistent treap.
-
-As the real tree's size can be huge, but the query is limited in 1e8, so we 
-can limit each node's size in 1e8, so that the depth of treap is ensured.
-
-Time complex: O(nlog(1e8)).
