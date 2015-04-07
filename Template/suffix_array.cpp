@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 template<int N> 
 struct SuffixArray {
+=======
+template<int N> struct SuffixArray {
+>>>>>>> origin/master
     int sa[N],t1[N],t2[N],c[N],rank[N],height[N];
     void construct(char *s,int n,int m=256) {
         int *x = t1,*y = t2;
