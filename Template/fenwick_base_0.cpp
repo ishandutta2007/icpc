@@ -16,6 +16,15 @@ struct FenwickTree {
         for (int i = p; i >= 0; i -= ~i&i+1) ret += C[i];
         return ret;
     }
+    int Kth(int K) {
+        int p = -1;
+        for (int i = 18; i >= 0; -- i) {
+            p += 1 << i;
+            if (p >= n || C[p] >= K) p -= 1 << i;
+            else K -= C[p];
+        }
+        return p + 1;
+    }
 
     static int pool_size;
     static int pool[N];
