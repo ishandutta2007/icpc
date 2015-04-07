@@ -19,7 +19,7 @@ struct MaxFlow {
             int u = que[qf++];
             for (int i = head[u]; i != -1; i = g[i].next) {
                 Edge &e = g[i];
-                if (g[i^1].cap && dis[e.v]==-1) {
+                if (g[i^1].cap && dis[e.v] == -1) {
                     dis[e.v] = dis[u] - 1;
                     que[qe++] = e.v;
                 }
@@ -32,7 +32,7 @@ struct MaxFlow {
         T flow = 0,f;
         for (int &i = cur[u]; i != -1; i = g[i].next) {
             Edge &e = g[i];
-            if (e.cap && dis[e.v]>dis[u]) {
+            if (e.cap && dis[e.v] > dis[u]) {
                 f = dfs(e.v,std::min(a,e.cap));
                 flow += f;
                 e.cap -= f;
