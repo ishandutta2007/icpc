@@ -1,6 +1,6 @@
 const int ort = 10; // original root in MOD
-const int MOD = 786433; // MOD = a  * b ^ k + 1,max_n = b ^ k
-// this code works when b == 2
+const int MOD = 786433; // MOD = a * b ^ k + 1,max_n = b ^ k
+// this code works only when b == 2
 
 LL pow_mod(LL a,LL b,LL p) {
     LL ret = 1;
