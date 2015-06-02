@@ -1,7 +1,8 @@
-template<int N> 
-struct SuffixArray {
+namespace SuffixArray {
+    const int N = 400000 + 5;
     int sa[N],t1[N],t2[N],c[N],rank[N],height[N];
-    void construct(char *s,int n,int m=256) {
+    void construct(std::vector<int> &s,int m=256) {
+        int n = s.size();
         int *x = t1,*y = t2;
         int i,j,k,p,length;
         for (i = 0; i < m; ++ i) c[i] = 0;
@@ -33,4 +34,4 @@ struct SuffixArray {
             }
         }
     }
-};
+}
