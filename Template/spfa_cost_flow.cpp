@@ -35,7 +35,7 @@ struct CostFlow {
             if (dis[t]==T(1e30)) break;
             T f = (T)1e30;
             for (int u = t; u != s; u = prevv[u])
-                f = min(f,g[preve[u]].cap);
+                f = std::min(f,g[preve[u]].cap);
             cost += f*dis[t];
             flow += f;
             for (int u = t; u != s; u = prevv[u])
