@@ -1,4 +1,5 @@
 const int MOD = (int)1e9 + 7;
+
 inline void add(int &a,int b) {
     a += b;
     if (a >= MOD) a -= MOD;
