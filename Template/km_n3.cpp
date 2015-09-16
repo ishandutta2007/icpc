@@ -2,6 +2,7 @@ const int INF = 0x3f3f3f3f;
 
 int km(int n,int m,int graph[N][N]) {
     // 返回最小完美匹配
+    // 下标为1..n,1..m
     std::vector<int> u(n + 1),v(m + 1),p(m + 1),way(m + 1);
     for (int i = 1; i <= n; ++ i) {
         p[0] = i;
