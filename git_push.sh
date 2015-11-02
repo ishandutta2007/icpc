@@ -1,4 +1,4 @@
 git add -A
-git commit -m "`date + %Y-%m-%d`"
+git commit -m "`date +%F`"
 git push origin master
 
