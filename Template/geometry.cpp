@@ -102,15 +102,43 @@ Point projection_point_line(Point p,Point a,Point b) {
 }
 
 // 线段规范相交判定
-bool intersection_segment_segment(Point a1,Point a2,Point b1,Point b2) {
+bool intersection_proper_segment_segment(Point a1,Point a2,Point b1,Point b2) {
     double c1 = det(a2 - a1,b1 - a1),c2 = det(a2 - a1,b2 - a1),
            c3 = det(b2 - b1,a1 - b1),c4 = det(b2 - b1,a2 - b1);
     return dcmp(c1) * dcmp(c2) < 0 && dcmp(c3) * dcmp(c4) < 0;
 }
 
-// 点在线段上判定
+// 点在线段上判定(端点也算)
 bool on_point_segment(Point p,Point a1,Point a2) {
-    return dcmp(det(a1 - p,a2 - p)) == 0 && dcmp(dot(a1 - p,a2 -p)) < 0;
+    return dcmp(det(a1 - p,a2 - p)) == 0 && dcmp(dot(a1 - p,a2 -p)) <= 0;
+}
+
+// 线段相交判定(交在点上也算)
+bool intersection_segment_segment(Point a1,Point a2,Point b1,Point b2) {
+    if (intersection_proper_segment_segment(a1,a2,b1,b2)) return true;
+    return on_point_segment(a1,b1,b2) || on_point_segment(a2,b1,b2)
+        || on_point_segment(b1,a1,a2) || on_point_segment(b2,a1,a2);
+}
+
+// 点在多边形内判定
+bool in_point_poly(Point o,const Poly &poly,bool flag) {
+    // 传入flag表示在边界上算不算在里面
+    int t = 0;
+    Point a,b;
+    int n = poly.size();
+    for (int i = 0; i < n; ++ i) {
+        if (on_point_segment(o,poly[i],poly[(i + 1) % n]))
+            return flag;
+    }
+    for (int i = 0; i < n; ++ i) {
+        a = poly[i];
+        b = poly[(i + 1) % n];
+        if (dcmp(a.y - b.y) > 0) std::swap(a,b);
+        if (dcmp(det(a - o,b - o)) < 0 && 
+                dcmp(a.y - o.y) < 0 && dcmp(o.y - b.y) <= 0)
+            ++ t;
+    }
+    return t & 1;
 }
 
 int main() {
