@@ -8,7 +8,7 @@ inline int dcmp(double x) {
 
 struct Point;
 using Vector = Point;
-using Poly = std::vector<Point>;
+using Polygon = std::vector<Point>;
 
 struct Point {
     double x,y;
@@ -121,7 +121,7 @@ bool intersection_segment_segment(Point a1,Point a2,Point b1,Point b2) {
 }
 
 // 点在多边形内判定
-bool in_point_poly(Point o,const Poly &poly,bool flag) {
+bool in_point_polygon(Point o,const Polygon &poly,bool flag) {
     // 传入flag表示在边界上算不算在里面
     int t = 0;
     Point a,b;
