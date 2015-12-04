@@ -1,21 +1,28 @@
-const int N = 100000 + 5;
-const int INF = 0x3f3f3f3f;
+#include <bits/stdc++.h>
 
 struct Node *nill;
+
 struct Node {
     Node *fa,*ch[2];
     bool rev_tag;
-    int val,min_val;
+    int val,vmax;
+    int sz,vc;
+    // sz   : splay子树的节点以及虚树节点和.
+    // vc   : 虚树节点和.
+    // vmax : splay子树最大val
 
-    Node(int _val = INF) {
+    Node(int _val = 0) {
         rev_tag = false;
         fa = ch[0] = ch[1] = nill;
-        val = min_val = _val;
+        val = vmax = _val;
+        sz = 1;
+        vc = 0;
     }
 
     void up() {
         if (this == nill) return ;
-        min_val = std::min(val,std::min(ch[0]->min_val,ch[1]->min_val));
+        vmax = std::max(val,std::max(ch[0]->vmax,ch[1]->vmax));
+        sz = 1 + vc + ch[0]->sz + ch[1]->sz;
     }
 
     void down() {
@@ -54,8 +61,7 @@ struct Node {
     }
 
     void D() {
-        if (this == nill) return ;
-        fa->D();
+        if (!isroot()) fa->D();
         down();
     }
 
@@ -71,29 +77,57 @@ struct Node {
     }
 
     Node *access() {
-        for (Node *p = this,*q = nill; p != nill; q = p,p = p->fa)
-            p->splay()->setc(q,1);
+        for (Node *p = this,*q = nill; p != nill; ) {
+            p->splay();
+            p->vc += p->ch[1]->sz;
+            p->vc -= q->sz;
+            p->setc(q,1);
+            q = p;
+            p = p->fa;
+        }
         return splay();
     }
 
     void link(Node *p) {
+        p->access();
         make_root()->fa = p;
+        p->vc += sz;
+        p->up();
     }
 
-    Node* make_root() {
+    Node *make_root() {
         access()->rev();
+        down();
         return this;
+    }
+
+    Node *get_max() {
+        Node *p = this;
+        while (true) {
+            p->down();
+            if (p->val >= p->ch[0]->vmax && p->val >= p->ch[1]->vmax) {
+                return p;
+            }
+            if (p->ch[0]->vmax >= p->ch[1]->vmax) {
+                p = p->ch[0];
+            } else {
+                p = p->ch[1];
+            }
+        }
     }
 };
 
-Node pool[N << 1],*bat,*node[N];
+const int N = 400000 + 5;
+Node pool[N],*node[N],*alloc;
+int n;
 
 void lct_init() {
-    bat = pool;
-    nill = new(bat++) Node;
-    nill->ch[0] = nill->ch[1] = nill->fa = nill;
+    alloc = pool;
+    nill = new(alloc ++) Node();
+    nill->fa = nill->ch[0] = nill->ch[1] = nill;
+    nill->sz = 0;
 
     for (int i = 1; i <= n; ++ i) {
-        node[i] = new(bat++) Node;
+        node[i] = new(alloc ++) Node();
     }
 }
