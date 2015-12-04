@@ -9,7 +9,9 @@ struct Node {
     int sz,vc;
     // sz   : splay子树的节点以及虚树节点和.
     // vc   : 虚树节点和.
-    // vmax : splay子树最大val
+    // vmax : splay子树最大val.
+
+    //      : 所有修改操作只关于access后的根进行.
 
     Node(int _val = 0) {
         rev_tag = false;
