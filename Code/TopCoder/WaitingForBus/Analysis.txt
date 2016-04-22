@@ -1,3 +1,0 @@
-Use dynamic programming to solve it.
-dp[i] stand for the probability the bus is seting out in time i.
-Time complex: O(max(A[i])*n)

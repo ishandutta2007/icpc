@@ -1,5 +1,0 @@
-Enumerate the number between two prime factors.
-Let the prime in odd position is x, if x is not the biggest one,
-x will no bigger then one million.
-Handing the last one specially.
-Time Complex: O(1e6).

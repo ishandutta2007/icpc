@@ -1,2 +1,0 @@
-enumerate the smallest one, then use combinations to solve it.
-Time complex: O(n).

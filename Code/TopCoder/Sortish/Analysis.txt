@@ -1,3 +1,0 @@
-Preculculation and meet-in-the-middle. Optimizing and optimizing.
-
-Time complex: O(n^2+2^(m/2)*(m/2)!).

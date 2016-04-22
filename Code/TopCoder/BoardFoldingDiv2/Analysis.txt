@@ -1,4 +1,0 @@
-Although this problem has simple solution,I passed by optimizing the O(n^5) 
-brute force,using bit magic.
-
-Time complex: O(n^4).
