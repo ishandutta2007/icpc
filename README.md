@@ -1,4 +1,4 @@
 ACM-ICPC
 ========
 
-algorithm and algorithm
+templates of icpc-algorithm
