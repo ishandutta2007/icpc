@@ -1,19 +1,45 @@
-let &termencoding=&encoding
-set fileencodings=utf-8,gbk,utf-16,big5
-set si go= nu ts=4 sw=4 sts=4 acd noswapfile nobackup et
-set backspace=eol,start,indent
+set cin nu ts=4 sw=4 sts=4 et acd noswapfile nobackup go=
+set bs=eol,start,indent
 syntax on
-filetype indent plugin on
-
-map <F4> :!g++ -std=c++11 -O2 % -o %<<cr>
-map <F5> :!%<<cr>
-
-map <F3> :!javac %<cr>
-map <F2> :!java %<<cr>
-
-map <F6> :!python %<cr>
-
-map <F8> :!ghc -o %< %<cr>
 
 colorscheme solarized
 
+set fileencodings=utf-8,gb2312,gbk,gb18030
+set termencoding=utf-8
+
+function! Compile()
+    if &filetype=="cpp" || &filetype=="c"
+        :!g++ -std=c++0x -O2 -m32 % -o %<
+    elseif &filetype=="java"
+        :!javac %
+    elseif &filetype=="haskell"
+        :!ghc -o %< %
+    endif
+endfunction
+
+function! Run()
+    if &filetype=="java"
+        :!java %<
+    elseif &filetype=="python"
+        :!python %
+    else
+        :!%<
+    endif
+endfunction
+
+function! SetTitle()
+    if &filetype=="java"
+        let l = 0
+        for line in readfile(join([$vim,"\\templates\\Main.java"],""))
+            let l = l + 1 | call setline(l,line)
+        endfor
+    endif
+endfunction
+
+map <F4> :call Compile()<cr>
+map <F5> :call Run()<cr>
+map <F2> :call SetTitle()<cr>
+
+let mapleader="-"
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
