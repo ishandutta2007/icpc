@@ -72,7 +72,6 @@ filetype plugin indent on
 " vim-scripts repos  
 Bundle 'The-NERD-tree'
 Bundle 'matrix.vim--Yang'
-Bundle 'fcitx.vim'
    
 filetype plugin indent on     " required!   
 
