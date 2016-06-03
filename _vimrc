@@ -1,5 +1,5 @@
 " 一般设置
-set smartindent nu ts=4 sw=4 sts=4 et acd noswapfile nobackup go=
+set smartindent nu ai ts=4 sw=4 sts=4 et acd noswapfile nobackup go=
 set bs=eol,start,indent
 syntax on
 
@@ -10,6 +10,7 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set fileencoding=utf-8
 set encoding=utf-8
 set termencoding=utf-8
+set fileformat=unix
 language messages zh_CN.utf-8
 
 " 编译
@@ -78,4 +79,4 @@ filetype plugin indent on     " required!
 " 目录树设定
 map <F2> :silent! NERDTreeToggle<cr>
 let NERDTreeWinPos="right"
-let NERDTreeShowBookmarks=1
+"let NERDTreeShowBookmarks=1
