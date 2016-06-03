@@ -12,6 +12,8 @@ set encoding=utf-8
 set termencoding=utf-8
 set fileformat=unix
 language messages zh_CN.utf-8
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
 
 " 编译
 function! Compile()
