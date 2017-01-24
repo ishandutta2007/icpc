@@ -1,45 +1,22 @@
-set cin nu ts=4 sw=4 sts=4 et acd noswapfile nobackup go=
-set bs=eol,start,indent
+set si nu ts=4 sw=4 sts=4 bs=eol,start,indent et acd relativenumber tags=tags;/
 syntax on
 
-colorscheme solarized
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-set fileencodings=utf-8,gb2312,gbk,gb18030
-set termencoding=utf-8
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'majutsushi/tagbar'
+call vundle#end()            " required
+filetype plugin indent on    " required
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 
-function! Compile()
-    if &filetype=="cpp" || &filetype=="c"
-        :!g++ -std=c++0x -O2 -m32 % -o %<
-    elseif &filetype=="java"
-        :!javac %
-    elseif &filetype=="haskell"
-        :!ghc -o %< %
-    endif
-endfunction
-
-function! Run()
-    if &filetype=="java"
-        :!java %<
-    elseif &filetype=="python"
-        :!python %
-    else
-        :!%<
-    endif
-endfunction
-
-function! SetTitle()
-    if &filetype=="java"
-        let l = 0
-        for line in readfile(join([$vim,"\\templates\\Main.java"],""))
-            let l = l + 1 | call setline(l,line)
-        endfor
-    endif
-endfunction
-
-map <F4> :call Compile()<cr>
-map <F5> :call Run()<cr>
-map <F2> :call SetTitle()<cr>
-
-let mapleader="-"
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
+let mapleader='-'
+nnoremap <leader>e :!g++ -std=c++11 -O2 % -o %<<cr>
+nnoremap <leader>w :!./%<<cr>
+nnoremap <leader>q :!./%< <data.in<cr>
+nnoremap <leader>tt :TagbarToggle<cr>
+nnoremap <leader>nt :NERDTreeToggle<cr>
