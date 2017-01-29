@@ -1,3 +1,7 @@
+const int kN = 100000 + 5;
+int n, dfn[kN], rd[kN << 1], dr[kN << 1], stmp, depth[kN];
+std::vector<int> edges[kN];
+
 struct ST {
     std::vector<std::vector<int>> u;
     std::vector<int> lg;
@@ -20,3 +24,24 @@ struct ST {
     }
 } st;
 
+int get_lca(int a, int b)
+{
+    return rd[st.ask(dfn[a], dfn[b])];
+}
+
+int get_dis(int a, int b)
+{
+    return depth[a] + depth[b] - 2 * depth[get_lca(a, b)];
+}
+
+void dfs(int u, int fa)
+{
+    depth[u] = fa == -1 ? 0 : depth[fa] + 1;
+    dfn[u] = stmp;
+    dr[stmp] = stmp;
+    rd[stmp ++] = u;
+    for (int v : edges[u]) if (v != fa) {
+        dfs(v, u);
+        dr[stmp++] = dfn[u];
+    }
+}
