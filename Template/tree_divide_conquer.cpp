@@ -22,10 +22,13 @@ int bfs(int source,int fa = -1) {
             }
         }
     }
-    for (int i = qe - 1; i > 0; -- i) {
+    for (int i = qe - 1; i >= 0; -- i) {
         int u = que[i];
-        sz[parent[u]] += sz[u];
-        balance[parent[u]] = std::max(balance[parent[u]],sz[u]);
+        if (i) {
+            sz[parent[u]] += sz[u];
+            balance[parent[u]] = std::max(balance[parent[u]],sz[u]);
+        }
+        balance[u] = std::max(balance[u],qe - sz[u]);
     }
     return qe;
 }
@@ -34,7 +37,6 @@ void divide(int root) {
     int tot = bfs(root);
     for (int i = tot - 1; i > 0; -- i) {
         int u = que[i];
-        balance[u] = std::max(balance[u],tot - sz[u]);
         if (balance[u] < balance[root]) {
             root = u;
         }
