@@ -1,3 +1,6 @@
+// 已经被hack了...
+// 详见https://arxiv.org/pdf/1705.11035.pdf
+
 LL f() {
     auto vec = getConvex();
     int a = 0,b = 1,c = 2;
