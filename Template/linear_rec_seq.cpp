@@ -1,59 +1,67 @@
 /*
-   令f(lambda) = det(lambda * E - M)
-   显然 f(M) == 0
-   展开f(M)得到M^i == sum_{j=1}^{deg}{c(j) * M^{i-j}}
-   然后快速幂blablah，复杂度O(deg^2 * log(n))
- */
-typedef long long LL;
-const int N = 2000 + 5;
-const int MOD = (int)1e9 + 7;
+    let f(lambda) = det(lambda * E - M)
+    obviously f(M) == 0
+    expand f(M) we have M^i == sum_{j=1}^{deg}{coef(j) * M^{i-j}}
+    complexity O(deg^2 * log(n))
+    */
 
-LL n;
-int D[N],D[N],deg;
-struct Poly {
-    int A[N];
-    Poly() {
-        memset(A,0,sizeof(A));
-    }
-    int& operator [] (int x) {
-        return A[x];
-    }
-};
-inline void add(int &a,int b) {
-    a += b;
-    if (a >= MOD) a -= MOD;
+using LL = long long ;
+using Poly = std::vector<int>;
+const int MOD = (int)1e9 + 7;
+inline void add(int &a, int b) { a += b; if (a >= MOD) a -= MOD; }
+inline int mul(int x) { return x; }
+template<typename ...Args> inline int mul(int x, Args ...args) { return x * 1LL * mul(args...) % MOD; }
+
+void add(Poly &lhs, const Poly &rhs)
+{
+    for (int i = 0; i < lhs.size(); ++ i)
+        add(lhs[i], rhs[i]);
 }
-Poly operator * (Poly &X,Poly &Y) {
-    Poly ret;
+
+Poly product(const Poly &lhs, const Poly &rhs, const Poly &coef)
+{
+    int deg = lhs.size();
+    Poly ret(deg << 1);
     for (int i = 0; i < deg; ++ i) 
         for (int j = 0; j < deg; ++ j) 
-            add(ret[i + j],X[i] * 1ll * Y[j] % MOD);
-    for (int i = deg + deg - 2; i >= 0; -- i) {
-        for (int j = 1; j <= deg; ++ j)
-            add(ret[i - j],ret[i] * 1ll * C[j] % MOD);
+            add(ret[i + j], mul(lhs[i], rhs[j]));
+    for (int i = deg + deg - 2; i >= deg; -- i) {
+        for (int j = 1; j < deg; ++ j)
+            add(ret[i - j], mul(ret[i], coef[j]));
         ret[i] = 0;
+    }
+    ret.resize(deg);
+    return ret;
+}
+
+Poly power(Poly P, LL n, const Poly &coef)
+{
+    Poly ret(P.size());
+    ret[0] = 1;
+    while (n) {
+        if (n & 1) ret = product(ret, P, coef);
+        P = product(P, P, coef);
+        n >>= 1;
     }
     return ret;
 }
-int work() {
-    memset(C,0,sizeof(C));
-    memset(D,0,sizeof(D));
-    deg = 2;
-    D[0] = 3; D[1] = 4;
-    C[2] = 1; C[1] = 2;
-    n = 3;
-    /* C为转移关系，D为初值，deg为阶数 */
-    // F(i) = 2 * F(i-1) + 1 * F(i-2)
-    // F0 = 3 , F1 = 4 , F2 = 11 , F3 = 25...
-    Poly ans,P;
-    P[1] = 1,ans[0] = 1;
-    while (n) {
-        if (n & 1) ans = ans * P;
-        P = P * P;
-        n >>= 1;
-    }
+
+int sample()
+{
+    LL n = 3;
+    int deg = 3;
+    Poly W(deg), coef(deg);
+    coef[2] = 1; coef[1] = 2;
+    W[0] = 3; W[1] = 4;
+    // W_i = 2 * W_{i-1} + 1 * W_{i - 2}
+    // W_0 = 3, W_1 = 4, W_2 = 11, W_3 = 25 ...
+
+    Poly P(deg);
+    P[1] = 1;
+    Poly A = power(P, n, coef);
     int ret = 0;
     for (int i = 0; i < deg; ++ i)
-        add(ret,D[i] * 1ll * ans[i] % MOD);
+        add(ret, mul(W[i], coef[i]));
+
     return ret;
 }
