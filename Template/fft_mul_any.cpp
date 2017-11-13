@@ -48,7 +48,7 @@ void fft(Complex *a, int n, int flag) {
 
 void mul_any(const int *x, int lx, const int *y, int ly, int *z)
 {
-    static Complex a[kN << 1], b[kN << 1], c[kN << 1], d[kN << 1];
+    static Complex a[kN], b[kN], c[kN], d[kN];
     for (int i = 0; i < lx; ++ i)
         a[i] = Complex(x[i] >> 15, 0.), b[i] = Complex(x[i] & 32767, 0.);
     for (int i = lx; i < L; ++ i)
