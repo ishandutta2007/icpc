@@ -11,6 +11,7 @@ void fft(Complex *a, int n, int rev) {
     // n是大于等于相乘的两个数组长度的2的幂次
     // 从0开始表示长度，对a进行操作
     // rev==1进行DFT，==-1进行IDFT
+    // 精度炸裂的话, 把w换成用三角函数直接算
     for (int i = 1,j = 0; i < n; ++ i) {
         for (int k = n>>1; k > (j^=k); k >>= 1);
         if (i<j) std::swap(a[i],a[j]);
