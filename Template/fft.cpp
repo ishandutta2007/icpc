@@ -6,7 +6,7 @@
 
 using LL = long long ;
 const double pi = atan(1.) * 4;
-const int kN = 200000 + 5;
+const int kN = (1 << 18) + 5;
 
 struct Complex {
     double x, y;
