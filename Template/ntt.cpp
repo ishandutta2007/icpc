@@ -21,12 +21,12 @@ LL power(LL a,LL b,LL p) {
 
 void ntt(LL A[],int n,int inv) {
     // inv == 1 : ntt, == -1 : intt
-    LL w = 1,d = pow_mod(ort,(MOD - 1) / n,MOD),t;
+    LL w = 1,d = power(ort,(MOD - 1) / n,MOD),t;
     int i,j,c,s;
     if (inv == -1) {
         for (i = 1,j = n - 1; i < j; ++ i,-- j)
             std::swap(A[i],A[j]);
-        for (t = pow_mod(n,MOD - 2,MOD),i = 0; i < n; ++ i)
+        for (t = power(n,MOD - 2,MOD),i = 0; i < n; ++ i)
             A[i] = A[i] * t % MOD;
     }
     for (s = n >> 1; s; s >>= w = 1,d = d * d % MOD) {
