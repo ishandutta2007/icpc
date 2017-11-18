@@ -1,5 +1,12 @@
-const int ort = 10; // original root in MOD
-const int MOD = 786433; // MOD = a * b ^ k + 1,n <= b ^ k
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+#include <vector>
+
+using LL = long long;
+const int kN = (1 << 18) + 5;
+const int ort = 3; // original root in MOD
+const int MOD = 998244353; // MOD = a * b ^ k + 1,n <= b ^ k
 // this code works only when b == 2
 
 LL pow_mod(LL a,LL b,LL p) {
@@ -36,3 +43,4 @@ void ntt(LL A[],int n,int inv) {
         if (i < j) std::swap(A[i],A[j]);
     }
 }
+
