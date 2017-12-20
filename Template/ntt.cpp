@@ -5,7 +5,7 @@
 
 using LL = long long;
 const int kN = (1 << 18) + 5;
-const int ort = 3; // original root in MOD
+const int ort = 3; // primitive root of MOD
 const int MOD = 998244353; // MOD = a * b ^ k + 1,n <= b ^ k
 // this code works only when b == 2
 
