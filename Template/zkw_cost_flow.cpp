@@ -1,6 +1,6 @@
 const int INF = 0x3f3f3f3f;
-template<int N> struct CostFlow {
-    int s,t,vis[N],d[N],head[N],cur[N],etot;
+template<int kN> struct CostFlow {
+    int s,t,vis[kN],d[kN],head[kN],cur[kN],etot;
     struct Edge {int v,cap,cost,next;} g[555555];
     void add_edge(int u,int v,int cap,int cost) {
         g[etot].v = v; g[etot].cap = cap; g[etot].cost = cost; g[etot].next = head[u]; head[u] = etot ++;
@@ -28,7 +28,7 @@ template<int N> struct CostFlow {
     }
     bool modlabel() {
         int tmp = INF;
-        for (int u = 0; u < N; u ++) if (vis[u]) {
+        for (int u = 0; u < kN; u ++) if (vis[u]) {
             for (int i = head[u]; i != -1; i = g[i].next) {
                 Edge &e = g[i];
                 if (e.cap && !vis[e.v])
@@ -36,7 +36,7 @@ template<int N> struct CostFlow {
             }
         }
         if (tmp==INF) return true;
-        for (int u = 0; u < N; u ++) if (vis[u]) {
+        for (int u = 0; u < kN; u ++) if (vis[u]) {
             vis[u] = 0;
             d[u] += tmp;
         }

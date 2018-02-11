@@ -1,11 +1,11 @@
-const int N = 100000 + 5;
-std::vector<int> edges[N];
+const int kN = 100000 + 5;
+std::vector<int> edges[kN];
 int n;
-bool vis[N];
-int parent[N];
-int sz[N];
-int que[N];
-int balance[N];
+bool vis[kN];
+int parent[kN];
+int sz[kN];
+int que[kN];
+int balance[kN];
 
 int bfs(int source,int fa = -1) {
     int qf = 0,qe = 0;

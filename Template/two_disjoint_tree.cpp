@@ -4,12 +4,12 @@
 #include <algorithm>
 using namespace std;
 
-const int N = 110;
+const int kN = 110;
 const int M = 333<<1;
 
-int head[N],etot,n,m,e[2][M],last[M],ch[M],prev[N],preu[N];
+int head[kN],etot,n,m,e[2][M],last[M],ch[M],prev[kN],preu[kN];
 struct edge {int v,next;} g[M];
-bool mark[N],vis[M];
+bool mark[kN],vis[M];
 
 void add_edge(int u,int v) {
     g[etot].v = v; g[etot].next = head[u]; head[u] = etot ++;
@@ -85,7 +85,7 @@ int main() {
             cnt += bfs(i);
         }
         printf("Case %d: ",++ca);
-        puts(cnt==(n-1<<1) ? "YES" : "NO");
+        puts(cnt==(n-1<<1) ? "YES" : "kNO");
     }
     return 0;
 }

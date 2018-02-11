@@ -1,10 +1,10 @@
-const int N = 200 + 5;
+const int kN = 200 + 5;
 std::deque<int> que;
-bool graph[N][N],inq[N],inblossom[N];
-int match[N],pre[N],base[N];
+bool graph[kN][kN],inq[kN],inblossom[kN];
+int match[kN],pre[kN],base[kN];
 
 int find_ancestor(int u,int v) {
-    bool inpath[N] = {};
+    bool inpath[kN] = {};
     while (true) {
         u = base[u];
         inpath[u] = true;

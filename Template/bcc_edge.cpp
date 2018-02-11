@@ -1,6 +1,6 @@
-const int N = 100000 + 5;
+const int kN = 100000 + 5;
 
-int ntot,head[N],etot,dfn[N],low[N],belong[N],stack[N],top,tot,tim,n,m;
+int ntot,head[kN],etot,dfn[kN],low[kN],belong[kN],stack[kN],top,tot,tim,n,m;
 struct Edge {
     int v,next;
 } g[501000];

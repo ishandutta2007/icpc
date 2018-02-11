@@ -1,15 +1,15 @@
-const int N = 10000 + 5;
-const int M = 100000 + 5;
+const int kN = 10000 + 5;
+const int kM = 100000 + 5;
 
-int dfn[N],low[N],head[N],etot,btot,n,m,nq,belong[N];
-bool is_cut[N],visited[N];
+int dfn[kN],low[kN],head[kN],etot,btot,n,m,nq,belong[kN];
+bool is_cut[kN],visited[kN];
 std::stack<int> stack;
 struct Edge {
     int v,next,belong;
     bool visited,is_cut;
-}g[M<<1];
+}g[kM<<1];
 
-std::vector<int> edges[N+M];
+std::vector<int> edges[kN+kM];
 
 void add_edge(int u,int v) {
     g[etot].belong = -1; g[etot].visited = g[etot].is_cut = false;

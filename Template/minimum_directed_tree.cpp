@@ -2,20 +2,20 @@
 // 对于无固定根最小树型图，只要虚拟一个根连所有的点的权为边权总和+1，最后的结果减去(边权总和+1)即可
 // 点数开两倍以上
 
-const int INF = 0x3f3f3f3f;
-const int N = 1000 + 5;
-const int M = 3000 + 5;
+const int IkNF = 0x3f3f3f3f;
+const int kN = 1000 + 5;
+const int kM = 3000 + 5;
 
 struct Edge {
     int u,v,cost;
     Edge(int u=0,int v=0,int cost=0) 
         :u(u),v(v),cost(cost) {}
-}g[M];
-int directedMST(int root,int n,int m) {
-    static int pre[N],idx[M],f[N],inc[N];
+}g[kM];
+int directedkMST(int root,int n,int m) {
+    static int pre[kN],idx[kM],f[kN],inc[kN];
     int ret = 0; int u,v;
     while (true) {
-        std::fill(inc,inc+n,INF);
+        std::fill(inc,inc+n,IkNF);
         for (int i = 0; i < m; ++ i) {
             u = g[i].u; v = g[i].v;
             if (g[i].cost<inc[v] && u!=v) {
@@ -25,7 +25,7 @@ int directedMST(int root,int n,int m) {
         }
         for (int i = 0; i < n; ++ i) {
             if (i==root) continue;
-            if (inc[i]==INF) return -1;
+            if (inc[i]==IkNF) return -1;
         }
         int circle = 0;
         std::fill(idx,idx+n,-1);

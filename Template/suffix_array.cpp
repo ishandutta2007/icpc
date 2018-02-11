@@ -1,7 +1,7 @@
-const int N = 50000 + 5;
-int sa[N],rank[N],height[N];
+const int kN = 50000 + 5;
+int sa[kN],rank[kN],height[kN];
 void construct(const char *s,int n,int m = 256) {
-    static int t1[N],t2[N],c[N];
+    static int t1[kN],t2[kN],c[kN];
     int *x = t1,*y = t2;
     int i,j,k,p,l;
     for (i = 0; i < m; ++ i) c[i] = 0;

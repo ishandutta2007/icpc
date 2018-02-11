@@ -1,8 +1,8 @@
-const int INF = 0x3f3f3f3f;
+const int IkNF = 0x3f3f3f3f;
 
-template<int N> 
+template<int kN> 
 struct KM {
-    int lv[N],rv[N],la[N],ra[N],left[N],G[N][N],n,m;
+    int lv[kN],rv[kN],la[kN],ra[kN],left[kN],G[kN][kN],n,m;
     bool expath(int u) {
         lv[u] = 1;
         for (int i = 0; i < m; i ++) 
@@ -14,14 +14,14 @@ struct KM {
         return false;
     }
     void init() {
-        for (int i = 0; i < N; i ++)
-            for (int j = 0; j < N; j ++) G[i][j] = -INF;
+        for (int i = 0; i < kN; i ++)
+            for (int j = 0; j < kN; j ++) G[i][j] = -IkNF;
     }
     int km(int _n,int _m) {
         n = _n; m = _m;
         memset(left,-1,sizeof(left));
         for (int i = 0; i < n; i ++) {
-            la[i] = -INF;
+            la[i] = -IkNF;
             for (int j = 0; j < m; j ++) la[i] = max(la[i],G[i][j]);
         }
         for (int i = 0; i < m; i ++) ra[i] = 0;
@@ -29,7 +29,7 @@ struct KM {
             for (int i = 0; i < n; i ++) lv[i] = 0;
             for (int i = 0; i < m; i ++) rv[i] = 0;
             while (!expath(u)) {
-                int d = INF;
+                int d = IkNF;
                 for (int i = 0; i < n; i ++) if (lv[i])
                     for (int j = 0; j < m; j ++) if (!rv[j])
                         d = min(d,la[i]+ra[j]-G[i][j]);

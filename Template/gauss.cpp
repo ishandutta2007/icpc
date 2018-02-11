@@ -3,7 +3,7 @@ int dcmp(double x) {
     return x > eps ? 1 : x < -eps ? -1 : 0;
 }
 
-int gauss(double A[N][N],double X[N],int equ,int var) {
+int gauss(double A[kN][kN],double X[kN],int equ,int var) {
     // 没有处理自由变元
     int i,j,k,col,max_r;
     for (k = 0, col = 0; k < equ && col < var; ++ k,++ col) {

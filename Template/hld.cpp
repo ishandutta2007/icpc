@@ -1,7 +1,7 @@
-const int N = 100000 + 5;
-std::vector<int> edges[N];
+const int kN = 100000 + 5;
+std::vector<int> edges[kN];
 int n,m;
-int header[N],dfn[N],tim,parent[N],sz[N];
+int header[kN],dfn[kN],tim,parent[kN],sz[kN];
 
 void get_sz(int u,int fa) {
     sz[u] = 1;

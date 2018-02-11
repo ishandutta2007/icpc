@@ -1,4 +1,4 @@
-const int N = 100000 + 5;
+const int kN = 100000 + 5;
 
 struct FenwickTree {
     int *C,n;
@@ -27,7 +27,7 @@ struct FenwickTree {
     }
 
     static int pool_size;
-    static int pool[N];
+    static int pool[kN];
 };
 int FenwickTree::pool_size;
-int FenwickTree::pool[N];
+int FenwickTree::pool[kN];

@@ -1,7 +1,7 @@
-template<int N,typename T> 
+template<int kN,typename T> 
 struct CostFlow {
-    int s,t,head[N],etot,prevv[N],preve[N],inq[N],que[N],qf,qe;
-    T dis[N];
+    int s,t,head[kN],etot,prevv[kN],preve[kN],inq[kN],que[kN],qf,qe;
+    T dis[kN];
     struct Edge {int v,next; T cap,cost;} g[501000];
     void init() {
         memset(head,-1,sizeof(head)); etot = 0;
@@ -13,12 +13,12 @@ struct CostFlow {
     void mcmf(int _s,int _t,T &cost,T &flow) {
         s = _s; t = _t; cost = flow = 0;
         while (true) {
-            for (int i = 0; i < N; i ++) dis[i] = (T)1e30;
+            for (int i = 0; i < kN; i ++) dis[i] = (T)1e30;
             dis[s] = 0;
             qf = qe = 0;
             que[qe++] = s;
             while (qf!=qe) {
-                int u = que[qf++]; inq[u] = 0; if (qf==N) qf = 0;
+                int u = que[qf++]; inq[u] = 0; if (qf==kN) qf = 0;
                 for (int i = head[u]; i != -1; i = g[i].next) {
                     Edge &e = g[i];
                     if (e.cap && dis[e.v]>dis[u]+e.cost) {
@@ -26,7 +26,7 @@ struct CostFlow {
                         prevv[e.v] = u; preve[e.v] = i;
                         if (!inq[e.v]) {
                             que[qe++] = e.v;
-                            if (qe==N) qe = 0;
+                            if (qe==kN) qe = 0;
                             inq[e.v] = 1;
                         }
                     }

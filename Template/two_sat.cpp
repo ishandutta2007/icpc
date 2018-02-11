@@ -1,7 +1,7 @@
-template<int N> 
+template<int kN> 
 struct Sat {
-    int head[N],etot,stack[N],top;
-    bool mark[N];
+    int head[kN],etot,stack[kN],top;
+    bool mark[kN];
     struct Edge {int v,next;} g[501000];
     void init() {
         memset(head,-1,sizeof(head)); etot = 0;

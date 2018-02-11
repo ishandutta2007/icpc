@@ -1,7 +1,7 @@
-const int N = 100000 + 5;
+const int kN = 100000 + 5;
 
-int dfn[N],low[N],belong[N],stack[N],instack[N],tim,top,tot,n,m;
-std::vector<int> edges[N];
+int dfn[kN],low[kN],belong[kN],stack[kN],instack[kN],tim,top,tot,n,m;
+std::vector<int> edges[kN];
 
 void tarjan(int u) {
     dfn[u] = low[u] = ++tim;

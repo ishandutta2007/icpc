@@ -1,6 +1,6 @@
-template<int N,typename T> 
+template<int kN,typename T> 
 struct MaxFlow {
-    int s,t,head[N],etot,que[N],qf,qe,dis[N],cur[N];
+    int s,t,head[kN],etot,que[kN],qf,qe,dis[kN],cur[kN];
     struct Edge {int v,next; T cap;}g[501000];
     void init() {
         memset(head,-1,sizeof(head)); etot = 0;
@@ -12,7 +12,7 @@ struct MaxFlow {
     bool bfs() {
         memset(dis,-1,sizeof(dis));
         memcpy(cur,head,sizeof(cur));
-        dis[t] = N;
+        dis[t] = kN;
         qf = qe = 0;
         que[qe++] = t;
         while (qf!=qe) {
