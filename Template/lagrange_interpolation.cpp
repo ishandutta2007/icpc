@@ -78,7 +78,7 @@ Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>&
     for (int j = 0; j <= degree - 1; ++j)
       f[i].emplace_back((f[i - 1][j + 1] - f[i - 1][j]) / (x[i + j] - x[j]));
   Polynomial<T> cur(1, T(1));
-  Polynomial<T> ret;
+  Polynomial<T> ret(1, T(0));
   for (int i = 0; i <= degree; ++i) {
     ret = ret + cur * Polynomial<T>(1, f[i][0]);
     cur = cur * Polynomial<T>{T(-x[i]), T(1)};
