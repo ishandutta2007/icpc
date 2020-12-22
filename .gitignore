@@ -1,4 +1,5 @@
 *.class
 *.exe
 *~
+*.swp
 *.Ds_Store
