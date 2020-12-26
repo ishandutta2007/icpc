@@ -53,7 +53,7 @@ template<typename T> using VecT = Vec<T>;
 template<typename T> using PolygonT = std::vector<PointT<T>>;
 
 template<typename T>
-bool polar_cmp(const Vec<T> &a,const Vec<T> &b) {
+bool polar_cmp(const Vec<T>& a,const Vec<T>& b) {
   if (cmpT(a.y) * cmpT(b.y) <= 0) {
     if (cmpT(a.y) > 0 || cmpT(b.y) > 0) return cmpT(a.y - b.y) < 0;
     if (cmpT(a.y) == 0 && cmpT(b.y) == 0) return cmpT(a.x - b.x) < 0;
@@ -78,16 +78,16 @@ PointT<double> projection_point_line(const PointT<T>& p, const PointT<T>& a, con
 template<typename T>
 double distance_point_line(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
   const VecT<T> v1 = b - a, v2 = p - a;
-  return std::abs(det(v1,v2)) / v1.length();
+  return std::abs(det(v1, v2)) / v1.length();
 }
 
 template<typename T>
 double distance_point_segment(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
   if (a == b) return (p - a).length();
   const VecT<T> v1 = b - a, v2 = p - a, v3 = p - b;
-  if (cmpT(dot(v1,v2)) < 0) return v2.length();
-  else if (cmpT(dot(v1,v3)) > 0) return v3.length();
-  else return std::abs(det(v1,v2)) / v1.length();
+  if (cmpT(dot(v1, v2)) < 0) return v2.length();
+  else if (cmpT(dot(v1, v3)) > 0) return v3.length();
+  else return std::abs(det(v1, v2)) / v1.length();
 }
 
 template<typename T>
