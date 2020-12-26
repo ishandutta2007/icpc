@@ -33,7 +33,7 @@ struct Vec {
   double length() const { return hypot(x, y); }
   Vec<double> rotate(double angle) const {
     double c = cos(angle), s = sin(angle);
-    return Point(x * c - y * s, x * s + y * c);
+    return Vec<double>(x * c - y * s, x * s + y * c);
   }
   Vec<double> operator / (double t) const { return Vec<double>(x / t, y / t); }
   Vec<double>& operator /= (double t) { *this = *this / t; return *this; }
@@ -142,6 +142,9 @@ void geom_test() {
   DUMP(projection_point_line(PointT<int>(1, 1), PointT<int>(0, 0), PointT<int>(3, -2)));
   DUMP(distance_point_segment(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
   DUMP(distance_point_line(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
+  DUMP(PointT<int>(1, 1).rotate90());
+  DUMP(PointT<int>(1, 1).rotate(1.57));
+  DUMP(PointT<int>(1, 1).rotate(M_PI / 2));
 }
 
 int main() {
