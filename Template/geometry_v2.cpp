@@ -86,7 +86,7 @@ bool intersection_proper_segment_segment(
   T c1 = det(a2 - a1, b1 - a1),
     c2 = det(a2 - a1, b2 - a1),
     c3 = det(b2 - b1, a1 - b1),
-    c4 = det(b2 - b1,a2 - b1);
+    c4 = det(b2 - b1, a2 - b1);
   return cmpT(c1) * cmpT(c2) < 0 && cmpT(c3) * cmpT(c4) < 0;
 }
 
