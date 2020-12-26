@@ -1,3 +1,11 @@
+#include <bits/stdc++.h>
+#ifdef LOCAL
+#include "debuger.hpp"
+#else
+#define DUMP(...) 1145141919810
+#define CHECK(...) (__VA_ARGS__)
+#endif
+
 const double eps = 1e-8;
 
 template<typename T> inline int cmpT(T x) { return x < 0 ? -1 : x > 0; }
@@ -52,11 +60,18 @@ bool polar_cmp(const Vec<T> &a,const Vec<T> &b) {
   return cmpT(det(a,b)) > 0;
 }
 
-PointT<double> intersection_line_line(
-    const PointT<double>& p, const VecT<double>& v, const PointT<double>& q, const VecT<double>& w) {
-  const VecT<double> u = p - q;
-  double t = det(w, u) / det(v, w);
-  return p + v * t;
+template<typename T>
+PointT<double> intersection_line_line(const PointT<T>& p, const VecT<T>& v, const PointT<T>& q, const VecT<T>& w) {
+  const VecT<T> u = p - q;
+  const double ratio = det(w, u) / static_cast<double>(det(v, w));
+  return PointT<double>(p.x + v.x * ratio, p.y + v.y * ratio);
+}
+
+template<typename T>
+PointT<double> projection_point_line(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
+  const VecT<T> v = b - a;
+  const double ratio = dot(v, p - a) / static_cast<double>(dot(v, v));
+  return PointT<double>(a.x + v.x * ratio, a.y + v.y * ratio);
 }
 
 template<typename T>
@@ -72,12 +87,6 @@ double distance_point_segment(const PointT<T>& p, const PointT<T>& a, const Poin
   if (cmpT(dot(v1,v2)) < 0) return v2.length();
   else if (cmpT(dot(v1,v3)) > 0) return v3.length();
   else return std::abs(det(v1,v2)) / v1.length();
-}
-
-template<typename T>
-PointT<double> projection_point_line(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
-  const VecT<T> v = b - a;
-  return a + v * (dot(v, p - a) / static_cast<double>(dot(v, v)));
 }
 
 template<typename T>
@@ -127,3 +136,14 @@ using Vector = Point;
 using Polygon = std::vector<Point>;
 
 inline int dcmp(double x) { return cmpT(x); }
+
+void geom_test() {
+  DUMP(intersection_line_line(PointT<int>(1, 0), VecT<int>(-1, 1), PointT<int>(0, 0), VecT<int>(1, 1)));
+  DUMP(projection_point_line(PointT<int>(1, 1), PointT<int>(0, 0), PointT<int>(3, -2)));
+  DUMP(distance_point_segment(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
+  DUMP(distance_point_line(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
+}
+
+int main() {
+  geom_test();
+}
