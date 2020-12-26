@@ -37,6 +37,7 @@ struct Vec {
   }
   Vec<double> operator / (double t) const { return Vec<double>(x / t, y / t); }
   Vec<double>& operator /= (double t) { *this = *this / t; return *this; }
+  template<typename U> Vec<U> convert() const { return Vec<U>(x, y); }
 };
 
 template<typename T>
@@ -145,6 +146,8 @@ void geom_test() {
   DUMP(PointT<int>(1, 1).rotate90());
   DUMP(PointT<int>(1, 1).rotate(1.57));
   DUMP(PointT<int>(1, 1).rotate(M_PI / 2));
+  DUMP(PointT<long long>(1, 10000).convert<double>());
+  DUMP(PointT<double>(1.7, -1.7).convert<int>());
 }
 
 int main() {
