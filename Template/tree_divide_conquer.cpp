@@ -33,12 +33,15 @@ int bfs(int source, int fa = -1) {
   return qe;
 }
 
+void divide_core(int root, int tot) {
+}
+
 void divide(int root) {
   int tot = bfs(root);
   for (int i = tot - 1; i > 0; --i) if (balance[que[i]] < balance[root]) root = que[i];
   bfs(root);
 
-  // balabalah
+  divide_core(root, tot);
 
   vis[root] = true;
   for (int u : edges[root]) if (!vis[u]) divide(u);
