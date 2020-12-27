@@ -73,6 +73,7 @@ void test_binomial() {
   CHECK(4950 == binom(100, 2).val());
   CHECK(19900 == binom(200, 2).val());
   CHECK(binom(200000, 2) == binom(200000, 199998));
+  CHECK(1 == binom(0, 0).val());
 }
 
 int main() {
