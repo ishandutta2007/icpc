@@ -127,8 +127,7 @@ const int kN = 400000 + 5;
 Node pool[kN],*node[kN],*alloc;
 int n;
 
-void lct_init()
-{
+void lct_init() {
   alloc = pool;
   nill = new(alloc ++) Node();
   nill->fa = nill->ch[0] = nill->ch[1] = nill;
