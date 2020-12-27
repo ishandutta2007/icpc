@@ -26,10 +26,10 @@ struct Integral {
   Integral operator * (const Integral& rhs) const { return Integral(val() * 1LL * rhs.val()); }
   Integral operator / (const Integral& rhs) const { return *this * rhs.inv(); }
   Integral operator - () const { return Integral(-val()); }
-  Integral operator += (const Integral& rhs) { *this = *this + rhs; return *this; }
-  Integral operator -= (const Integral& rhs) { *this = *this - rhs; return *this; }
-  Integral operator *= (const Integral& rhs) { *this = *this * rhs; return *this; }
-  Integral operator /= (const Integral& rhs) { *this = *this / rhs; return *this; }
+  Integral& operator += (const Integral& rhs) { *this = *this + rhs; return *this; }
+  Integral& operator -= (const Integral& rhs) { *this = *this - rhs; return *this; }
+  Integral& operator *= (const Integral& rhs) { *this = *this * rhs; return *this; }
+  Integral& operator /= (const Integral& rhs) { *this = *this / rhs; return *this; }
   bool operator == (const Integral& rhs) { return val() == rhs.val(); }
   bool operator != (const Integral& rhs) { return !(*this == rhs); }
 
