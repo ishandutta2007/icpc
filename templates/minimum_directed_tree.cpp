@@ -7,56 +7,56 @@ const int kN = 1000 + 5;
 const int kM = 3000 + 5;
 
 struct Edge {
-    int u,v,cost;
-    Edge(int u=0,int v=0,int cost=0) 
-        :u(u),v(v),cost(cost) {}
+  int u,v,cost;
+  Edge(int u=0,int v=0,int cost=0)
+    :u(u),v(v),cost(cost) {}
 }g[kM];
 int directedkMST(int root,int n,int m) {
-    static int pre[kN],idx[kM],f[kN],inc[kN];
-    int ret = 0; int u,v;
-    while (true) {
-        std::fill(inc,inc+n,IkNF);
-        for (int i = 0; i < m; ++ i) {
-            u = g[i].u; v = g[i].v;
-            if (g[i].cost<inc[v] && u!=v) {
-                pre[v] = u;
-                inc[v] = g[i].cost;
-            }
-        }
-        for (int i = 0; i < n; ++ i) {
-            if (i==root) continue;
-            if (inc[i]==IkNF) return -1;
-        }
-        int circle = 0;
-        std::fill(idx,idx+n,-1);
-        std::fill(f,f+n,-1);
-        inc[root] = 0;
-        for (int i = 0; i < n; ++ i) {
-            ret += inc[i];
-            int v = i;
-            while (f[v]!=i && idx[v]==-1 && v!=root) {
-                f[v] = i;
-                v = pre[v];
-            }
-            if (v!=root && idx[v]==-1) {
-                for (int u = pre[v]; u != v; u = pre[u]) idx[u] = circle;
-                idx[v] = circle ++;
-            }
-        }
-        if (circle==0) break;
-        for (int i = 0; i < n; ++ i) {
-            if (idx[i]==-1) idx[i] = circle ++;
-        }
-        for (int i = 0; i < m; ++ i) {
-            v = g[i].v;
-            g[i].u = idx[g[i].u];
-            g[i].v = idx[g[i].v];
-            if (g[i].u!=g[i].v) {
-                g[i].cost -= inc[v];
-            }
-        }
-        n = circle;
-        root = idx[root];
+  static int pre[kN],idx[kM],f[kN],inc[kN];
+  int ret = 0; int u,v;
+  while (true) {
+    std::fill(inc,inc+n,IkNF);
+    for (int i = 0; i < m; ++ i) {
+      u = g[i].u; v = g[i].v;
+      if (g[i].cost<inc[v] && u!=v) {
+        pre[v] = u;
+        inc[v] = g[i].cost;
+      }
     }
-    return ret;
+    for (int i = 0; i < n; ++ i) {
+      if (i==root) continue;
+      if (inc[i]==IkNF) return -1;
+    }
+    int circle = 0;
+    std::fill(idx,idx+n,-1);
+    std::fill(f,f+n,-1);
+    inc[root] = 0;
+    for (int i = 0; i < n; ++ i) {
+      ret += inc[i];
+      int v = i;
+      while (f[v]!=i && idx[v]==-1 && v!=root) {
+        f[v] = i;
+        v = pre[v];
+      }
+      if (v!=root && idx[v]==-1) {
+        for (int u = pre[v]; u != v; u = pre[u]) idx[u] = circle;
+        idx[v] = circle ++;
+      }
+    }
+    if (circle==0) break;
+    for (int i = 0; i < n; ++ i) {
+      if (idx[i]==-1) idx[i] = circle ++;
+    }
+    for (int i = 0; i < m; ++ i) {
+      v = g[i].v;
+      g[i].u = idx[g[i].u];
+      g[i].v = idx[g[i].v];
+      if (g[i].u!=g[i].v) {
+        g[i].cost -= inc[v];
+      }
+    }
+    n = circle;
+    root = idx[root];
+  }
+  return ret;
 }

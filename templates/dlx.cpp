@@ -1,5 +1,4 @@
-#include <bits/stdc++.h> 
-
+#include <bits/stdc++.h>
 
 struct DLX {
   static const int kMaxn = 11111;
@@ -39,7 +38,7 @@ struct DLX {
   void remove(int c) {
     L[R[c]] = L[c];
     R[L[c]] = R[c];
-    FOR(i,D,c) 
+    FOR(i,D,c)
       FOR(j,R,i) {
         U[D[j]] = U[j]; D[U[j]] = D[j]; S[col[j]] --;
       }
