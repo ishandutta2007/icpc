@@ -41,6 +41,11 @@ struct Integral {
 };
 
 template<int MOD>
+std::string to_string(const Integral<MOD>& v) {
+  return std::string("Integral{v=") + std::to_string(v.val()) + "}";
+}
+
+template<int MOD>
 struct Binomial {
   std::vector<Integral<MOD>> factor, inv_factor;
 
@@ -74,6 +79,7 @@ void test_binomial() {
   CHECK(19900 == binom(200, 2).val());
   CHECK(binom(200000, 2) == binom(200000, 199998));
   CHECK(1 == binom(0, 0).val());
+  DUMP(Integral<MOD>(-233));
 }
 
 int main() {
