@@ -36,7 +36,7 @@ void fft(Complex *a, int n, int flag) {
   }
   for(int l=2; l<=n; l<<=1) {
     int m = l>>1;
-    for(Complex *p = a; p != a+n; p += l) 
+    for(Complex *p = a; p != a+n; p += l)
       for(int k=0; k<m; k++) {
         Complex t = w[L/l*k] * p[k+m];
         p[k+m] = p[k] - t;
@@ -46,8 +46,7 @@ void fft(Complex *a, int n, int flag) {
   if(flag == -1) for(int i=0; i<n; i++) a[i].x /= n;
 }
 
-void mul(int *x, int lx, int *y, int ly, int *z)
-{
+void mul(int *x, int lx, int *y, int ly, int *z) {
   fft_init(lx + ly);
   static Complex p[kN << 2], q[kN << 2];
   for (int i = 0; i < L; ++ i)
@@ -64,8 +63,7 @@ void mul(int *x, int lx, int *y, int ly, int *z)
     z[i] = int(p[i].x + .5);
 }
 
-void example()
-{
+void example() {
   int a[3] = {1, 2, 3}, b[4] = {1, 2, 3, 4};
   int c[6];
   mul(a, 3, b, 4, c);
@@ -74,7 +72,6 @@ void example()
   // 1 4 10 16 17 12
 }
 
-int main()
-{
+int main() {
   example();
 }
