@@ -1,4 +1,1 @@
-ACM-ICPC
-========
-
 templates.
