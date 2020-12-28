@@ -27,6 +27,7 @@ struct VecT {
   VecT operator * (T t) const { return VecT(x * t, y * t); }
   VecT& operator *= (T t) { *this = *this * t; return *this; }
   bool operator == (const VecT& rhs) const { return cmpT(x - rhs.x) == 0 && cmpT(y - rhs.y) == 0; }
+  bool operator != (const VecT& rhs) const { return !(*this == rhs); }
   T length_sqr() const { return x * x + y * y; }
   VecT rotate90() const { return VecT(-y, x); }
 
