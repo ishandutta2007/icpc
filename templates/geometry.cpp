@@ -12,48 +12,47 @@ template<typename T> inline int cmpT(T x) { return x < 0 ? -1 : x > 0; }
 template<> inline int cmpT(double x) { return x < -eps ? -1 : x > eps; }
 
 template<typename T>
-struct Vec {
+struct VecT {
   T x = 0;
   T y = 0;
 
   static_assert(std::is_arithmetic<T>::value, "Should be an arithmetic type.");
 
-  Vec() {}
-  Vec(T x, T y) : x(x), y(y) {}
-  Vec operator + (const Vec& rhs) const { return Vec(x + rhs.x, y + rhs.y); }
-  Vec& operator += (const Vec& rhs) { *this = *this + rhs; return *this; }
-  Vec operator - (const Vec& rhs) const { return Vec(x - rhs.x, y - rhs.y); }
-  Vec& operator -= (const Vec& rhs) { *this = *this - rhs; return *this; }
-  Vec operator * (T t) const { return Vec(x * t, y * t); }
-  Vec& operator *= (T t) { *this = *this * t; return *this; }
-  bool operator == (const Vec& rhs) const { return cmpT(x - rhs.x) == 0 && cmpT(y - rhs.y) == 0; }
+  VecT() {}
+  VecT(T x, T y) : x(x), y(y) {}
+  VecT operator + (const VecT& rhs) const { return VecT(x + rhs.x, y + rhs.y); }
+  VecT& operator += (const VecT& rhs) { *this = *this + rhs; return *this; }
+  VecT operator - (const VecT& rhs) const { return VecT(x - rhs.x, y - rhs.y); }
+  VecT& operator -= (const VecT& rhs) { *this = *this - rhs; return *this; }
+  VecT operator * (T t) const { return VecT(x * t, y * t); }
+  VecT& operator *= (T t) { *this = *this * t; return *this; }
+  bool operator == (const VecT& rhs) const { return cmpT(x - rhs.x) == 0 && cmpT(y - rhs.y) == 0; }
   T length_sqr() const { return x * x + y * y; }
-  Vec rotate90() const { return Vec(-y, x); }
+  VecT rotate90() const { return VecT(-y, x); }
 
   double length() const { return hypot(x, y); }
-  Vec<double> rotate(double angle) const {
+  VecT<double> rotate(double angle) const {
     double c = cos(angle), s = sin(angle);
-    return Vec<double>(x * c - y * s, x * s + y * c);
+    return VecT<double>(x * c - y * s, x * s + y * c);
   }
-  Vec<double> operator / (double t) const { return Vec<double>(x / t, y / t); }
-  Vec<double>& operator /= (double t) { *this = *this / t; return *this; }
-  template<typename U> Vec<U> convert() const { return Vec<U>(x, y); }
+  VecT<double> operator / (double t) const { return VecT<double>(x / t, y / t); }
+  VecT<double>& operator /= (double t) { *this = *this / t; return *this; }
+  template<typename U> VecT<U> convert() const { return VecT<U>(x, y); }
 };
 
 template<typename T>
-std::string to_string(const Vec<T>& v) {
-  return std::string("Vec{x=") + std::to_string(v.x) + ",y=" + std::to_string(v.y) + "}";
+std::string to_string(const VecT<T>& v) {
+  return std::string("VecT{x=") + std::to_string(v.x) + ",y=" + std::to_string(v.y) + "}";
 }
 
-template<typename T> T det(const Vec<T>& a, const Vec<T>& b) { return a.x * b.y - a.y * b.x; }
-template<typename T> T dot(const Vec<T>& a, const Vec<T>& b) { return a.x * b.x + a.y * b.y; }
+template<typename T> T det(const VecT<T>& a, const VecT<T>& b) { return a.x * b.y - a.y * b.x; }
+template<typename T> T dot(const VecT<T>& a, const VecT<T>& b) { return a.x * b.x + a.y * b.y; }
 
-template<typename T> using PointT = Vec<T>;
-template<typename T> using VecT = Vec<T>;
+template<typename T> using PointT = VecT<T>;
 template<typename T> using PolygonT = std::vector<PointT<T>>;
 
 template<typename T>
-bool polar_cmp(const Vec<T>& a,const Vec<T>& b) {
+bool polar_cmp(const VecT<T>& a,const VecT<T>& b) {
   if (cmpT(a.y) * cmpT(b.y) <= 0) {
     if (cmpT(a.y) > 0 || cmpT(b.y) > 0) return cmpT(a.y - b.y) < 0;
     if (cmpT(a.y) == 0 && cmpT(b.y) == 0) return cmpT(a.x - b.x) < 0;
