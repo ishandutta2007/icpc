@@ -81,7 +81,3 @@ void test_binomial() {
   CHECK(1 == binom(0, 0).val());
   DUMP(Integral<MOD>(-233));
 }
-
-int main() {
-  test_binomial();
-}
