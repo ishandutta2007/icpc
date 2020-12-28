@@ -53,6 +53,11 @@ T eval(const Polynomial<T>& a, const T& x) {
 }
 
 template<typename T>
+T interpolation(const std::vector<T>& x, const std::vector<T>& y, const T& p) {
+  return eval(lagrange_polynomial(x, y), p);
+}
+
+template<typename T>
 Polynomial<T> sum_from_l(const Polynomial<T>& a, int l, int n) {
   std::vector<T> x;
   for (int i = 0; i <= n; ++i) x.emplace_back(l + i);
