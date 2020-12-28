@@ -61,8 +61,8 @@ bool polar_cmp(const VecT<T>& a,const VecT<T>& b) {
 }
 
 template<typename T>
-PointT<double> intersection_line_line(const PointT<T>& p, const VecT<T>& v, const PointT<T>& q, const VecT<T>& w) {
-  const VecT<T> u = p - q;
+PointT<double> intersection_line_line(const PointT<T>& p, const PointT<T>& pp, const PointT<T>& q, const PointT<T>& qq) {
+  const VecT<T> u = p - q, v = pp - p, w = qq - q;
   const double ratio = det(w, u) / static_cast<double>(det(v, w));
   return PointT<double>(p.x + v.x * ratio, p.y + v.y * ratio);
 }
@@ -138,7 +138,7 @@ using Polygon = std::vector<Point>;
 inline int dcmp(double x) { return cmpT(x); }
 
 void geom_test() {
-  DUMP(intersection_line_line(PointT<int>(1, 0), VecT<int>(-1, 1), PointT<int>(0, 0), VecT<int>(1, 1)));
+  DUMP(intersection_line_line(PointT<int>(1, 0), VecT<int>(0, 1), PointT<int>(0, 0), VecT<int>(1, 1)));
   DUMP(projection_point_line(PointT<int>(1, 1), PointT<int>(0, 0), PointT<int>(3, -2)));
   DUMP(distance_point_segment(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
   DUMP(distance_point_line(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
