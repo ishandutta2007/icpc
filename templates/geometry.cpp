@@ -26,6 +26,11 @@ struct VecT {
   VecT& operator -= (const VecT& rhs) { *this = *this - rhs; return *this; }
   VecT operator * (T t) const { return VecT(x * t, y * t); }
   VecT& operator *= (T t) { *this = *this * t; return *this; }
+  bool operator < (const VecT& rhs) const {
+    if (cmpT(x - rhs.x) == 0) return cmpT(y - rhs.y) < 0;
+    return cmpT(x - rhs.x) < 0;
+  }
+  bool operator > (const VecT& rhs) const { return rhs < *this; }
   bool operator == (const VecT& rhs) const { return cmpT(x - rhs.x) == 0 && cmpT(y - rhs.y) == 0; }
   bool operator != (const VecT& rhs) const { return !(*this == rhs); }
   T length_sqr() const { return x * x + y * y; }
@@ -48,14 +53,6 @@ std::string to_string(const VecT<T>& v) {
 
 template<typename T> T det(const VecT<T>& a, const VecT<T>& b) { return a.x * b.y - a.y * b.x; }
 template<typename T> T dot(const VecT<T>& a, const VecT<T>& b) { return a.x * b.x + a.y * b.y; }
-
-template<typename T>
-struct XYComparator {
-  bool operator () (const VecT<T>& lhs, const VecT<T>& rhs) const {
-    if (cmpT(lhs.x - rhs.x) == 0) return cmpT(lhs.y - rhs.y) < 0;
-    return cmpT(lhs.x - rhs.x) < 0;
-  }
-};
 
 template<typename T> using PointT = VecT<T>;
 template<typename T> using PolygonT = std::vector<PointT<T>>;
