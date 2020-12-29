@@ -118,7 +118,7 @@ bool has_intersection_segment_segment(
 }
 
 template<typename T>
-bool in_point_polygon(const PointT<T>& o, const PolygonT<T> &poly, bool flag) {
+bool in_point_polygon(const PointT<T>& o, const PolygonT<T>& poly, bool flag) {
   // flag == true means boundary counts as inner side.
   int t = 0;
   PointT<T> a, b;
@@ -133,14 +133,15 @@ bool in_point_polygon(const PointT<T>& o, const PolygonT<T> &poly, bool flag) {
   return t & 1;
 }
 
-using Point = PointT<double>;
-using Vector = Point;
+using Vector = VecT<double>;
+using Point = Vector;
 using Polygon = std::vector<Point>;
 
 inline int dcmp(double x) { return cmpT(x); }
 
 void geom_test() {
-  DUMP(intersection_line_line(PointT<int>(1, 0), VecT<int>(0, 1), PointT<int>(0, 0), VecT<int>(1, 1)));
+  CHECK(PointT<double>(0.5, 0.5) ==
+        intersection_line_line(PointT<int>(1, 0), PointT<int>(0, 1), PointT<int>(0, 0), PointT<int>(1, 1)));
   DUMP(projection_point_line(PointT<int>(1, 1), PointT<int>(0, 0), PointT<int>(3, -2)));
   DUMP(distance_point_segment(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
   DUMP(distance_point_line(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
