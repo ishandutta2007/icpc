@@ -33,7 +33,7 @@ Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>&
   std::vector<std::vector<T>> f(degree + 1);
   f[0] = y;
   for (int i = 1; i <= degree; ++i)
-    for (int j = 0; j <= degree - 1; ++j)
+    for (int j = 0; i + j <= degree; ++j)
       f[i].emplace_back((f[i - 1][j + 1] - f[i - 1][j]) / (x[i + j] - x[j]));
   Polynomial<T> cur(1, T(1));
   Polynomial<T> ret(1, T(0));
