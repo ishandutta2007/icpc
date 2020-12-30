@@ -104,7 +104,7 @@ template<typename T>
 PointT<decltype(T(1) / double(1))> projection_point_line(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
   using R = decltype(T(1) / double(1));
   const VecT<T> v = b - a;
-  const double ratio = dot(v, p - a) / static_cast<R>(dot(v, v));
+  const R ratio = dot(v, p - a) / static_cast<R>(dot(v, v));
   return PointT<R>(a.x + v.x * ratio, a.y + v.y * ratio);
 }
 
