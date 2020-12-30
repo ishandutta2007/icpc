@@ -52,13 +52,13 @@ template<typename T, typename U> inline VecT<decltype(T(1) * U(1))> operator * (
   return VecT<decltype(T(1) * U(1))>(v.x * t, v.y * t);
 }
 template<typename T, typename U> inline VecT<decltype(T(1) * U(1))> operator * (U t, const VecT<T>& v) { return v * t; }
-template<typename T, typename U> inline VecT<T>& operator *= (VecT<T>& v, U t) { v = v * t; return v; }
+template<typename T, typename U> inline VecT<T>& operator *= (VecT<T>& v, U t) { return v = v * t; }
 
 // /
 template<typename T, typename U> inline VecT<decltype(T(1) / U(1))> operator / (const VecT<T>& v, U t) {
   return VecT<decltype(T(1) / U(1))>(v.x / t, v.y / t);
 }
-template<typename T, typename U> inline VecT<T>& operator /= (VecT<T>& v, U t) { v = v / t; return v; }
+template<typename T, typename U> inline VecT<T>& operator /= (VecT<T>& v, U t) { return v = v / t; }
 
 // <
 template<typename T> inline bool operator < (const VecT<T>& lhs, const VecT<T>& rhs) {
