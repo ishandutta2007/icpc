@@ -16,23 +16,14 @@ struct VecT {
   T x = 0;
   T y = 0;
 
-  static_assert(std::is_arithmetic<T>::value, "Should be an arithmetic type.");
+  // TODO: Support long double.
+  static_assert(std::is_integral<T>::value || std::is_same<T, double>::value,
+                "T should be an integral or a double.");
 
   VecT() {}
   VecT(T x, T y) : x(x), y(y) {}
-  VecT operator + (const VecT& rhs) const { return VecT(x + rhs.x, y + rhs.y); }
-  VecT& operator += (const VecT& rhs) { *this = *this + rhs; return *this; }
-  VecT operator - (const VecT& rhs) const { return VecT(x - rhs.x, y - rhs.y); }
-  VecT& operator -= (const VecT& rhs) { *this = *this - rhs; return *this; }
-  VecT operator * (T t) const { return VecT(x * t, y * t); }
-  VecT& operator *= (T t) { *this = *this * t; return *this; }
-  bool operator < (const VecT& rhs) const {
-    if (cmpT(x - rhs.x) == 0) return cmpT(y - rhs.y) < 0;
-    return cmpT(x - rhs.x) < 0;
-  }
-  bool operator > (const VecT& rhs) const { return rhs < *this; }
-  bool operator == (const VecT& rhs) const { return cmpT(x - rhs.x) == 0 && cmpT(y - rhs.y) == 0; }
-  bool operator != (const VecT& rhs) const { return !(*this == rhs); }
+  ~VecT() {}
+
   T length_sqr() const { return x * x + y * y; }
   VecT rotate90() const { return VecT(-y, x); }
 
@@ -41,10 +32,43 @@ struct VecT {
     double c = cos(angle), s = sin(angle);
     return VecT<double>(x * c - y * s, x * s + y * c);
   }
-  VecT<double> operator / (double t) const { return VecT<double>(x / t, y / t); }
-  VecT<double>& operator /= (double t) { *this = *this / t; return *this; }
   template<typename U> VecT<U> convert() const { return VecT<U>(x, y); }
 };
+
+// +
+template<typename T> inline VecT<T> operator + (const VecT<T>& lhs, const VecT<T>& rhs) {
+  return VecT<T>(lhs.x + rhs.x, lhs.y + rhs.y);
+}
+template<typename T> inline VecT<T>& operator += (VecT<T>& lhs, const VecT<T>& rhs) { return lhs = lhs + rhs; }
+
+// -
+template<typename T> inline VecT<T> operator - (const VecT<T>& lhs, const VecT<T>& rhs) {
+  return VecT<T>(lhs.x - rhs.x, lhs.y - rhs.y);
+}
+template<typename T> inline VecT<T>& operator -= (VecT<T>& lhs, const VecT<T>& rhs) { return lhs = lhs - rhs; }
+
+// *
+template<typename T, typename U> inline VecT<T> operator * (const VecT<T>& v, U t) { return VecT<T>(v.x * t, v.y * t); }
+template<typename T, typename U> inline VecT<T> operator * (U t, const VecT<T>& v) { return v * t; }
+template<typename T> inline VecT<double> operator * (const VecT<T>& v, double t) { return VecT<double>(v.x * t, v.y * t); }
+template<typename T> inline VecT<double> operator * (double t, const VecT<T>& v) { return v * t; }
+template<typename T, typename U> inline VecT<T>& operator *= (VecT<T>& v, U t) { v = v * t; return v; }
+
+// /
+template<typename T, typename U> inline VecT<T> operator / (const VecT<T>& v, U t) { return VecT<T>(v.x / t, v.y / t); }
+template<typename T> inline VecT<double> operator / (const VecT<T>& v, double t) { return VecT<double>(v.x / t, v.y / t); }
+template<typename U> inline VecT<double>& operator /= (VecT<double>& v, U t) { v = v / t; return v; }
+
+// <
+template<typename T> inline bool operator < (const VecT<T>& lhs, const VecT<T>& rhs) {
+  if (cmpT(lhs.x - rhs.x) == 0) return cmpT(lhs.y - rhs.y) < 0;
+  return cmpT(lhs.x - rhs.x) < 0;
+}
+template<typename T> inline bool operator > (const VecT<T>& lhs, const VecT<T>& rhs) { return rhs < lhs; }
+template<typename T> inline bool operator == (const VecT<T>& lhs, const VecT<T>& rhs) {
+  return cmpT(lhs.x - rhs.x) == 0 && cmpT(lhs.y - rhs.y) == 0;
+}
+template<typename T> inline bool operator != (const VecT<T>& lhs, const VecT<T>& rhs) { return !(lhs == rhs); }
 
 template<typename T>
 std::string to_string(const VecT<T>& v) {
@@ -158,6 +182,17 @@ void geom_test() {
   DUMP(PointT<int>(1, 1).rotate(M_PI / 2));
   DUMP(PointT<long long>(1, 10000).convert<double>());
   DUMP(PointT<double>(1.7, -1.7).convert<int>());
+  DUMP(PointT<int>(2, 3) * 1.0);
+  DUMP(PointT<double>(2.1, 3.1) * 1);
+  DUMP(1.0 * PointT<double>(2.1, 3.1));
+  PointT<double> p(2.1, 3.1);
+  p *= 5;
+  CHECK(p == PointT<double>(10.5, 15.5));
+  p /= 5;
+  CHECK(p == PointT<double>(2.1, 3.1));
+  CHECK(PointT<int>(0, 0) == PointT<int>(1, 1) / 2);
+  CHECK(PointT<double>(0.5, 0.5) == PointT<int>(1, 1) / 2.0);
+  DUMP(PointT<bool>(false, false));
 }
 
 int main() {
