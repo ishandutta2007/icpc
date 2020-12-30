@@ -159,7 +159,7 @@ bool in_point_polygon(const PointT<T>& o, const PolygonT<T>& poly, bool flag) {
   for (int i = 0; i < n; ++ i) {
     a = poly[i];
     b = poly[(i + 1) % n];
-    if (cmpT(a.y - b.y) > 0) std::swap(a,b);
+    if (cmpT(a.y - b.y) > 0) std::swap(a, b);
     if (cmpT(det(a - o, b - o)) < 0 && cmpT(a.y - o.y) < 0 && cmpT(o.y - b.y) <= 0) ++t;
   }
   return t & 1;
