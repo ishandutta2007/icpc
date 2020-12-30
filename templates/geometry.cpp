@@ -198,6 +198,7 @@ void geom_test() {
   CHECK(PointT<int>(0, 0) == PointT<int>(1, 1) / 2);
   CHECK(PointT<double>(0.5, 0.5) == PointT<int>(1, 1) / 2.0);
   DUMP(PointT<bool>(false, false));
+  CHECK(PointT<long double>(0.0, 1.0) == PointT<long double>(1.0, 0.0).rotate(M_PI / 2));
 }
 
 int main() {
