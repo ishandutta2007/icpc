@@ -9,16 +9,16 @@
 const double eps = 1e-8;
 
 template<typename T> inline int cmpT(T x) { return x < 0 ? -1 : x > 0; }
+template<> inline int cmpT(float x) { return x < -eps ? -1 : x > eps; }
 template<> inline int cmpT(double x) { return x < -eps ? -1 : x > eps; }
+template<> inline int cmpT(long double x) { return x < -eps ? -1 : x > eps; }
 
 template<typename T>
 struct VecT {
   T x = 0;
   T y = 0;
 
-  // TODO: Support long double.
-  static_assert(std::is_integral<T>::value || std::is_same<T, double>::value,
-                "T should be an integral or a double.");
+  static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type.");
 
   VecT() {}
   VecT(T x, T y) : x(x), y(y) {}
@@ -28,9 +28,9 @@ struct VecT {
   VecT rotate90() const { return VecT(-y, x); }
 
   double length() const { return hypot(x, y); }
-  VecT<double> rotate(double angle) const {
-    double c = cos(angle), s = sin(angle);
-    return VecT<double>(x * c - y * s, x * s + y * c);
+  VecT<decltype(T(1) * double(1))> rotate(double angle) const {
+    const double c = cos(angle), s = sin(angle);
+    return VecT<decltype(T(1) * double(1))>(x * c - y * s, x * s + y * c);
   }
   template<typename U> VecT<U> convert() const { return VecT<U>(x, y); }
 };
@@ -48,16 +48,17 @@ template<typename T> inline VecT<T> operator - (const VecT<T>& lhs, const VecT<T
 template<typename T> inline VecT<T>& operator -= (VecT<T>& lhs, const VecT<T>& rhs) { return lhs = lhs - rhs; }
 
 // *
-template<typename T, typename U> inline VecT<T> operator * (const VecT<T>& v, U t) { return VecT<T>(v.x * t, v.y * t); }
-template<typename T, typename U> inline VecT<T> operator * (U t, const VecT<T>& v) { return v * t; }
-template<typename T> inline VecT<double> operator * (const VecT<T>& v, double t) { return VecT<double>(v.x * t, v.y * t); }
-template<typename T> inline VecT<double> operator * (double t, const VecT<T>& v) { return v * t; }
+template<typename T, typename U> inline VecT<decltype(T(1) * U(1))> operator * (const VecT<T>& v, U t) {
+  return VecT<decltype(T(1) * U(1))>(v.x * t, v.y * t);
+}
+template<typename T, typename U> inline VecT<decltype(T(1) * U(1))> operator * (U t, const VecT<T>& v) { return v * t; }
 template<typename T, typename U> inline VecT<T>& operator *= (VecT<T>& v, U t) { v = v * t; return v; }
 
 // /
-template<typename T, typename U> inline VecT<T> operator / (const VecT<T>& v, U t) { return VecT<T>(v.x / t, v.y / t); }
-template<typename T> inline VecT<double> operator / (const VecT<T>& v, double t) { return VecT<double>(v.x / t, v.y / t); }
-template<typename U> inline VecT<double>& operator /= (VecT<double>& v, U t) { v = v / t; return v; }
+template<typename T, typename U> inline VecT<decltype(T(1) / U(1))> operator / (const VecT<T>& v, U t) {
+  return VecT<decltype(T(1) / U(1))>(v.x / t, v.y / t);
+}
+template<typename T, typename U> inline VecT<T>& operator /= (VecT<T>& v, U t) { v = v / t; return v; }
 
 // <
 template<typename T> inline bool operator < (const VecT<T>& lhs, const VecT<T>& rhs) {
@@ -91,18 +92,20 @@ bool polar_cmp(const VecT<T>& a,const VecT<T>& b) {
 }
 
 template<typename T>
-PointT<double> intersection_line_line(
+PointT<decltype(T(1) / double(1))> intersection_line_line(
     const PointT<T>& p, const PointT<T>& pp, const PointT<T>& q, const PointT<T>& qq) {
+  using R = decltype(T(1) / double(1));
   const VecT<T> u = p - q, v = pp - p, w = qq - q;
-  const double ratio = det(w, u) / static_cast<double>(det(v, w));
-  return PointT<double>(p.x + v.x * ratio, p.y + v.y * ratio);
+  const R ratio = det(w, u) / static_cast<R>(det(v, w));
+  return PointT<R>(p.x + v.x * ratio, p.y + v.y * ratio);
 }
 
 template<typename T>
-PointT<double> projection_point_line(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
+PointT<decltype(T(1) / double(1))> projection_point_line(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
+  using R = decltype(T(1) / double(1));
   const VecT<T> v = b - a;
-  const double ratio = dot(v, p - a) / static_cast<double>(dot(v, v));
-  return PointT<double>(a.x + v.x * ratio, a.y + v.y * ratio);
+  const double ratio = dot(v, p - a) / static_cast<R>(dot(v, v));
+  return PointT<R>(a.x + v.x * ratio, a.y + v.y * ratio);
 }
 
 template<typename T>
@@ -189,6 +192,8 @@ void geom_test() {
   p *= 5;
   CHECK(p == PointT<double>(10.5, 15.5));
   p /= 5;
+  CHECK(PointT<double>(1.0, 1.0) == PointT<float>(1.0, 1.0) / 1.0);
+  CHECK(PointT<long double>(1.0, 1.0) == PointT<long double>(1.0, 1.0) / 1.0);
   CHECK(p == PointT<double>(2.1, 3.1));
   CHECK(PointT<int>(0, 0) == PointT<int>(1, 1) / 2);
   CHECK(PointT<double>(0.5, 0.5) == PointT<int>(1, 1) / 2.0);
