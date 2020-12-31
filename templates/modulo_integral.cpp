@@ -64,7 +64,7 @@ template<int MOD> inline bool operator != (const Integral<MOD>& lhs, const Integ
   return !(lhs == rhs);
 }
 
-// Uinary
+// Unary
 template<int MOD> inline Integral<MOD> operator - (const Integral<MOD>& v) { return Integral<MOD>(-v.val()); }
 template<int MOD> inline Integral<MOD> operator ++ (Integral<MOD>& v) { return v = Integral<MOD>(v.val() + 1); }
 template<int MOD> inline Integral<MOD> operator ++ (Integral<MOD>& v, int) { Integral<MOD> ret = v; ++v; return ret; }
