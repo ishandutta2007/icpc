@@ -56,12 +56,13 @@ struct Binomial {
   }
   ~Binomial() = default;
 
-  Integral<MOD> operator () (int a, int b) const {
+  template<typename T>
+  Integral<MOD> operator () (T a, T b) const {
     if (a < b || b < 0) return 0;
     if (a < factor.size()) return factor[a] * inv_factor[b] * inv_factor[a - b];
     b = std::min(b, a - b);
     Integral<MOD> ret = 1;
-    for (int i = 1; i <= b; ++i) ret = ret * (a + 1 - i) / i;
+    for (T i = 1; i <= b; ++i) ret = ret * (a + 1 - i) / i;
     return ret;
   }
 };
