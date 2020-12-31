@@ -48,14 +48,13 @@ template<int MOD>
 struct Binomial {
   std::vector<Integral<MOD>> factor, inv_factor;
 
-  void init(int n) {
-    factor.resize(n + 1);
-    inv_factor.resize(n + 1);
+  explicit Binomial(int n = 0) : factor(n + 1), inv_factor(n + 1) {
     factor[0] = 1;
     for (int i = 1; i <= n; ++i) factor[i] = factor[i - 1] * i;
     inv_factor[n] = factor[n].inv();
     for (int i = n; i >= 1; --i) inv_factor[i - 1] = inv_factor[i] * i;
   }
+  ~Binomial() {}
 
   Integral<MOD> operator () (int a, int b) const {
     if (a < b || b < 0) return 0;
@@ -66,4 +65,10 @@ struct Binomial {
     return ret;
   }
 };
+
+const int MOD = 1e9 + 7;
+using Mint = Integral<MOD>;
+using Binom = Binomial<MOD>;
+
+// Binom binom(200000);
 
