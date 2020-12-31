@@ -26,11 +26,11 @@ struct Integral {
   Integral& operator /= (const Integral& rhs) { return *this = *this / rhs; }
   bool operator == (const Integral& rhs) const { return val() == rhs.val(); }
   bool operator != (const Integral& rhs) const { return !(*this == rhs); }
-  Integral operator - () const { return Integral(-val()); }
-  Integral operator ++ () { v_ = norm(v_ + 1); return *this; }
-  Integral operator ++ (int) { Integral ret = *this; ++(*this); return ret; }
-  Integral operator -- () { v_ = norm(v_ - 1); return *this; }
-  Integral operator -- (int) { Integral ret = *this; --(*this); return ret; }
+  const Integral operator - () const { return Integral(-val()); }
+  const Integral operator ++ () { v_ = norm(v_ + 1); return *this; }
+  const Integral operator ++ (int) { Integral ret = *this; ++(*this); return ret; }
+  const Integral operator -- () { v_ = norm(v_ - 1); return *this; }
+  const Integral operator -- (int) { Integral ret = *this; --(*this); return ret; }
 
   Integral power(long long b) const {
     long long ret = 1 % MOD, a = v_;
