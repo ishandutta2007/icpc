@@ -54,7 +54,7 @@ struct Binomial {
     inv_factor[n] = factor[n].inv();
     for (int i = n; i >= 1; --i) inv_factor[i - 1] = inv_factor[i] * i;
   }
-  ~Binomial() {}
+  ~Binomial() = default;
 
   Integral<MOD> operator () (int a, int b) const {
     if (a < b || b < 0) return 0;
