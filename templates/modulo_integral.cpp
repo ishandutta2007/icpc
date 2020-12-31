@@ -67,7 +67,7 @@ struct Binomial {
   }
 };
 
-const int MOD = 1e9 + 7;
+const int MOD = 998244353;
 using Mint = Integral<MOD>;
 using Binom = Binomial<MOD>;
 
