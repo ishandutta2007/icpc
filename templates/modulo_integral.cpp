@@ -3,14 +3,17 @@ struct Integral {
   int v_ = 0;
 
   Integral() {}
-  Integral(int v) : Integral((long long)v) {}  // Implicit conversion is allowed.
-  Integral(long long v) {
+  template<typename T> Integral(T v) : v_(norm(v)) {  // Implicit conversion is allowed.
+    static_assert(std::is_integral<T>::value, "input should be an integral.");
+  }
+  ~Integral() = default;
+
+  template<typename T> T norm(T v) const {
     if (v >= MOD) v -= MOD;
     if (v < 0) v += MOD;
     if (v >= MOD || v < 0) v = (v % MOD + MOD) % MOD;
-    v_ = v;
+    return v;
   }
-  ~Integral() = default;
 
   int val() const { return v_; }
   Integral operator + (const Integral& rhs) const { return Integral(val() + rhs.val()); }
