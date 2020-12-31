@@ -2,10 +2,10 @@ template<int MOD>
 struct Integral {
   int v_ = 0;
 
-  Integral() {}
   template<typename T> Integral(T v) : v_(norm(v)) {  // Implicit conversion is allowed.
     static_assert(std::is_integral<T>::value, "input should be an integral.");
   }
+  Integral() = default;
   ~Integral() = default;
 
   template<typename T> T norm(T v) const {
