@@ -1,11 +1,3 @@
-#include <bits/stdc++.h>
-#ifdef LOCAL
-#include "debuger.hpp"
-#else
-#define DUMP(...) 1145141919810
-#define CHECK(...) (__VA_ARGS__)
-#endif
-
 template<int MOD>
 struct Integral {
   int v_ = 0;
@@ -67,17 +59,3 @@ struct Binomial {
     return ret;
   }
 };
-
-void test_binomial() {
-  const int MOD = 998244353;
-  using Binom = Binomial<MOD>;
-  Binom binom;
-  binom.init(100);
-  CHECK(1 == binom(99, 0).val());
-  CHECK(0 == binom(99, 10000).val());
-  CHECK(4950 == binom(100, 2).val());
-  CHECK(19900 == binom(200, 2).val());
-  CHECK(binom(200000, 2) == binom(200000, 199998));
-  CHECK(1 == binom(0, 0).val());
-  DUMP(Integral<MOD>(-233));
-}
