@@ -16,17 +16,6 @@ struct Integral {
   }
 
   int val() const { return v_; }
-  Integral operator + (const Integral& rhs) const { return Integral(val() + rhs.val()); }
-  Integral operator - (const Integral& rhs) const { return Integral(val() - rhs.val()); }
-  Integral operator * (const Integral& rhs) const { return Integral(val() * 1LL * rhs.val()); }
-  Integral operator / (const Integral& rhs) const { return *this * rhs.inv(); }
-  Integral operator - () const { return Integral(-val()); }
-  Integral& operator += (const Integral& rhs) { *this = *this + rhs; return *this; }
-  Integral& operator -= (const Integral& rhs) { *this = *this - rhs; return *this; }
-  Integral& operator *= (const Integral& rhs) { *this = *this * rhs; return *this; }
-  Integral& operator /= (const Integral& rhs) { *this = *this / rhs; return *this; }
-  bool operator == (const Integral& rhs) { return val() == rhs.val(); }
-  bool operator != (const Integral& rhs) { return !(*this == rhs); }
 
   Integral power(long long b) const {
     long long ret = 1 % MOD, a = v_;
@@ -34,6 +23,53 @@ struct Integral {
   }
   Integral inv() const { return power(MOD - 2); }
 };
+
+// +
+template<int MOD> inline Integral<MOD> operator + (const Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+  return Integral<MOD>(lhs.val() + rhs.val());
+}
+template<int MOD> inline Integral<MOD>& operator += (Integral<MOD>& lhs, const Integral<MOD> & rhs) {
+  return lhs = lhs + rhs;
+}
+
+// -
+template<int MOD> inline Integral<MOD> operator - (const Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+  return Integral<MOD>(lhs.val() - rhs.val());
+}
+template<int MOD> inline Integral<MOD>& operator -= (Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+  return lhs = lhs - rhs;
+}
+
+// *
+template<int MOD> inline Integral<MOD> operator * (const Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+  return Integral<MOD>(lhs.val() * 1LL * rhs.val());
+}
+template<int MOD> inline Integral<MOD>& operator *= (Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+  return lhs = lhs * rhs;
+}
+
+// /
+template<int MOD> inline Integral<MOD> operator / (const Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+  return lhs * rhs.inv();
+}
+template<int MOD> inline Integral<MOD>& operator /= (Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+  return lhs = lhs / rhs;
+}
+
+// ==
+template<int MOD> inline bool operator == (const Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+  return lhs.val() == rhs.val();
+}
+template<int MOD> inline bool operator != (const Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+  return !(lhs == rhs);
+}
+
+// Uinary
+template<int MOD> inline Integral<MOD> operator - (const Integral<MOD>& v) { return Integral<MOD>(-v.val()); }
+template<int MOD> inline Integral<MOD> operator ++ (Integral<MOD>& v) { return v = Integral<MOD>(v.val() + 1); }
+template<int MOD> inline Integral<MOD> operator ++ (Integral<MOD>& v, int) { Integral<MOD> ret = v; ++v; return ret; }
+template<int MOD> inline Integral<MOD> operator -- (Integral<MOD>& v) { return v = Integral<MOD>(v.val() - 1); }
+template<int MOD> inline Integral<MOD> operator -- (Integral<MOD>& v, int) { Integral<MOD> ret = v; --v; return ret; }
 
 template<int MOD>
 std::string to_string(const Integral<MOD>& v) {
