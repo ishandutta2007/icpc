@@ -26,7 +26,7 @@ struct SparseTable {
     if constexpr(kUseMax) {
       return std::max(u[a][k], u[b - (1 << k) + 1][k]);
     } else {
-      return std::max(u[a][k], u[b - (1 << k) + 1][k]);
+      return std::min(u[a][k], u[b - (1 << k) + 1][k]);
     }
   }
 };
