@@ -28,9 +28,9 @@ struct VecT {
   VecT rotate90() const { return VecT(-y, x); }
 
   double length() const { return hypot(x, y); }
-  VecT<decltype(T(1) * double(1))> rotate(double angle) const {
+  VecT<std::common_type_t<T, double>> rotate(double angle) const {
     const double c = cos(angle), s = sin(angle);
-    return VecT<decltype(T(1) * double(1))>(x * c - y * s, x * s + y * c);
+    return VecT<std::common_type_t<T, double>>(x * c - y * s, x * s + y * c);
   }
   template<typename U> VecT<U> convert() const { return VecT<U>(x, y); }
 };
@@ -48,15 +48,15 @@ template<typename T> inline VecT<T> operator - (const VecT<T>& lhs, const VecT<T
 template<typename T> inline VecT<T>& operator -= (VecT<T>& lhs, const VecT<T>& rhs) { return lhs = lhs - rhs; }
 
 // *
-template<typename T, typename U> inline VecT<decltype(T(1) * U(1))> operator * (const VecT<T>& v, U t) {
-  return VecT<decltype(T(1) * U(1))>(v.x * t, v.y * t);
+template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (const VecT<T>& v, U t) {
+  return VecT<std::common_type_t<T, U>>(v.x * t, v.y * t);
 }
-template<typename T, typename U> inline VecT<decltype(T(1) * U(1))> operator * (U t, const VecT<T>& v) { return v * t; }
+template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (U t, const VecT<T>& v) { return v * t; }
 template<typename T, typename U> inline VecT<T>& operator *= (VecT<T>& v, U t) { return v = v * t; }
 
 // /
-template<typename T, typename U> inline VecT<decltype(T(1) / U(1))> operator / (const VecT<T>& v, U t) {
-  return VecT<decltype(T(1) / U(1))>(v.x / t, v.y / t);
+template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator / (const VecT<T>& v, U t) {
+  return VecT<std::common_type_t<T, U>>(v.x / t, v.y / t);
 }
 template<typename T, typename U> inline VecT<T>& operator /= (VecT<T>& v, U t) { return v = v / t; }
 
@@ -92,17 +92,17 @@ bool polar_cmp(const VecT<T>& a,const VecT<T>& b) {
 }
 
 template<typename T>
-PointT<decltype(T(1) / double(1))> intersection_line_line(
+PointT<std::common_type_t<T, double>> intersection_line_line(
     const PointT<T>& p, const PointT<T>& pp, const PointT<T>& q, const PointT<T>& qq) {
-  using R = decltype(T(1) / double(1));
+  using R = std::common_type_t<T, double>;
   const VecT<T> u = p - q, v = pp - p, w = qq - q;
   const R ratio = det(w, u) / static_cast<R>(det(v, w));
   return PointT<R>(p.x + v.x * ratio, p.y + v.y * ratio);
 }
 
 template<typename T>
-PointT<decltype(T(1) / double(1))> projection_point_line(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
-  using R = decltype(T(1) / double(1));
+PointT<std::common_type_t<T, double>> projection_point_line(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
+  using R = std::common_type_t<T, double>;
   const VecT<T> v = b - a;
   const R ratio = dot(v, p - a) / static_cast<R>(dot(v, v));
   return PointT<R>(a.x + v.x * ratio, a.y + v.y * ratio);
