@@ -5,7 +5,7 @@ struct SparseTable {
   void build(const std::vector<T>& a) {
     int n = a.size(), L = 1;
     while ((1 << L) <= n) ++L;
-    std::vector<std::vector<T>>(n, std::vector<int>(L)).swap(u);
+    std::vector<std::vector<T>>(n, std::vector<T>(L)).swap(u);
     lg.resize(n + 1);
     lg[0] = -1;
     for (int i = 1; i < lg.size(); ++ i) lg[i] = lg[i >> 1] + 1;
