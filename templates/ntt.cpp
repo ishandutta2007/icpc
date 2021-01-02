@@ -1,7 +1,9 @@
 using LL = long long;
 const int kN = (1 << 18) + 5;
 const int ort = 3;  // primitive root of MOD.
-const int MOD = 998244353;  // MOD = a * b ^ k + 1, n <= b ^ k.
+const int MOD = 998244353;
+// MOD == a * b ^ k + 1, n <= b ^ k.
+// 998244353 == (7 * 17) * 2 ^ 23 + 1.
 // This code works only when b == 2.
 
 LL power(LL a, LL b, LL p) {
