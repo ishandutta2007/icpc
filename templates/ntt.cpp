@@ -16,7 +16,7 @@ void ntt(LL A[], int n, int inv) {
   int i, j, c, s;
   if (inv == -1) {
     for (i = 1, j = n - 1; i < j; ++i, --j) std::swap(A[i], A[j]);
-    for (t = power(n,MOD - 2,MOD), i = 0; i < n; ++i) A[i] = A[i] * t % MOD;
+    for (t = power(n, MOD - 2, MOD), i = 0; i < n; ++i) A[i] = A[i] * t % MOD;
   }
   for (s = n >> 1; s; s >>= w = 1, d = d * d % MOD) {
     for (c = 0; c < s; ++c, w = w * d % MOD) {
