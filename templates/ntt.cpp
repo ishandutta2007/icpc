@@ -1,5 +1,4 @@
 using LL = long long;
-const int kN = (1 << 18) + 5;
 const int ort = 3;  // primitive root of MOD.
 const int MOD = 998244353;
 // MOD == a * b ^ k + 1, n <= b ^ k.
@@ -29,7 +28,7 @@ void ntt(LL A[], int n, int inv) {
     }
   }
   for (i = 1; i < n; ++i) {
-    for (j = 0, s = i, c = n >> 1; c; c >>= 1,s >>= 1) j = j << 1 | s & 1;
+    for (j = 0, s = i, c = n >> 1; c; c >>= 1,s >>= 1) j = j << 1 | (s & 1);
     if (i < j) std::swap(A[i], A[j]);
   }
 }
