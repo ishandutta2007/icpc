@@ -61,7 +61,7 @@ struct Binomial {
     if (a < b || b < 0) return 0;
     if (a < factor.size()) return factor[a] * inv_factor[b] * inv_factor[a - b];
     if constexpr(!kByDefinition) {
-      throw;
+      throw std::out_of_range("Accessing Binomial Out of Range.");
     } else {
       b = std::min(b, a - b);
       Integral<MOD> ret = 1;
