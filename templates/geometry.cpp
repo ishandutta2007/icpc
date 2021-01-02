@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#ifdef LOCAL
+#ifdef ALGO
 #include "el_psy_congroo.hpp"
 #else
 #define DUMP(...) 1145141919810
