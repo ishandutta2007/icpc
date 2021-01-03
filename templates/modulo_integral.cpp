@@ -44,7 +44,7 @@ std::string to_string(const Integral<MOD>& v) {
   return std::string("Integral{v=") + std::to_string(v.val()) + "}";
 }
 
-template<int MOD, bool kByDefinition = false>
+template<int MOD, bool kAllowBruteForce = false>
 struct Binomial {
   std::vector<Integral<MOD>> factor, inv_factor;
 
@@ -60,7 +60,7 @@ struct Binomial {
   Integral<MOD> operator () (T a, T b) const {
     if (a < b || b < 0) return 0;
     if (a < factor.size()) return factor[a] * inv_factor[b] * inv_factor[a - b];
-    if constexpr(!kByDefinition) {
+    if constexpr(!kAllowBruteForce) {
       throw std::out_of_range("Accessing Binomial Out of Range.");
     } else {
       b = std::min(b, a - b);
