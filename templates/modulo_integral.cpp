@@ -61,7 +61,7 @@ struct Binomial {
     if (a < b || b < 0) return 0;
     if (a < factor.size()) return factor[a] * inv_factor[b] * inv_factor[a - b];
     if constexpr(!kAllowBruteForce) {
-      throw std::out_of_range("Accessing Binomial Out of Range.");
+      throw std::out_of_range("Binomial");
     } else {
       b = std::min(b, a - b);
       Integral<MOD> ret = 1;
@@ -71,9 +71,27 @@ struct Binomial {
   }
 };
 
+template<int MOD>
+struct PowerTable {
+  std::vector<Integral<MOD>> arr;
+
+  PowerTable(int n, const Integral<MOD>& g) : arr(n + 1) {
+    arr[0] = 1;
+    arr[1] = g;
+    for (int i = 2; i < arr.size(); ++i) arr[i] = arr[i - 1] * arr[1];
+  }
+
+  template<typename T>
+  Integral<MOD> power(T index) const {
+    if (0 <= index && index < arr.size()) return arr[index];
+    return arr[1].power(index);
+  }
+};
+
 const int MOD = 998244353;
 using Mint = Integral<MOD>;
 using Binom = Binomial<MOD>;
 
 // Binom binom(200000);
+// PowerTable<MOD> inv2(200000, Mint(2).inv());
 
