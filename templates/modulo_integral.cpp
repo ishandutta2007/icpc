@@ -72,19 +72,13 @@ struct Binomial {
 };
 
 template<int MOD>
-struct PowerTable {
-  std::vector<Integral<MOD>> arr;
-
-  PowerTable(int n, const Integral<MOD>& g) : arr(n + 1) {
-    arr[0] = 1;
-    arr[1] = g;
-    for (int i = 2; i < arr.size(); ++i) arr[i] = arr[i - 1] * arr[1];
-  }
-
-  template<typename T>
-  Integral<MOD> power(T index) const {
-    if (0 <= index && index < arr.size()) return arr[index];
-    return arr[1].power(index);
+struct PowerTable : public std::vector<Integral<MOD>> {
+  PowerTable(int n, const Integral<MOD>& g) {
+    static_assert(sizeof(PowerTable) == sizeof(std::vector<Integral<MOD>>), "");
+    this->resize(n + 1);
+    this->at(0) = 1;
+    this->at(1) = g;
+    for (int i = 2; i < this->size(); ++i) this->at(i) = this->at(i - 1) * this->at(1);
   }
 };
 
@@ -93,5 +87,5 @@ using Mint = Integral<MOD>;
 using Binom = Binomial<MOD>;
 
 // Binom binom(200000);
-// PowerTable<MOD> inv2(200000, Mint(2).inv());
+// PowerTable<MOD> pw2(200000, 2);
 
