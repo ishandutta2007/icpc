@@ -41,7 +41,7 @@ struct Integral {
 
 template<int MOD>
 std::string to_string(const Integral<MOD>& v) {
-  return std::string("Integral{v=") + std::to_string(v.val()) + "}";
+  return std::string("Int<>{") + std::to_string(v.val()) + "}";
 }
 
 template<int MOD, bool kAllowBruteForce = false>
