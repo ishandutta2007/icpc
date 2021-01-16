@@ -20,7 +20,7 @@ void ntt(Integral<MOD> A[], int n, int inv) {
     }
   }
   for (i = 1; i < n; ++i) {
-    for (j = 0, s = i, c = n >> 1; c; c >>= 1,s >>= 1) j = j << 1 | (s & 1);
+    for (j = 0, s = i, c = n >> 1; c; c >>= 1, s >>= 1) j = j << 1 | (s & 1);
     if (i < j) std::swap(A[i], A[j]);
   }
 }
