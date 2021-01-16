@@ -15,7 +15,10 @@ struct Integral {
     } else {
       if (v >= MOD) v -= MOD;
       if (v < 0) v += MOD;
-      if (v >= MOD || v < 0) v = (v % MOD + MOD) % MOD;
+      if (v >= MOD || v < 0) {
+        v %= MOD;
+        if (v < 0) v += MOD;
+      }
     }
     return v;
   }
