@@ -9,9 +9,14 @@ struct Integral {
   ~Integral() = default;
 
   template<typename T> T norm(T v) const {
-    if (v >= MOD) v -= MOD;
-    if (v < 0) v += MOD;
-    if (v >= MOD || v < 0) v = (v % MOD + MOD) % MOD;
+    if constexpr(std::is_same<long long, T>::value) {
+      v %= MOD;
+      if (v < 0) v += MOD;
+    } else {
+      if (v >= MOD) v -= MOD;
+      if (v < 0) v += MOD;
+      if (v >= MOD || v < 0) v = (v % MOD + MOD) % MOD;
+    }
     return v;
   }
 
