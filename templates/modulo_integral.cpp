@@ -24,14 +24,14 @@ struct Integral {
   }
 
   int val() const { return v_; }
-  Integral operator + (const Integral& rhs) const { return Integral(val() + rhs.val()); }
-  Integral operator - (const Integral& rhs) const { return Integral(val() - rhs.val()); }
-  Integral operator * (const Integral& rhs) const { return Integral(val() * 1LL * rhs.val()); }
-  Integral operator / (const Integral& rhs) const { return *this * rhs.inv(); }
-  Integral& operator += (const Integral& rhs) { return *this = *this + rhs; }
-  Integral& operator -= (const Integral& rhs) { return *this = *this - rhs; }
-  Integral& operator *= (const Integral& rhs) { return *this = *this * rhs; }
-  Integral& operator /= (const Integral& rhs) { return *this = *this / rhs; }
+  Integral& operator += (const Integral& rhs) { v_ += rhs.val(); if (v_ >= MOD) v_ -= MOD; return *this; }
+  Integral& operator -= (const Integral& rhs) { v_ += MOD - rhs.val(); if (v_ >= MOD) v_ -= MOD; return *this; }
+  Integral& operator *= (const Integral& rhs) { v_ = v_ * 1LL * rhs.val() % MOD; return *this; }
+  Integral& operator /= (const Integral& rhs) { v_ = v_ * 1LL * power(rhs.val(), MOD - 2) % MOD; return *this; }
+  Integral operator + (const Integral& rhs) const { auto copy = *this; return copy += rhs; }
+  Integral operator - (const Integral& rhs) const { auto copy = *this; return copy -= rhs; }
+  Integral operator * (const Integral& rhs) const { auto copy = *this; return copy *= rhs; }
+  Integral operator / (const Integral& rhs) const { auto copy = *this; return copy /= rhs; }
   bool operator == (const Integral& rhs) const { return val() == rhs.val(); }
   bool operator != (const Integral& rhs) const { return !(*this == rhs); }
   const Integral operator - () const { return Integral(-val()); }
