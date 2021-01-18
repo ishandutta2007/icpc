@@ -41,9 +41,8 @@ template<typename T> inline VecT<T>& operator += (VecT<T>& lhs, const VecT<T>& r
   lhs.y += rhs.y;
   return lhs;
 }
-template<typename T> inline VecT<T> operator + (const VecT<T>& lhs, const VecT<T>& rhs) {
-  VecT<T> ret = lhs;
-  return ret += rhs;
+template<typename T> inline VecT<T> operator + (VecT<T> lhs, const VecT<T>& rhs) {
+  return lhs += rhs;
 }
 
 // -
@@ -52,9 +51,8 @@ template<typename T> inline VecT<T>& operator -= (VecT<T>& lhs, const VecT<T>& r
   lhs.y -= rhs.y;
   return lhs;
 }
-template<typename T> inline VecT<T> operator - (const VecT<T>& lhs, const VecT<T>& rhs) {
-  VecT<T> ret = lhs;
-  return ret -= rhs;
+template<typename T> inline VecT<T> operator - (VecT<T> lhs, const VecT<T>& rhs) {
+  return lhs -= rhs;
 }
 
 // *
