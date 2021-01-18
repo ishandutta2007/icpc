@@ -36,29 +36,51 @@ struct VecT {
 };
 
 // +
-template<typename T> inline VecT<T> operator + (const VecT<T>& lhs, const VecT<T>& rhs) {
-  return VecT<T>(lhs.x + rhs.x, lhs.y + rhs.y);
+template<typename T> inline VecT<T>& operator += (VecT<T>& lhs, const VecT<T>& rhs) {
+  lhs.x += rhs.x;
+  lhs.y += rhs.y;
+  return lhs;
 }
-template<typename T> inline VecT<T>& operator += (VecT<T>& lhs, const VecT<T>& rhs) { return lhs = lhs + rhs; }
+template<typename T> inline VecT<T> operator + (const VecT<T>& lhs, const VecT<T>& rhs) {
+  VecT<T> ret = lhs;
+  return ret += rhs;
+}
 
 // -
-template<typename T> inline VecT<T> operator - (const VecT<T>& lhs, const VecT<T>& rhs) {
-  return VecT<T>(lhs.x - rhs.x, lhs.y - rhs.y);
+template<typename T> inline VecT<T>& operator -= (VecT<T>& lhs, const VecT<T>& rhs) {
+  lhs.x -= rhs.x;
+  lhs.y -= rhs.y;
+  return lhs;
 }
-template<typename T> inline VecT<T>& operator -= (VecT<T>& lhs, const VecT<T>& rhs) { return lhs = lhs - rhs; }
+template<typename T> inline VecT<T> operator - (const VecT<T>& lhs, const VecT<T>& rhs) {
+  VecT<T> ret = lhs;
+  return ret -= rhs;
+}
 
 // *
-template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (const VecT<T>& v, U t) {
-  return VecT<std::common_type_t<T, U>>(v.x * t, v.y * t);
+template<typename T, typename U> inline VecT<T>& operator *= (VecT<T>& v, U t) {
+  v.x *= t;
+  v.y *= t;
+  return v;
 }
-template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (U t, const VecT<T>& v) { return v * t; }
-template<typename T, typename U> inline VecT<T>& operator *= (VecT<T>& v, U t) { return v = v * t; }
+template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (const VecT<T>& v, U t) {
+  auto ret = v.template convert<std::common_type_t<T, U>>();
+  return ret *= t;
+}
+template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (U t, const VecT<T>& v) {
+  return v * t;
+}
 
 // /
-template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator / (const VecT<T>& v, U t) {
-  return VecT<std::common_type_t<T, U>>(v.x / t, v.y / t);
+template<typename T, typename U> inline VecT<T>& operator /= (VecT<T>& v, U t) {
+  v.x /= t;
+  v.y /= t;
+  return v;
 }
-template<typename T, typename U> inline VecT<T>& operator /= (VecT<T>& v, U t) { return v = v / t; }
+template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator / (const VecT<T>& v, U t) {
+  auto ret = v.template convert<std::common_type_t<T, U>>();
+  return ret /= t;
+}
 
 // <
 template<typename T> inline bool operator < (const VecT<T>& lhs, const VecT<T>& rhs) {
