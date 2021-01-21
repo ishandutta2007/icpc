@@ -27,7 +27,7 @@ struct Integral {
   Integral& operator += (const Integral& rhs) { v_ += rhs.val(); if (v_ >= MOD) v_ -= MOD; return *this; }
   Integral& operator -= (const Integral& rhs) { v_ += MOD - rhs.val(); if (v_ >= MOD) v_ -= MOD; return *this; }
   Integral& operator *= (const Integral& rhs) { v_ = v_ * 1LL * rhs.val() % MOD; return *this; }
-  Integral& operator /= (const Integral& rhs) { v_ = v_ * 1LL * power(rhs.val(), MOD - 2) % MOD; return *this; }
+  Integral& operator /= (const Integral& rhs) { v_ = v_ * 1LL * rhs.inv().val() % MOD; return *this; }
   Integral operator + (const Integral& rhs) const { Integral ret = *this; return ret += rhs; }
   Integral operator - (const Integral& rhs) const { Integral ret = *this; return ret -= rhs; }
   Integral operator * (const Integral& rhs) const { Integral ret = *this; return ret *= rhs; }
