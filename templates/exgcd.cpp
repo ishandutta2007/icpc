@@ -8,6 +8,12 @@ LL exgcd(LL a, LL b, LL &x, LL &y) {
   return g;
 }
 
+LL inv(LL a, LL p) {
+  LL x, y;
+  exgcd(a, p, x, y);
+  return (x % p + p) % p;
+}
+
 // a * x + b * y == c
 // 0 <= x <= lx
 // 0 <= y <= ly
