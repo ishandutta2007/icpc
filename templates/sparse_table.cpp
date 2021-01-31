@@ -20,8 +20,8 @@ struct SparseTable {
       }
     }
   }
-  T ask(int a, int b) {
-    if (a > b) std::swap(a, b);
+  T ask(int a, int b) {  // [a, b]
+    if (a > b || a < 0 || b >= u.size()) throw;
     int k = lg[b - a + 1];
     if constexpr(kUseMax) {
       return std::max(u[a][k], u[b - (1 << k) + 1][k]);
