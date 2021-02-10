@@ -135,3 +135,12 @@ struct BitSet {
     return -1;
   }
 };
+
+std::string to_string(const BitSet& bits) {
+  std::stringstream ss;
+  for (int i = (int)bits.buckets.size() - 1; i >= 0; --i) {
+    ss << std::hex << bits.buckets[i];
+  }
+  return ss.str();
+}
+
