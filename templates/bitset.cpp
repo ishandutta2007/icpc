@@ -140,6 +140,7 @@ std::string to_string(const BitSet& bits) {
   std::stringstream ss;
   for (int i = (int)bits.buckets.size() - 1; i >= 0; --i) {
     ss << std::hex << bits.buckets[i];
+    if (i) ss << "-";
   }
   return ss.str();
 }
