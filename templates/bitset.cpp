@@ -13,6 +13,7 @@ struct BitSet {
   std::vector<ULL> buckets;
 
   static int get_bucket_size(int n) { return ((n - 1) >> 6) + 1; }
+  static int lowbit(ULL val) { return __builtin_ffsll(val) - 1; }
 
   explicit BitSet(int n) : n(n), buckets(get_bucket_size(n)) { CHECK(n > 0); }
 
@@ -56,7 +57,7 @@ struct BitSet {
   int size() const { return n; }
   int lowbit() const {
     for (int i = 0; i < buckets.size(); ++i) if (buckets[i]) {
-      return __builtin_ffsll(buckets[i]) - 1 + (i << 6);
+      return (i << 6) + lowbit(buckets[i]);
     }
     return -1;
   }
@@ -116,12 +117,21 @@ struct BitSet {
     return *this;
   }
   BitSet operator << (int m) const { BitSet ret = *this; return ret <<= m; }
-};
 
-std::string to_string(const BitSet& bits) {
-  std::stringstream ss;
-  for (int i = (int)bits.buckets.size() - 1; i >= 0; --i) {
-    ss << std::hex << bits.buckets[i];
+  int touch(int l, int r) const {  // return lowbit in [l, r]
+    int lat = l >> 6;
+    int rat = r >> 6;
+    for (int i = 0; i < 64; ++i) if (buckets[lat] >> i & 1) {
+      int w = (lat << 6) + i;
+      if (l <= w && w <= r) return w;
+    }
+    for (int i = lat + 1; i < rat; ++i) if (buckets[i]) {
+      return (i << 6) + lowbit(buckets[i]);
+    }
+    for (int i = 0; i < 64; ++i) if (buckets[rat] >> i & 1) {
+      int w = (rat << 6) + i;
+      if (l <= w && w <= r) return w;
+    }
+    return -1;
   }
-  return ss.str();
-}
+};
