@@ -1,9 +1,9 @@
 const int kN = 100000 + 5;
 std::vector<int> edges[kN];
 int n,m;
-int header[kN],dfn[kN],tim,parent[kN],sz[kN];
+int header[kN], dfn[kN], tim, parent[kN], depth[kN], sz[kN];
 
-void get_sz(int u,int fa) {
+void get_sz(int u, int fa) {
   sz[u] = 1;
   for (int v : edges[u]) {
     if (v == fa) continue;
@@ -12,9 +12,10 @@ void get_sz(int u,int fa) {
   }
 }
 
-void rebuild(int u,int fa,int color) {
+void rebuild(int u, int fa, int color) {
   dfn[u] = tim ++;
   parent[u] = fa;
+  depth[u] = fa == -1 ? 0 : depth[fa] + 1;
   header[u] = color;
   int p = -1;
   for (int v : edges[u]) {
