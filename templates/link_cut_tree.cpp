@@ -44,10 +44,10 @@ struct Node {
   bool d() const { return fa->ch[1] == this; }
   bool isroot() const { return fa == nill || (fa->ch[0] != this && fa->ch[1] != this); }
   void D() { if (!isroot()) fa->D(); down(); }
-  void setc(Node *p,int c) { ch[c] = p; p->fa = this; up(); }
+  void setc(Node *p, int c) { ch[c] = p; p->fa = this; up(); }
 
   void rot() {
-    Node *f = fa,*ff = fa->fa;
+    Node *f = fa, *ff = fa->fa;
     int c = d(), cc = fa->d();
     f->setc(ch[c ^ 1], c);
     this->setc(f, c ^ 1);
@@ -55,7 +55,7 @@ struct Node {
     else this->fa = ff;
   }
 
-  Node *splay() {
+  Node* splay() {
     for (D(); !isroot(); rot()) {
       if (!fa->isroot())
         d() == fa->d() ? fa->rot() : rot();
@@ -63,8 +63,8 @@ struct Node {
     return this;
   }
 
-  Node *access() {
-    for (Node *p = this,*q = nill; p != nill; ) {
+  Node* access() {
+    for (Node *p = this, *q = nill; p != nill; ) {
       p->splay();
       p->vc += p->ch[1]->sz;
       p->vc -= q->sz;
@@ -75,21 +75,21 @@ struct Node {
     return splay();
   }
 
-  void link(Node *p) {
+  void link(Node* p) {
     p->access();
     make_root()->fa = p;
     p->vc += sz;
     p->up();
   }
 
-  Node *make_root() {
+  Node* make_root() {
     access()->rev();
     down();
     return this;
   }
 
-  Node *get_max() {
-    Node *p = this;
+  Node* get_max() {
+    Node* p = this;
     while (true) {
       p->down();
       if (p->val >= p->ch[0]->vmax && p->val >= p->ch[1]->vmax) {
