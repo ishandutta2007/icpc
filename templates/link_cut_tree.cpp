@@ -104,12 +104,13 @@ struct Node {
     parent->up();
   }
 
-  void cut() {
+  Node* cut() {
     access();
     Node* parent = get_splay_precursor()->access();
     detach_from_virtual_child(parent->virtual_summary);
     fa = nill;
     parent->up();
+    return parent;
   }
 
   Node* make_root() {
