@@ -153,11 +153,11 @@ int n;
 
 void lct_init() {
   alloc = pool;
-  nill = new(alloc ++) Node();
+  nill = new(alloc++) Node();
   nill->fa = nill->ch[0] = nill->ch[1] = nill;
   nill->sz = 0;
 
   for (int i = 0; i < n; ++ i) {
-    node[i] = new(alloc ++) Node();
+    node[i] = new(alloc++) Node();
   }
 }
