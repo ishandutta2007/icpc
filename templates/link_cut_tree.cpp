@@ -6,7 +6,7 @@
 #define CHECK(...) (__VA_ARGS__)
 #endif
 
-struct Node *nill;
+struct Node* nill;
 
 // Note: Generally speaking, all modifications should act only on the root of the splay tree after access().
 struct Node {
