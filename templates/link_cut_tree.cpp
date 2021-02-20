@@ -8,7 +8,7 @@
 
 struct Node *nill;
 
-// Note: All modifications should act only on the root of the splay tree after access().
+// Note: Generally speaking, all modifications should act only on the root of the splay tree after access().
 struct Node {
   // Fundamental fields for splay/LCT.
   Node* fa = nill;
