@@ -8,8 +8,6 @@ while True:
     os.system('./F_good <F.in >F_good.out')
 
     ca += 1
-    print("case: ", ca)
-    # os.system('cat ./F.out')
-    # os.system('cat ./F_good.out')
+    print("case:", ca)
     if not filecmp.cmp('./F.out', './F_good.out'):
         break
