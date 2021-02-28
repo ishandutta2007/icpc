@@ -39,6 +39,7 @@ Polynomial<T> operator * (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
   for (int i = 0; i < lhs.size(); ++i)
     for (int j = 0; j < rhs.size(); ++j)
       ret[i + j] += lhs[i] * rhs[j];
+  norm(ret);
   return ret;
 }
 
@@ -92,8 +93,7 @@ struct LinearRecursiveSequenceSolver {
       }
     }
     std::reverse(C.begin(), C.end());
-    norm(C);
-    for (int i = 0; i < C.size(); ++i) C[i] /= C.back();
+    CHECK(!C.empty() && C.back() == T(1));
     return C;
   }
 
