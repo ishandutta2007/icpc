@@ -41,7 +41,8 @@ Info universal_euclid(int a, int b, int c, int n, const Info& fu, const Info& fr
   return power(fr, (c - b - 1) / a) * fu * universal_euclid(c, c - b - 1, a, m - 1, fr, fu) * power(fr, n - (c * 1LL * m - b - 1) / a);
 }
 
-// https://www.luogu.com.cn/problem/P5170
+// www.luogu.com.cn/blog/ILikeDuck/mo-neng-ou-ji-li-dei-suan-fa
+// www.luogu.com.cn/problem/P5170
 void solve(int a, int b, int c, int n) {
   Info result = power(fu, b / c) * fr * universal_euclid(a, b % c, c, n, fu, fr);
   printf("%d %d %d\n", result.f.val(), result.h.val(), result.g.val());
