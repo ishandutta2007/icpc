@@ -31,8 +31,8 @@ Info power(Info a, int b) {
 
 // Calculate f(s), where s is generated as follows:
 // - Consider x in (0, n] incrementally.
-// - Once line y=(ax+b)/c touches a integral horizontal line (y=z, z in Z), append a 'u' to s.
-// - Once line y=(ax+b)/c touches a integral vertical line (x=z, z in Z), append a 'r' to s.
+// - Once line y=(ax+b)/c touches an integral horizontal line (y=z, z in Z), append a 'u' to s.
+// - Once line y=(ax+b)/c touches an integral vertical line (x=z, z in Z), append a 'r' to s.
 Info universal_euclid(int a, int b, int c, int n, const Info& fu, const Info& fr) {
   b %= c;
   if (a >= c) return universal_euclid(a % c, b, c, n, fu, power(fu, a / c) * fr);
