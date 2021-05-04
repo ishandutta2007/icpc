@@ -18,13 +18,15 @@ struct SparseTable {
     }
   }
   int ask(int a, int b) {
-    if (a > b) std::swap(a, b);
     int k = lg[b - a + 1];
     return std::min(u[a][k], u[b - (1 << k) + 1][k]);
   }
 } st;
 
-int get_lca(int a, int b) { return rd[st.ask(dfn[a], dfn[b])]; }
+int get_lca(int a, int b) {
+  if (dfn[a] > dfn[b]) std::swap(a, b);
+  return rd[st.ask(dfn[a], dfn[b])];
+}
 int get_dis(int a, int b) { return depth[a] + depth[b] - 2 * depth[get_lca(a, b)]; }
 
 void dfs(int u, int fa) {
