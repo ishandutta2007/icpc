@@ -20,8 +20,9 @@ void radix_sort(RandomAccessIterator begin,
   for (auto iter = begin; iter != end; ++iter) mx = std::max(mx, get_key(*iter));
   using ElemType = std::remove_reference_t<decltype(*begin)>;
   std::vector<ElemType> b(n);
+  std::vector<int> bucket_size(m);
   for (int step = 0; mx >> (L * step); ++step) {
-    std::vector<int> bucket_size(m);
+    std::fill(bucket_size.begin(), bucket_size.end(), 0);
     for (auto iter = begin; iter != end; ++iter) {
       ++bucket_size[get_key(*iter) >> (L * step) & mask];
     }
