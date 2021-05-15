@@ -1,6 +1,6 @@
 template<typename T, int kN, int kE = 600000>
 struct CostFlow {
-  const T inf = std::numeric_limits<T>::infinity();
+  const T inf = std::numeric_limits<T>::max();
   int s, t, head[kN], etot, prevv[kN], preve[kN];
   T dis[kN];
   struct Edge {int v, next; T cap, cost;} g[kE];
