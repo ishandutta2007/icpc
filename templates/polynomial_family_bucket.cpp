@@ -228,6 +228,33 @@ Polynomial<T> inv(Polynomial<T> poly) {
   return mod_len(w, n);
 }
 
+template<typename T>
+Polynomial<T> derivate(Polynomial<T> poly) {
+  if (poly.size() <= 1) {
+    return Polynomial<T>(1, 0);
+  }
+  for (int i = 1; i < poly.size(); ++i) {
+    poly[i - 1] = poly[i] * i;
+  }
+  poly.pop_back();
+  norm(poly);
+  return poly;
+}
+
+template<typename T>
+Polynomial<T> integrate(Polynomial<T> poly) {
+  if (poly.size() == 0) {
+    return poly;
+  }
+  poly.emplace_back(0);
+  for (int i = (int)poly.size() - 1; i > 0; --i) {
+    poly[i] = poly[i - 1] / i;
+  }
+  poly[0] = 0;
+  norm(poly);
+  return poly;
+}
+
 using Poly = Polynomial<Integral<MOD>>;
 
 int main() {
