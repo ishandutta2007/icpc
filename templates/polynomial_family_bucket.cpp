@@ -242,8 +242,7 @@ Polynomial<T> mod_inv(Polynomial<T> poly, int len = 0) {
     ntt(r, len, -1);
     for (int i = (len >> 1); i < len; ++i) w[i] = w[i] + w[i] - r[i];
   }
-  norm(w);
-  return w;
+  return mod_len(w, len);
 }
 
 template<typename T>
@@ -292,8 +291,7 @@ Polynomial<T> mod_sqrt(Polynomial<T> poly, int len = 0) {
     for (int i = 0; i < len; ++i) buffer[i] += poly[i];
     buffer = enforce_len(buffer * buffer1, len);
   }
-  norm(buffer);
-  return buffer;
+  return mod_len(buffer, len);
 }
 
 template<typename T>
@@ -301,6 +299,24 @@ Polynomial<T> mod_ln(Polynomial<T> poly, int len = 0) {
   // https://www.luogu.com.cn/problem/P4725
   if (len == 0) len = poly.size();
   return mod_len(integrate(derivate(poly) * mod_inv(poly, len)), len);
+}
+
+template<typename T>
+Polynomial<T> mod_exp(Polynomial<T> poly, int len = 0) {
+  // https://www.luogu.com.cn/problem/P4726
+  if (len == 0) len = poly.size();
+  CHECK(poly.size() == 0 || poly[0] == 0);
+  const int L = binary_upper_bound(len);
+  poly.resize(L, 0);
+  Polynomial<T> p(1, 1);
+  for (int len = 2; len <= L; len <<= 1) {
+    Polynomial<T> q = p;
+    p = enforce_len(mod_ln(p, len), len);
+    for (int i = 0; i < len; ++i) p[i] = poly[i] - p[i];
+    ++p[0];
+    p = mod_len(p * q, len);
+  }
+  return mod_len(p, len);
 }
 
 using Poly = Polynomial<Integral<MOD>>;
@@ -318,7 +334,7 @@ int main() {
     reader >> x;
     poly[i] = x;
   }
-  Poly Q = enforce_len(mod_ln(poly), n);
+  Poly Q = enforce_len(mod_exp(poly), n);
   for (int i = 0; i < n; ++i) {
     printf("%d%c", Q[i].val(), " \n"[i + 1 == n]);
   }
