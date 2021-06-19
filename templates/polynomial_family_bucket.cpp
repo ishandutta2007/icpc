@@ -136,6 +136,14 @@ template<typename T>
 using Polynomial = std::vector<T>;
 
 template<typename T>
+void ntt(Polynomial<T>& poly, int n, int inv) {
+  if (poly.size() < n) {
+    poly.resize(n, 0);
+  }
+  return ntt(&poly[0], n, inv);
+}
+
+template<typename T>
 void norm(Polynomial<T>& p) {
   while (p.size() > 1 && p.back() == T(0)) p.pop_back();
 }
@@ -159,12 +167,18 @@ Polynomial<T> operator - (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
 }
 
 template<typename T>
-Polynomial<T> mod_len(Polynomial<T> poly, int n) {
-  // poly % x^n
-  if (poly.size() > n) {
-    poly.resize(n);
+Polynomial<T> mod_len(Polynomial<T> poly, int len) {
+  // poly % x^len
+  if (poly.size() > len) {
+    poly.resize(len);
   }
   norm(poly);
+  return poly;
+}
+
+template<typename T>
+Polynomial<T> enforce_len(Polynomial<T> poly, int len) {
+  poly.resize(len, 0);
   return poly;
 }
 
@@ -185,12 +199,12 @@ Polynomial<T> operator * (Polynomial<T> lhs, Polynomial<T> rhs) {
   const int L = get_ntt_len(lhs, rhs);
   lhs.resize(L, 0);
   rhs.resize(L, 0);
-  ntt(&lhs[0], L, 1);
-  ntt(&rhs[0], L, 1);
+  ntt(lhs, L, 1);
+  ntt(rhs, L, 1);
   for (int i = 0; i < L; ++i) {
     lhs[i] *= rhs[i];
   }
-  ntt(&lhs[0], L, -1);
+  ntt(lhs, L, -1);
   norm(lhs);
   return lhs;
 }
@@ -203,29 +217,33 @@ Polynomial<T> operator * (T a, Polynomial<T> p) {
 }
 
 template<typename T>
-Polynomial<T> inv(Polynomial<T> poly) {
+Polynomial<T> mod_inv(Polynomial<T> poly, int len = 0) {
+  // https://www.luogu.com.cn/problem/P4238
   CHECK(poly.size() >= 1 && poly[0] != 0);
-  const int n = poly.size();
-  const int L = binary_upper_bound(n);
+  if (len == 0) len = poly.size();
+  // poly * inv(poly) % (x^len) == 1
+
+  const int L = binary_upper_bound(len);
   poly.resize(L, 0);
   Polynomial<T> w(L << 1), r(L << 1), saved(L << 1);
   w[0] = poly[0].inv();
   for (int len = 2; len <= L; len <<= 1) {
     std::copy(w.begin(), w.begin() + (len >> 1), r.begin());
     std::copy(poly.begin(), poly.begin() + len, saved.begin());
-    ntt(&saved[0], len, 1);
-    ntt(&r[0], len, 1);
+    ntt(saved, len, 1);
+    ntt(r, len, 1);
     for (int i = 0; i < len; ++i) r[i] *= saved[i];
-    ntt(&r[0], len, -1);
+    ntt(r, len, -1);
     for (int i = 0; i < (len >> 1); ++i) r[i] = 0;
     std::copy(w.begin(), w.begin() + len, saved.begin());
-    ntt(&saved[0], len, 1);
-    ntt(&r[0], len, 1);
+    ntt(saved, len, 1);
+    ntt(r, len, 1);
     for (int i = 0; i < len; ++i) r[i] *= saved[i];
-    ntt(&r[0], len, -1);
+    ntt(r, len, -1);
     for (int i = (len >> 1); i < len; ++i) w[i] = w[i] + w[i] - r[i];
   }
-  return mod_len(w, n);
+  norm(w);
+  return w;
 }
 
 template<typename T>
@@ -255,6 +273,36 @@ Polynomial<T> integrate(Polynomial<T> poly) {
   return poly;
 }
 
+template<typename T>
+Polynomial<T> mod_sqrt(Polynomial<T> poly, int len = 0) {
+  // https://www.luogu.com.cn/problem/P5205
+  CHECK(poly.size() >= 1 && poly[0] == 1);  // Or quadratic residue without this constraint.
+  if (poly.size() == 1) {
+    return poly;
+  }
+  if (len == 0) len = poly.size();
+  const int L = binary_upper_bound(len);
+  poly.resize(L, 0);
+  Polynomial<T> buffer(1, 1), buffer1;
+  for (int len = 2; len <= L; len <<= 1) {
+    buffer1 = mod_inv(T(2) * buffer, len);
+    ntt(buffer, len, 1);
+    for (int i = 0; i < len; ++i) buffer[i] *= buffer[i];
+    ntt(buffer, len, -1);
+    for (int i = 0; i < len; ++i) buffer[i] += poly[i];
+    buffer = enforce_len(buffer * buffer1, len);
+  }
+  norm(buffer);
+  return buffer;
+}
+
+template<typename T>
+Polynomial<T> mod_ln(Polynomial<T> poly, int len = 0) {
+  // https://www.luogu.com.cn/problem/P4725
+  if (len == 0) len = poly.size();
+  return mod_len(integrate(derivate(poly) * mod_inv(poly, len)), len);
+}
+
 using Poly = Polynomial<Integral<MOD>>;
 
 int main() {
@@ -270,7 +318,7 @@ int main() {
     reader >> x;
     poly[i] = x;
   }
-  Poly Q = inv(poly);
+  Poly Q = enforce_len(mod_ln(poly), n);
   for (int i = 0; i < n; ++i) {
     printf("%d%c", Q[i].val(), " \n"[i + 1 == n]);
   }
