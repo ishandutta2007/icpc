@@ -322,6 +322,7 @@ Polynomial<T> mod_exp(Polynomial<T> poly, int len = 0) {
 template<typename T>
 Polynomial<T> mod_power(Polynomial<T> poly, T k, int len = 0) {
   // https://www.luogu.com.cn/problem/P5245
+  CHECK(poly.size() >= 1 && poly[0] == 1);  // In case poly[0] != 1, find another way.
   if (len == 0) len = poly.size();
   return mod_exp(k * mod_ln(poly, len), len);
 }
