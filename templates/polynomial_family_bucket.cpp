@@ -319,6 +319,13 @@ Polynomial<T> mod_exp(Polynomial<T> poly, int len = 0) {
   return mod_len(p, len);
 }
 
+template<typename T>
+Polynomial<T> mod_power(Polynomial<T> poly, T k, int len = 0) {
+  // https://www.luogu.com.cn/problem/P5245
+  if (len == 0) len = poly.size();
+  return mod_exp(k * mod_ln(poly, len), len);
+}
+
 using Poly = Polynomial<Integral<MOD>>;
 
 int main() {
@@ -327,14 +334,19 @@ int main() {
   std::istream& reader = std::cin;
 
   int n;
-  reader >> n;
+  std::string s;
+  reader >> n >> s;
+  int k = 0;
+  for (char c : s) {
+    k = ((long long)k * 10 + c - '0') % MOD;
+  }
   Poly poly(n);
   for (int i = 0; i < n; ++i) {
     int x;
     reader >> x;
     poly[i] = x;
   }
-  Poly Q = enforce_len(mod_exp(poly), n);
+  Poly Q = enforce_len(mod_power(poly, Mint(k)), n);
   for (int i = 0; i < n; ++i) {
     printf("%d%c", Q[i].val(), " \n"[i + 1 == n]);
   }
