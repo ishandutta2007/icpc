@@ -102,7 +102,7 @@ const int MOD = 998244353;
 using Mint = Integral<MOD>;
 using Binom = Binomial<MOD>;
 
-// Binom binom(200000);
+Binom binom(200000);
 // PowerTable<MOD> pw2(200000, 2);
 
 template<int MOD = 998244353, int kPrimRoot = 3>
@@ -221,6 +221,7 @@ Polynomial<T> mod_inv(Polynomial<T> poly, int len = 0) {
   // https://www.luogu.com.cn/problem/P4238
   CHECK(poly.size() >= 1 && poly[0] != 0);
   if (len == 0) len = poly.size();
+  if (len > poly.size()) poly.resize(len);
   // poly * inv(poly) % (x^len) == 1
 
   const int L = binary_upper_bound(len);
@@ -276,6 +277,7 @@ template<typename T>
 Polynomial<T> mod_sqrt(Polynomial<T> poly, int len = 0) {
   // https://www.luogu.com.cn/problem/P5205
   CHECK(poly.size() >= 1 && poly[0] == 1);  // Or quadratic residue without this constraint.
+  if (len > poly.size()) poly.resize(len);
   if (poly.size() == 1) {
     return poly;
   }
@@ -298,6 +300,7 @@ template<typename T>
 Polynomial<T> mod_ln(Polynomial<T> poly, int len = 0) {
   // https://www.luogu.com.cn/problem/P4725
   if (len == 0) len = poly.size();
+  if (len > poly.size()) poly.resize(len);
   return mod_len(integrate(derivate(poly) * mod_inv(poly, len)), len);
 }
 
@@ -305,6 +308,7 @@ template<typename T>
 Polynomial<T> mod_exp(Polynomial<T> poly, int len = 0) {
   // https://www.luogu.com.cn/problem/P4726
   if (len == 0) len = poly.size();
+  if (len > poly.size()) poly.resize(len);
   CHECK(poly.size() == 0 || poly[0] == 0);
   const int L = binary_upper_bound(len);
   poly.resize(L, 0);
@@ -320,7 +324,7 @@ Polynomial<T> mod_exp(Polynomial<T> poly, int len = 0) {
 }
 
 template<typename T>
-Polynomial<T> mod_power(Polynomial<T> poly, T k, int len = 0) {
+Polynomial<T> conditioned_mod_power(Polynomial<T> poly, T k, int len = 0) {
   // https://www.luogu.com.cn/problem/P5245
   CHECK(poly.size() >= 1 && poly[0] == 1);  // In case poly[0] != 1, find another way.
   if (len == 0) len = poly.size();
@@ -334,22 +338,19 @@ int main() {
   std::cin.tie(nullptr);
   std::istream& reader = std::cin;
 
-  int n;
-  std::string s;
-  reader >> n >> s;
-  int k = 0;
-  for (char c : s) {
-    k = ((long long)k * 10 + c - '0') % MOD;
-  }
-  Poly poly(n);
-  for (int i = 0; i < n; ++i) {
-    int x;
-    reader >> x;
-    poly[i] = x;
-  }
-  Poly Q = enforce_len(mod_power(poly, Mint(k)), n);
-  for (int i = 0; i < n; ++i) {
-    printf("%d%c", Q[i].val(), " \n"[i + 1 == n]);
+  const int N = 100000;
+  Poly poly(N + 1);
+  for (int i = 0; i <= N; ++i) poly[i] = binom.inv_factor[i];
+  --poly[0];
+  Poly dom = enforce_len(mod_inv(Poly{1} - poly, N + 1), N + 1);
+  poly = enforce_len(mod_len(poly * dom, N + 1) * dom, N + 1);
+
+  int cas;
+  reader >> cas;
+  while (cas--) {
+    int n;
+    reader >> n;
+    Mint result = poly[n] * binom.factor[n] * (dom[n] * binom.factor[n]).inv();
+    printf("%d\n", result.val());
   }
 }
-
