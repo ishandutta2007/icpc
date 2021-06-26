@@ -3,3 +3,5 @@
 *~
 *.swp
 *.Ds_Store
+nohup.out
+.ipynb_checkpoints
