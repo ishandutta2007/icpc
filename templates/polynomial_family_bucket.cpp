@@ -326,9 +326,34 @@ Polynomial<T> mod_exp(Polynomial<T> poly, int len = 0) {
 template<typename T>
 Polynomial<T> conditioned_mod_power(Polynomial<T> poly, T k, int len = 0) {
   // https://www.luogu.com.cn/problem/P5245
-  CHECK(poly.size() >= 1 && poly[0] == 1);  // In case poly[0] != 1, find another way.
+  CHECK(poly.size() >= 1 && poly[0] != T(0));  // In case poly[0] == T(0), find another way.
   if (len == 0) len = poly.size();
-  return mod_exp(k * mod_ln(poly, len), len);
+  T constant = poly[0];
+  if (constant != T(1)) {
+    T inv_constant = T(1) / constant;
+    for (int i = 0; i < poly.size(); ++i) {
+      poly[i] *= inv_constant;
+    }
+  }
+  Polynomial<T> ret = mod_exp(k * mod_ln(poly, len), len);
+  if (constant != T(1)) {
+    constant = constant.power(k.val());
+    for (int i = 0; i < ret.size(); ++i) {
+      ret[i] *= constant;
+    }
+  }
+  return ret;
+}
+
+template<typename T>
+T lagrange_inversion(Polynomial<T> poly, int n) {  // WARNING: Has not been instantiated
+  if (poly.empty()) return T(0);
+  CHECK(poly[0] == T(0));
+  CHECK(poly.size() > 1);
+  CHECK(poly[1] != T(0));
+  CHECK(n > 0);
+  poly.erase(poly.begin());
+  return enforce_len(conditioned_mod_power(poly, n, n), n)[n - 1] / T(n);
 }
 
 using Poly = Polynomial<Integral<MOD>>;
@@ -338,19 +363,21 @@ int main() {
   std::cin.tie(nullptr);
   std::istream& reader = std::cin;
 
-  const int N = 100000;
-  Poly poly(N + 1);
-  for (int i = 0; i <= N; ++i) poly[i] = binom.inv_factor[i];
-  --poly[0];
-  Poly dom = enforce_len(mod_inv(Poly{1} - poly, N + 1), N + 1);
-  poly = enforce_len(mod_len(poly * dom, N + 1) * dom, N + 1);
-
-  int cas;
-  reader >> cas;
-  while (cas--) {
-    int n;
-    reader >> n;
-    Mint result = poly[n] * binom.factor[n] * (dom[n] * binom.factor[n]).inv();
-    printf("%d\n", result.val());
+  int n;
+  std::string k_string;
+  reader >> n >> k_string;
+  Mint k = 0;
+  for (char c : k_string) {
+    k = k * 10 + (c - '0');
+  }
+  Poly P(n);
+  for (int i = 0; i < n; ++i) {
+    int x;
+    reader >> x;
+    P[i] = x;
+  }
+  Poly Q = enforce_len(conditioned_mod_power(P, Mint(k), n), n);
+  for (int i = 0; i < n; ++i) {
+    printf("%d%c", Q[i].val(), " \n"[i + 1 == n]);
   }
 }
