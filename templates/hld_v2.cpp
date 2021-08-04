@@ -14,7 +14,7 @@ struct Edge {
 };
 
 struct HeavyLightDecomposition {
-  explicit HeavyLightDecomposition(int n) : n(n), edges(n), header(n), dfn(n), parent(n), depth(n), sz(n) {}
+  explicit HeavyLightDecomposition(int n) : n(n), edges(n), header(n), dfn(n), rd(n), parent(n), depth(n), sz(n) {}
 
   int n = 0;
   std::vector<std::vector<Edge>> edges;
@@ -32,6 +32,7 @@ struct HeavyLightDecomposition {
   }
 
   void rebuild(int u, int fa, int color) {
+    rd[tim] = u;
     dfn[u] = tim ++;
     parent[u] = fa;
     depth[u] = fa == -1 ? 0 : depth[fa] + 1;
@@ -54,6 +55,15 @@ struct HeavyLightDecomposition {
     }
   }
 
+  // Not verified.
+  int get_lca_v2(int a, int b) {
+    int ret = a;
+    traverse([&ret](int side, int L, int R) {
+      ret = rd[L];
+    }, a, b);
+    return ret;
+  }
+
   int get_lca(int a,int b) {
     while (header[a] != header[b]) {
       if (dfn[header[a]] < dfn[header[b]]) {
@@ -64,6 +74,7 @@ struct HeavyLightDecomposition {
     return dfn[a] < dfn[b] ? a : b;
   }
 
+  // Handler() :: void operator () (int side, int L, int R).
   template<typename Handler>
   Handler traverse(Handler&& handler, int a, int b) {
     while (header[a] != header[b]) {
@@ -83,22 +94,6 @@ struct HeavyLightDecomposition {
     return handler;
   }
 };
-
-struct Monoid {
-  int left = -1, right = -1, cnt = 0;
-
-  bool id() const { return left == -1; }
-
-  Monoid reverse() const {
-    return Monoid{.left = right, .right = left, .cnt = cnt};
-  }
-};
-
-Monoid operator * (const Monoid& lhs, const Monoid& rhs) {
-  if (lhs.id()) return rhs;
-  if (rhs.id()) return lhs;
-  return Monoid{lhs.left, rhs.right, lhs.cnt + rhs.cnt + (lhs.right == rhs.left)};
-}
 
 template<typename Node, typename Impl>
 class SegmentTreeBase {
@@ -124,6 +119,10 @@ class SegmentTreeBase {
 
  private:
   Node& get_node(int l, int r) { return tree[get_id(l, r)]; }
+
+  // Handler() :: void operator () (int l, int r, Node& u).
+  // Impl::down :: void down(int l, int mid, int r, Node& u, Node& lu, Node& ru).
+  // Impl::up :: void up(int l, int mid, int r, Node& u, const Node& lu, const Node& ru).
 
   template<typename Handler>
   void traverse_all(Handler&& handler, int l, int r) {
@@ -154,6 +153,22 @@ class SegmentTreeBase {
   int n;
   std::vector<Node> tree;
 };
+
+struct Monoid {
+  int left = -1, right = -1, cnt = 0;
+
+  bool id() const { return left == -1; }
+
+  Monoid reverse() const {
+    return Monoid{.left = right, .right = left, .cnt = cnt};
+  }
+};
+
+Monoid operator * (const Monoid& lhs, const Monoid& rhs) {
+  if (lhs.id()) return rhs;
+  if (rhs.id()) return lhs;
+  return Monoid{lhs.left, rhs.right, lhs.cnt + rhs.cnt + (lhs.right == rhs.left)};
+}
 
 struct Node {
   Monoid m;
