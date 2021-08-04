@@ -18,7 +18,7 @@ struct HeavyLightDecomposition {
 
   int n = 0;
   std::vector<std::vector<Edge>> edges;
-  std::vector<int> header, dfn, parent, depth, sz;
+  std::vector<int> header, dfn, rd, parent, depth, sz;
   int tim = 0;
 
   void get_sz(int u, int fa) {
@@ -58,8 +58,8 @@ struct HeavyLightDecomposition {
   // Not verified.
   int get_lca_v2(int a, int b) {
     int ret = a;
-    traverse([&ret](int side, int L, int R) {
-      ret = rd[L];
+    traverse([&ret, this](int side, int L, int R) {
+      ret = this->rd[L];
     }, a, b);
     return ret;
   }
