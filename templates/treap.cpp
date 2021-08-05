@@ -1,7 +1,7 @@
-struct Node *nill;
+struct Treap *nill;
 
-struct Node {
-  Node *ch[2];
+struct Treap {
+  Treap *ch[2];
   int val;
   int sz;
 
@@ -11,7 +11,7 @@ struct Node {
   }
 };
 
-void split(Node *a,Node *&b,Node *&c,int val) {
+void split(Treap *a,Treap *&b,Treap *&c,int val) {
   if (a == nill) {
     b = c = nill;
   } else if (a->val <= val) {
@@ -34,7 +34,7 @@ bool roll(int a,int b) {
   return ran() % (a+b) < a;
 }
 
-void merge(Node *&a,Node *b,Node *c) {
+void merge(Treap *&a,Treap *b,Treap *c) {
   if (b == nill) {
     a = c;
   } else if (c == nill) {
