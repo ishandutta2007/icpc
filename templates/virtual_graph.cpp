@@ -5,11 +5,12 @@ struct Edge {
 };
 
 struct VirtualGraph {
+  const std::vector<int>& dfn;
+
   int n;
   std::vector<std::vector<Edge>> edges;
   std::vector<int> original_points;
   std::vector<int> point_weight;
-  const std::vector<int>& dfn;
 
   // Prerequirements of get_index:
   // - points are sorted in dfn increasing order.
@@ -24,8 +25,8 @@ struct VirtualGraph {
 
   // Construct a virtual tree from given points.
   template<typename GetLca, typename GetPointWeight, typename GetEdgeWeight>
-  explicit VirtualGraph(std::vector<int> points,
-                        const std::vector<int>& dfn,
+  explicit VirtualGraph(const std::vector<int>& dfn,
+                        std::vector<int> points,
                         GetLca&& get_lca,
                         GetPointWeight&& get_point_weight,
                         GetEdgeWeight&& get_edge_weight) : dfn(dfn) {
