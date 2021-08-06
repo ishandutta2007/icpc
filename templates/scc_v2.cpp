@@ -1,5 +1,3 @@
-const int kN = 100000 + 5;
-
 struct Edge {
   int v;
 };
