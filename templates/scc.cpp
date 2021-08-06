@@ -79,12 +79,10 @@ struct StronglyConnectedComponent {
   DirectedAcyclicGraph shrink() const {
     DirectedAcyclicGraph dag(tot);
     for (int u = 0; u < n; ++u) {
-      std::set<int> set;
       for (const Edge& e : edges[u]) {
         int v = e.v;
-        if (belong[u] != belong[v] && !set.count(belong[v])) {
+        if (belong[u] != belong[v]) {
           dag.edges[belong[u]].emplace_back(belong[v]);
-          set.emplace(belong[v]);
         }
       }
     }
