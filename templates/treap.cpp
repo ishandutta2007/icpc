@@ -1,9 +1,24 @@
 struct Treap *nill;
 
 struct Treap {
-  Treap *ch[2];
-  int val;
-  int sz;
+  Treap *ch[2] = {nill, nill};
+  int sz = 1;
+  bool reversed = false;
+
+  void reverse() {
+    if (this == nill) return;
+    std::swap(ch[0], ch[1]);
+    reversed ^= 1;
+  }
+
+  void down() {
+    if (this == nill) return;
+    if (reversed) {
+      ch[0]->reverse();
+      ch[1]->reverse();
+      reversed = false;
+    }
+  }
 
   void up() {
     if (this == nill) return ;
@@ -11,17 +26,25 @@ struct Treap {
   }
 };
 
-void split(Treap *a,Treap *&b,Treap *&c,int val) {
+void split_by_sz(Treap *a, Treap *&b, Treap *&c, int sz) {
   if (a == nill) {
     b = c = nill;
-  } else if (a->val <= val) {
-    b = a;
-    split(a->ch[1],b->ch[1],c,val);
-    b->up();
-  } else {
+  } else if (sz == 0) {
+    b = nill;
     c = a;
-    split(a->ch[0],b,c->ch[0],val);
+  } else if (a->sz == sz) {
+    b = a;
+    c = nill;
+  } else if (a->ch[0]->sz >= sz) {
+    a->down();
+    c = a;
+    split_by_sz(a->ch[0], b, c->ch[0], sz);
     c->up();
+  } else {  // a->ch[0]->sz < sz
+    a->down();
+    b = a;
+    split_by_sz(a->ch[1],b->ch[1], c, sz - a->ch[0]->sz - 1);
+    b->up();
   }
 }
 
@@ -30,22 +53,42 @@ unsigned ran() {
   return ranx += ranx << 2 | 1;
 }
 
-bool roll(int a,int b) {
+bool roll(int a, int b) {
   return ran() % (a+b) < a;
 }
 
-void merge(Treap *&a,Treap *b,Treap *c) {
+void merge(Treap *&a, Treap *b, Treap *c) {
   if (b == nill) {
     a = c;
   } else if (c == nill) {
     a = b;
-  } else if (roll(b->sz,c->sz)) {
+  } else if (roll(b->sz, c->sz)) {
     a = b;
-    merge(a->ch[1],b->ch[1],c);
+    a->down();
+    merge(a->ch[1], b->ch[1], c);
     a->up();
   } else {
     a = c;
-    merge(a->ch[0],b,c->ch[0]);
+    a->down();
+    merge(a->ch[0], b, c->ch[0]);
     a->up();
   }
 }
+
+template<typename Handler>
+Handler on_interval(Handler&& handler, Treap*& root, int l, int r) {
+  Treap *a, *b, *c;
+  split_by_sz(root, b, c, r);
+  split_by_sz(b, a, b, l - 1);
+  handler(b);
+  merge(b, a, b);
+  merge(root, b, c);
+  return handler;
+}
+
+void treap_init() {
+  nill = new Treap;
+  nill->ch[0] = nill->ch[1] = nill;
+  nill->sz = 0;
+}
+
