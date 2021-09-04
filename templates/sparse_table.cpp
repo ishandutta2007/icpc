@@ -20,7 +20,7 @@ struct SparseTable {
       }
     }
   }
-  T ask(int a, int b) {  // [a, b]
+  T ask(int a, int b) const {  // [a, b]
     if (a > b || a < 0 || b >= u.size()) throw;
     int k = lg[b - a + 1];
     if constexpr(kUseMax) {
