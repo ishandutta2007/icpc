@@ -1,7 +1,8 @@
 template<typename T>
 class Fenwick {
  public:
-  Fenwick() {}
+  Fenwick() = default;
+  virtual ~Fenwick() = default;
 
   template<typename... Args>
   explicit Fenwick(int n) : bits(n) {}
