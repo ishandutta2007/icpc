@@ -20,7 +20,7 @@ struct Dsu {
     x = find(x);
     y = find(y);
     if (x == y) return false;
-    dsu[x] = y;
+    dsu[y] = x;
     return true;
   }
 };
