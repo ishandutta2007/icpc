@@ -81,7 +81,7 @@ struct SegmentTree : public SegmentTreeBase<Node, SegmentTree> {
   }
 
   void build() {
-    traverse_all([](int l, int r, Node& u) {
+    traverse_all([&](int l, int r, Node& u) {
       assert(l == r);
     });
   }
