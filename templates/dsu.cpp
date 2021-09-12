@@ -2,6 +2,8 @@ struct Dsu {
   int n;
   std::vector<int> dsu;
 
+  Dsu() = default;
+
   explicit Dsu(int n) : n(n), dsu(n) {
     std::iota(dsu.begin(), dsu.end(), 0);
   }
