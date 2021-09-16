@@ -31,5 +31,5 @@ struct SparseTable {
   }
 };
 
-SparseTable<int, true> st;
+// SparseTable<int, true> st;
 
