@@ -23,9 +23,10 @@ struct SparseTable {
   }
 };
 
+template<typename StringType = std::string>
 struct SuffixArray {
   int n;
-  std::string str;
+  StringType str;
   std::vector<int> sa, rank;
 
   // lcp[i] means lcp(str[sa[i]..], str[sa[i + 1]..]).
@@ -34,7 +35,7 @@ struct SuffixArray {
   SparseTable<int> st;
 
   // O(n(logn)^2) construction.
-  SuffixArray(const std::string& _s) : n(_s.size()), str(_s), sa(n + 1), rank(n + 1) {
+  SuffixArray(const StringType& _s) : n(_s.size()), str(_s), sa(n + 1), rank(n + 1) {
     for (int i = 0; i <= n; ++i) {
       sa[i] = i;
       rank[i] = i < n ? str[i] : -1;
@@ -72,11 +73,27 @@ struct SuffixArray {
     }
   }
 
-  template <typename Compare> int binary_search(const std::string& t) const {
+  // Not verified yet.
+  int compare(const StringType& lhs, int pos, int len, const StringType& rhs) const {
+    for (int i = pos; i < pos + len; ++i) {
+      if (i >= lhs.size()) {
+        return i - pos >= rhs.size() ? 0 : -1;
+      }
+      if (i - pos >= rhs.size()) {
+        return 1;
+      }
+      if (lhs[i] != rhs[i - pos]) {
+        return lhs[i] - rhs[i - pos];
+      }
+    }
+    return len < rhs.size() ? -1 : 0;
+  }
+
+  template <typename Compare> int binary_search(const StringType& t) const {
     int lb = -1, ub = n + 1;
     while (ub - lb > 1) {
       int mid = (ub + lb) / 2;
-      if (Compare()(str.compare(sa[mid], t.size(), t), 0))
+      if (Compare()(compare(str, sa[mid], t.size(), t), 0))
         lb = mid;
       else
         ub = mid;
@@ -85,16 +102,16 @@ struct SuffixArray {
   }
 
   // O(|t|logn).
-  bool contains(const std::string& t) const {
+  bool contains(const StringType& t) const {
     int lb = 0, ub = n;
     while (ub - lb > 1) {
       int mid = (lb + ub) / 2;
-      if (str.compare(sa[mid], t.size(), t) < 0)
+      if (compare(str, sa[mid], t.size(), t) < 0)
         lb = mid;
       else
         ub = mid;
     }
-    return str.compare(sa[ub], t.size(), t) == 0;
+    return compare(str, sa[ub], t.size(), t) == 0;
   }
 
   void prepare_lcp_rmq() {
@@ -108,14 +125,14 @@ struct SuffixArray {
     return st.ask(rank[x], rank[y] - 1);
   }
 
-  int lower_bound(const std::string& t) const { return binary_search<std::less<int>>(t); }
-  int upper_bound(const std::string& t) const { return binary_search<std::less_equal<int>>(t); }
+  int lower_bound(const StringType& t) const { return binary_search<std::less<int>>(t); }
+  int upper_bound(const StringType& t) const { return binary_search<std::less_equal<int>>(t); }
 };
 
 // https://atcoder.jp/contests/kupc2016/tasks/kupc2016_g
 int example(const std::string& s) {
-  SuffixArray sa(s);
-  return s.length() - *std::max_element(sa.lcp.begin(), sa.lcp.end());
+  SuffixArray<std::string> sa(s);
+  return s.size() - *std::max_element(sa.lcp.begin(), sa.lcp.end());
 }
 
 void test() {
@@ -124,3 +141,4 @@ void test() {
   printf("%d\n", 8 == example("abcbabbcabbc"));
   printf("%d\n", 44 == example("bbcacbcbcabbabacccbbcacbaaababbacabaaccbccabcaabba"));
 }
+
