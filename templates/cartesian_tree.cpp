@@ -4,7 +4,8 @@ struct CartesianTree {
   std::vector<std::vector<EdgeT>> graph;
   int root = -1;
 
-  explicit CartesianTree(const std::vector<int>& a) : n(a.size()), graph(n) {
+  template<typename T>
+  explicit CartesianTree(const std::vector<T>& a) : n(a.size()), graph(n) {
     if (n == 0) return;
     std::vector<int> stack;
     for (int i = 0; i < n; ++i) {
