@@ -35,7 +35,7 @@ struct SuffixArray {
   SparseTable<int> st;
 
   // O(n(logn)^2) construction.
-  SuffixArray(const StringType& _s) : n(_s.size()), str(_s), sa(n + 1), rank(n + 1) {
+  explicit SuffixArray(const StringType& _s) : n(_s.size()), str(_s), sa(n + 1), rank(n + 1) {
     for (int i = 0; i <= n; ++i) {
       sa[i] = i;
       rank[i] = i < n ? str[i] : -1;
