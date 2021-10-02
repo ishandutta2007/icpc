@@ -25,6 +25,7 @@ struct SparseTable {
 
 template<typename StringType = std::string>
 struct SuffixArray {
+ public:
   int n;
   StringType str;
   std::vector<int> sa, rank;
@@ -34,30 +35,14 @@ struct SuffixArray {
 
   SparseTable<int> st;
 
-  // O(n(logn)^2) construction.
-  explicit SuffixArray(const StringType& _s) : n(_s.size()), str(_s), sa(n + 1), rank(n + 1) {
-    for (int i = 0; i <= n; ++i) {
-      sa[i] = i;
-      rank[i] = i < n ? str[i] : -1;
-    }
-    std::vector<int> tmp(n + 1);
-    for (int k = 1; k <= n; k <<= 1) {
-      // (rank[i], rank[i+k]), (rank[j], rank[j+k]) comparasion.
-      auto compare_sa = [=](int i, int j) {
-        if (rank[i] != rank[j])
-          return rank[i] < rank[j];
-        else {
-          int ri = i + k <= n ? rank[i + k] : -1;
-          int rj = j + k <= n ? rank[j + k] : -1;
-          return ri < rj;
-        }
-      };
-      std::sort(sa.begin(), sa.end(), compare_sa);
-      tmp[sa[0]] = 0;
-      for (int i = 1; i <= n; i++) {
-        tmp[sa[i]] = tmp[sa[i - 1]] + (compare_sa(sa[i - 1], sa[i]) ? 1 : 0);
-      }
-      rank.swap(tmp);
+  explicit SuffixArray(const StringType& s) : n(s.size()), str(s), sa(n + 1), rank(n + 1) {
+    if (n > 0) {
+      this->len = n;
+      int m = *std::max_element(str.begin(), str.end()) + 1;
+      std::vector<int> buffer((std::max(m, (n + 1) / 2) + 1) * 2);
+      this->buffer = &buffer[0];
+      using T = typename std::decay_t<decltype(str[0])>;
+      sa_is<T>(&str[0], &sa[0], n + 1, m);
     }
     for (int i = 0; i <= n; ++i) rank[sa[i]] = i;
 
@@ -127,6 +112,84 @@ struct SuffixArray {
 
   int lower_bound(const StringType& t) const { return binary_search<std::less<int>>(t); }
   int upper_bound(const StringType& t) const { return binary_search<std::less_equal<int>>(t); }
+
+ private:
+  using SLTypes = std::vector<bool>;
+  int* buffer = nullptr;
+  int* freq = nullptr;
+  int* cur = nullptr;
+  int len = 0;
+
+  template<typename T>
+  void countFrequency(const T* s, int n, int m) {
+    memset(freq, 0, sizeof(int) * m);
+    for (int i = 0; i < n; ++i) ++freq[(int)s[i]];
+    for (int i = 1; i < m; ++i) freq[i] += freq[i - 1];
+    memcpy(cur, freq, sizeof(int) * m);
+  }
+
+#define pushS(x) sa[--cur[(int)s[x]]] = x
+#define pushL(x) sa[cur[(int)s[x]]++] = x
+  template<typename T>
+  void induce(const T* s, int* sa, int m, const SLTypes& t) {
+    const int n = t.size();
+    memcpy(cur + 1, freq, sizeof(int) * (m - 1));
+    for (int i = 0; i < n; ++i) {
+      int p = sa[i] - 1;
+      if (p >= 0 && t[p]) pushL(p);
+    }
+    memcpy(cur, freq, sizeof(int) * m);
+    for (int i = n - 1; i > 0; --i) {
+      int p = sa[i] - 1;
+      if (p >= 0 && !t[p]) pushS(p);
+    }
+  }
+
+  template<typename T>
+  void sa_is(const T* s, int* sa, int n, int m) {
+    SLTypes t(n); memset(sa, 0, sizeof(int) * n);
+    for (int i = n - 2; ~i; --i) {
+      t[i] = (s[i] == s[i + 1]) ? t[i + 1] : s[i] > s[i + 1];
+    }
+    freq = buffer, cur = buffer + m;
+    countFrequency(s, n, m);
+    for (int i = 1; i < n; ++i) if (t[i - 1] > t[i]) pushS(i);
+    induce(s, sa, m, t);
+    int n1 = 0, order = 0;
+    for (int i = 0, p; i < n; ++i) {
+      if ((p = sa[i]) && t[p - 1] > t[p]) sa[n1++] = p;
+    }
+    int* s1 = sa + n1;
+    memset(s1, -1, sizeof(int) * (n - n1));
+    s1[(sa[0] - 1) / 2] = order++;
+    for (int i = 1; i < n1; ++i) {
+      bool diff = true;
+      for (int x = sa[i - 1], y = sa[i]; ; ++x, ++y) {
+        if (s[x] != s[y] || t[x] != t[y]) break;
+        else if (t[x] > t[x + 1] && t[y] > t[y + 1]) {
+          diff = (s[x + 1] != s[y + 1]); break;
+        }
+      }
+      s1[(sa[i] - 1) / 2] = (order += diff) - 1;
+    }
+    for (int i = 0, x = 0; i < n - n1; ++i) {
+      if (~s1[i]) s1[x++] = s1[i];
+    }
+    if (order != n1) {
+      sa_is<int>(s1, sa, n1, order);
+      for (int i = 0; i < n1; ++i) s1[sa[i]] = i;
+    }
+    for (int i = 1, j = 0; i < n; ++i) {
+      if (t[i - 1] > t[i]) sa[s1[j++]] = -i;
+    }
+    memset(s1, 0, sizeof(int) * (n - n1));
+    freq = buffer, cur = buffer + m;
+    countFrequency(s, n, m);
+    for (int i = n1 - 1; ~i; --i) pushS(-sa[i]);
+    induce(s, sa, m, t);
+  }
+#undef pushS
+#undef pushL
 };
 
 // https://atcoder.jp/contests/kupc2016/tasks/kupc2016_g
