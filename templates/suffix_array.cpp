@@ -121,7 +121,7 @@ struct SuffixArray {
   int len = 0;
 
   template<typename T>
-  void countFrequency(const T* s, int n, int m) {
+  void count_frequency(const T* s, int n, int m) {
     memset(freq, 0, sizeof(int) * m);
     for (int i = 0; i < n; ++i) ++freq[(int)s[i]];
     for (int i = 1; i < m; ++i) freq[i] += freq[i - 1];
@@ -152,7 +152,7 @@ struct SuffixArray {
       t[i] = (s[i] == s[i + 1]) ? t[i + 1] : s[i] > s[i + 1];
     }
     freq = buffer, cur = buffer + m;
-    countFrequency(s, n, m);
+    count_frequency(s, n, m);
     for (int i = 1; i < n; ++i) if (t[i - 1] > t[i]) pushS(i);
     induce(s, sa, m, t);
     int n1 = 0, order = 0;
@@ -184,24 +184,11 @@ struct SuffixArray {
     }
     memset(s1, 0, sizeof(int) * (n - n1));
     freq = buffer, cur = buffer + m;
-    countFrequency(s, n, m);
+    count_frequency(s, n, m);
     for (int i = n1 - 1; ~i; --i) pushS(-sa[i]);
     induce(s, sa, m, t);
   }
 #undef pushS
 #undef pushL
 };
-
-// https://atcoder.jp/contests/kupc2016/tasks/kupc2016_g
-int example(const std::string& s) {
-  SuffixArray<std::string> sa(s);
-  return s.size() - *std::max_element(sa.lcp.begin(), sa.lcp.end());
-}
-
-void test() {
-  printf("%d\n", 3 == example("abcabc"));
-  printf("%d\n", 7 == example("abracadabra"));
-  printf("%d\n", 8 == example("abcbabbcabbc"));
-  printf("%d\n", 44 == example("bbcacbcbcabbabacccbbcacbaaababbacabaaccbccabcaabba"));
-}
 
