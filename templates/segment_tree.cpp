@@ -88,7 +88,7 @@ struct SegmentTree : public SegmentTreeBase<Node, SegmentTree> {
 
   Monoid query(int L, int R) {
     Monoid ret{};
-    traverse([&ret](int l, int r, Node& u) {
+    traverse([&](int l, int r, Node& u) {
       ret = ret * u.m;
     }, L, R);
     return ret;
