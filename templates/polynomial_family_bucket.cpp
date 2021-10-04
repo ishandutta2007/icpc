@@ -1,13 +1,3 @@
-#include <bits/stdc++.h>
-#ifdef ALGO
-#include "el_psy_congroo.hpp"
-#else
-#define DUMP(...)
-#define CHECK(...) (__VA_ARGS__)
-#endif
-
-namespace {
-
 template<int MOD>
 struct Integral {
   int v_ = 0;
@@ -377,37 +367,4 @@ T lagrange_inversion(Polynomial<T> poly, int n) {  // WARNING: Has not been inst
 }
 
 using Poly = Polynomial<Integral<MOD>>;
-
-struct Solver {
-
-  void solve(int ca, std::istream& reader) {
-    int n, m;
-    reader >> n >> m;
-    Poly C;
-    for (int i = 0; i < n; ++i) {
-      int x;
-      reader >> x;
-      C.touch(x) = 1;
-    }
-    Poly T = Mint(2) * mod_inv(Poly(1, 1) + mod_sqrt(Poly(1, 1) - Mint(4) * C, m + 1), m + 1);
-    for (int i = 1; i <= m; ++i) {
-      printf("%d\n", T.at(i).val());
-    }
-  }
-};
-
-}  // namespace
-
-int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-  std::istream& reader = std::cin;
-
-  int cas = 1;
-  // reader >> cas;
-  for (int ca = 1; ca <= cas; ++ca) {
-    auto solver = std::make_unique<Solver>();
-    solver->solve(ca, reader);
-  }
-}
 
