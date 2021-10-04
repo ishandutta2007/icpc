@@ -34,21 +34,21 @@ struct Integral {
   }
 
   int val() const { return v_; }
-  Integral& operator += (const Integral& rhs) { v_ += rhs.val(); if (v_ >= MOD) v_ -= MOD; return *this; }
-  Integral& operator -= (const Integral& rhs) { v_ += MOD - rhs.val(); if (v_ >= MOD) v_ -= MOD; return *this; }
-  Integral& operator *= (const Integral& rhs) { v_ = v_ * 1LL * rhs.val() % MOD; return *this; }
-  Integral& operator /= (const Integral& rhs) { v_ = v_ * 1LL * rhs.inv().val() % MOD; return *this; }
-  Integral operator + (const Integral& rhs) const { Integral ret = *this; return ret += rhs; }
-  Integral operator - (const Integral& rhs) const { Integral ret = *this; return ret -= rhs; }
-  Integral operator * (const Integral& rhs) const { Integral ret = *this; return ret *= rhs; }
-  Integral operator / (const Integral& rhs) const { Integral ret = *this; return ret /= rhs; }
-  bool operator == (const Integral& rhs) const { return val() == rhs.val(); }
-  bool operator != (const Integral& rhs) const { return !(*this == rhs); }
-  const Integral operator - () const { return Integral(-val()); }
-  const Integral& operator ++ () { v_ += 1; if (v_ >= MOD) v_ -= MOD; return *this; }
-  const Integral operator ++ (int) { Integral ret = *this; ++(*this); return ret; }
-  const Integral& operator -- () { v_ += MOD - 1; if (v_ >= MOD) v_ -= MOD; return *this; }
-  const Integral operator -- (int) { Integral ret = *this; --(*this); return ret; }
+  Integral& operator+=(const Integral& rhs) { v_ += rhs.val(); if (v_ >= MOD) v_ -= MOD; return *this; }
+  Integral& operator-=(const Integral& rhs) { v_ += MOD - rhs.val(); if (v_ >= MOD) v_ -= MOD; return *this; }
+  Integral& operator*=(const Integral& rhs) { v_ = v_ * 1LL * rhs.val() % MOD; return *this; }
+  Integral& operator/=(const Integral& rhs) { v_ = v_ * 1LL * rhs.inv().val() % MOD; return *this; }
+  Integral operator+(const Integral& rhs) const { Integral ret = *this; return ret += rhs; }
+  Integral operator-(const Integral& rhs) const { Integral ret = *this; return ret -= rhs; }
+  Integral operator*(const Integral& rhs) const { Integral ret = *this; return ret *= rhs; }
+  Integral operator/(const Integral& rhs) const { Integral ret = *this; return ret /= rhs; }
+  bool operator==(const Integral& rhs) const { return val() == rhs.val(); }
+  bool operator!=(const Integral& rhs) const { return !(*this == rhs); }
+  const Integral operator-() const { return Integral(-val()); }
+  const Integral& operator++() { v_ += 1; if (v_ >= MOD) v_ -= MOD; return *this; }
+  const Integral operator++(int) { Integral ret = *this; ++(*this); return ret; }
+  const Integral& operator--() { v_ += MOD - 1; if (v_ >= MOD) v_ -= MOD; return *this; }
+  const Integral operator--(int) { Integral ret = *this; --(*this); return ret; }
 
   Integral power(long long b) const {
     long long ret = 1 % MOD, a = v_;
@@ -75,7 +75,7 @@ struct Binomial {
   ~Binomial() = default;
 
   template<typename T>
-  Integral<MOD> operator () (T a, T b) const {
+  Integral<MOD> operator()(T a, T b) const {
     if (a < b || b < 0) return 0;
     if (a < factor.size()) return factor[a] * inv_factor[b] * inv_factor[a - b];
     if constexpr(!kAllowBruteForce) {
@@ -106,6 +106,7 @@ using Binom = Binomial<MOD>;
 
 // Binom binom(200000);
 // PowerTable<MOD> pw2(200000, 2);
+
 
 template<int MOD = 998244353, int kPrimRoot = 3>
 void ntt(Integral<MOD> A[], int n, int inv) {
