@@ -359,6 +359,7 @@ template<typename T>
 Polynomial<T> mod_euler_transform(const Polynomial<T>& poly, int len = 0) {
   // https://www.luogu.com.cn/problem/P4389
   if (poly.size() < 2) return Polynomial<T>{};
+  CHECK(poly[0] == T(0));
   if (len == 0) len = poly.size();
   Polynomial<T> P(len);
   std::vector<T> inv(len);
