@@ -2,9 +2,11 @@
 #ifdef ALGO
 #include "el_psy_congroo.hpp"
 #else
-#define DUMP(...) 1145141919810
+#define DUMP(...)
 #define CHECK(...) (__VA_ARGS__)
 #endif
+
+namespace {
 
 template<int MOD>
 struct Integral {
@@ -102,7 +104,7 @@ const int MOD = 998244353;
 using Mint = Integral<MOD>;
 using Binom = Binomial<MOD>;
 
-Binom binom(200000);
+// Binom binom(200000);
 // PowerTable<MOD> pw2(200000, 2);
 
 template<int MOD = 998244353, int kPrimRoot = 3>
@@ -133,7 +135,16 @@ void ntt(Integral<MOD> A[], int n, int inv) {
 }
 
 template<typename T>
-using Polynomial = std::vector<T>;
+struct Polynomial final : public std::vector<T> {
+  Polynomial() = default;
+  explicit Polynomial(int n) : std::vector<T>(n) {}
+  Polynomial(int n, const T& val) : std::vector<T>(n, val) {}
+  Polynomial(std::initializer_list<T> initializer_list) : std::vector<T>(std::move(initializer_list)) {}
+  Polynomial(std::vector<T> vec) : std::vector<T>(std::move(vec)) {}
+  int size() const { return std::vector<T>::size(); }
+  T at(int pos) const { return pos >= 0 && pos < size() ? (*this)[pos] : T(0); }
+  Polynomial mod(int n) const { return Polynomial(std::vector<T>(this->data(), this->data() + std::min(n, size()))); }
+};
 
 template<typename T>
 void ntt(Polynomial<T>& poly, int n, int inv) {
@@ -149,21 +160,29 @@ void norm(Polynomial<T>& p) {
 }
 
 template<typename T>
-Polynomial<T> operator + (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
-  Polynomial<T> ret = lhs;
-  ret.resize(std::max(lhs.size(), rhs.size()), T(0));
-  for (int i = 0; i < rhs.size(); ++i) ret[i] += rhs[i];
-  norm(ret);
-  return ret;
+Polynomial<T>& operator+=(Polynomial<T>& lhs, const Polynomial<T>& rhs) {
+  lhs.resize(std::max(lhs.size(), rhs.size()), T(0));
+  for (int i = 0; i < rhs.size(); ++i) lhs[i] += rhs[i];
+  norm(lhs);
+  return lhs;
 }
 
 template<typename T>
-Polynomial<T> operator - (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
-  Polynomial<T> ret = lhs;
-  ret.resize(std::max(lhs.size(), rhs.size()), T(0));
-  for (int i = 0; i < rhs.size(); ++i) ret[i] -= rhs[i];
-  norm(ret);
-  return ret;
+Polynomial<T> operator+(Polynomial<T> lhs, const Polynomial<T>& rhs) {
+  return lhs += rhs;
+}
+
+template<typename T>
+Polynomial<T>& operator-=(Polynomial<T>& lhs, const Polynomial<T>& rhs) {
+  lhs.resize(std::max(lhs.size(), rhs.size()), T(0));
+  for (int i = 0; i < rhs.size(); ++i) lhs[i] -= rhs[i];
+  norm(lhs);
+  return lhs;
+}
+
+template<typename T>
+Polynomial<T> operator-(Polynomial<T> lhs, const Polynomial<T>& rhs) {
+  return lhs -= rhs;
 }
 
 template<typename T>
@@ -358,26 +377,33 @@ T lagrange_inversion(Polynomial<T> poly, int n) {  // WARNING: Has not been inst
 
 using Poly = Polynomial<Integral<MOD>>;
 
+struct Solver {
+
+  void solve(int ca, std::istream& reader) {
+    int n;
+    reader >> n;
+    Poly G(n + 1);
+    Binom binom(n);
+    for (int i = 0; i <= n; ++i) {
+      G[i] = Mint(2).power(i * 1LL * (i - 1) / 2) * binom.inv_factor[i];
+    }
+    Poly F = mod_ln(G, n + 1);
+    printf("%d\n", (binom.factor[n] * F.at(n)).val());
+  }
+};
+
+}  // namespace
+
 int main() {
   std::ios::sync_with_stdio(false);
   std::cin.tie(nullptr);
   std::istream& reader = std::cin;
 
-  int n;
-  std::string k_string;
-  reader >> n >> k_string;
-  Mint k = 0;
-  for (char c : k_string) {
-    k = k * 10 + (c - '0');
-  }
-  Poly P(n);
-  for (int i = 0; i < n; ++i) {
-    int x;
-    reader >> x;
-    P[i] = x;
-  }
-  Poly Q = enforce_len(conditioned_mod_power(P, Mint(k), n), n);
-  for (int i = 0; i < n; ++i) {
-    printf("%d%c", Q[i].val(), " \n"[i + 1 == n]);
+  int cas = 1;
+  // reader >> cas;
+  for (int ca = 1; ca <= cas; ++ca) {
+    auto solver = std::make_unique<Solver>();
+    solver->solve(ca, reader);
   }
 }
+
