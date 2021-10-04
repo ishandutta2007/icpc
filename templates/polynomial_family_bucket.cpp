@@ -356,6 +356,24 @@ Polynomial<T> conditioned_mod_power(Polynomial<T> poly, T k, int len = 0) {
 }
 
 template<typename T>
+Polynomial<T> mod_euler_transform(const Polynomial<T>& poly, int len = 0) {
+  // https://www.luogu.com.cn/problem/P4389
+  if (poly.size() < 2) return Polynomial<T>{};
+  if (len == 0) len = poly.size();
+  Polynomial<T> P(len);
+  std::vector<T> inv(len);
+  for (int i = 1; i < len; ++i) {
+    inv[i] = Mint(i).inv();
+  }
+  for (int i = 1; i < poly.size(); ++i) if (poly[i].val()) {
+    for (int j = 1; i * j < len; ++j) {
+      P[i * j] += poly[i] * inv[j];
+    }
+  }
+  return mod_exp(P, len);
+}
+
+template<typename T>
 T lagrange_inversion(Polynomial<T> poly, int n) {  // WARNING: Has not been instantiated
   if (poly.empty()) return T(0);
   CHECK(poly[0] == T(0));
