@@ -107,7 +107,6 @@ using Binom = Binomial<MOD>;
 // Binom binom(200000);
 // PowerTable<MOD> pw2(200000, 2);
 
-
 template<int MOD = 998244353, int kPrimRoot = 3>
 void ntt(Integral<MOD> A[], int n, int inv) {
   // inv == 1: ntt, == -1: intt
@@ -144,6 +143,7 @@ struct Polynomial final : public std::vector<T> {
   Polynomial(std::vector<T> vec) : std::vector<T>(std::move(vec)) {}
   int size() const { return std::vector<T>::size(); }
   T at(int pos) const { return pos >= 0 && pos < size() ? (*this)[pos] : T(0); }
+  T& touch(int pos) { if (pos >= size()) std::vector<T>::resize(pos + 1, T(0)); return (*this)[pos]; }
   Polynomial mod(int n) const { return Polynomial(std::vector<T>(this->data(), this->data() + std::min(n, size()))); }
 };
 
@@ -214,7 +214,7 @@ int get_ntt_len(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
 }
 
 template<typename T>
-Polynomial<T> operator * (Polynomial<T> lhs, Polynomial<T> rhs) {
+Polynomial<T> operator*(Polynomial<T> lhs, Polynomial<T> rhs) {
   CHECK(lhs.size() + rhs.size() > 0);
   const int L = get_ntt_len(lhs, rhs);
   lhs.resize(L, 0);
@@ -230,7 +230,7 @@ Polynomial<T> operator * (Polynomial<T> lhs, Polynomial<T> rhs) {
 }
 
 template<typename T>
-Polynomial<T> operator * (T a, Polynomial<T> p) {
+Polynomial<T> operator*(T a, Polynomial<T> p) {
   for (int i = 0; i < p.size(); ++i) p[i] *= a;
   norm(p);
   return p;
@@ -381,15 +381,18 @@ using Poly = Polynomial<Integral<MOD>>;
 struct Solver {
 
   void solve(int ca, std::istream& reader) {
-    int n;
-    reader >> n;
-    Poly G(n + 1);
-    Binom binom(n);
-    for (int i = 0; i <= n; ++i) {
-      G[i] = Mint(2).power(i * 1LL * (i - 1) / 2) * binom.inv_factor[i];
+    int n, m;
+    reader >> n >> m;
+    Poly C;
+    for (int i = 0; i < n; ++i) {
+      int x;
+      reader >> x;
+      C.touch(x) = 1;
     }
-    Poly F = mod_ln(G, n + 1);
-    printf("%d\n", (binom.factor[n] * F.at(n)).val());
+    Poly T = Mint(2) * mod_inv(Poly(1, 1) + mod_sqrt(Poly(1, 1) - Mint(4) * C, m + 1), m + 1);
+    for (int i = 1; i <= m; ++i) {
+      printf("%d\n", T.at(i).val());
+    }
   }
 };
 
