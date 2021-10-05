@@ -195,12 +195,12 @@ Polynomial<T> enforce_len(Polynomial<T> poly, int len) {
 int binary_upper_bound(int w) {
   if (w <= 0) return 1;
   const int highbit = 31 - __builtin_clz(w);
-  return (1 << highbit) << ((1 << highbit) != w);
+  return (1 << (highbit + 1));
 }
 
 template<typename T>
 int get_ntt_len(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
-  return binary_upper_bound((int)lhs.size() + (int)rhs.size() - 1);
+  return binary_upper_bound((int)lhs.size() + (int)rhs.size() - 2);
 }
 
 template<typename T>
