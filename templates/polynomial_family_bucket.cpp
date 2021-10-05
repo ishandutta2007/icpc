@@ -200,7 +200,7 @@ int binary_upper_bound(int w) {
 
 template<typename T>
 int get_ntt_len(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
-  return binary_upper_bound((int)lhs.size() + (int)rhs.size() - 1);
+  return binary_upper_bound((int)lhs.size() + (int)rhs.size() - 2);
 }
 
 template<typename T>
