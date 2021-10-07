@@ -234,7 +234,7 @@ Polynomial<T> mod_inv(Polynomial<T> poly, int len = 0) {
   if (len > poly.size()) poly.resize(len);
   // poly * inv(poly) % (x^len) == 1
 
-  const int L = binary_upper_bound(len);
+  const int L = binary_upper_bound(len - 1);
   poly.resize(L, 0);
   Polynomial<T> w(L << 1), r(L << 1), saved(L << 1);
   w[0] = poly[0].inv();
@@ -292,7 +292,7 @@ Polynomial<T> mod_sqrt(Polynomial<T> poly, int len = 0) {
     return poly;
   }
   if (len == 0) len = poly.size();
-  const int L = binary_upper_bound(len);
+  const int L = binary_upper_bound(len - 1);
   poly.resize(L, 0);
   Polynomial<T> buffer(1, 1), buffer1;
   for (int len = 2; len <= L; len <<= 1) {
@@ -320,7 +320,7 @@ Polynomial<T> mod_exp(Polynomial<T> poly, int len = 0) {
   if (len == 0) len = poly.size();
   if (len > poly.size()) poly.resize(len);
   CHECK(poly.size() == 0 || poly[0] == 0);
-  const int L = binary_upper_bound(len);
+  const int L = binary_upper_bound(len - 1);
   poly.resize(L, 0);
   Polynomial<T> p(1, 1);
   for (int len = 2; len <= L; len <<= 1) {
