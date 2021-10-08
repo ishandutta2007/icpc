@@ -53,7 +53,7 @@ std::string to_string(const Integral<MOD>& v) {
 }
 
 template<int MOD, bool kAllowBruteForce = false>
-struct Binomial {
+struct Binomial final {
   std::vector<Integral<MOD>> factor, inv_factor;
 
   explicit Binomial(int n = 0) : factor(n + 1), inv_factor(n + 1) {
@@ -80,7 +80,7 @@ struct Binomial {
 };
 
 template<int MOD>
-struct PowerTable : public std::vector<Integral<MOD>> {
+struct PowerTable final : public std::vector<Integral<MOD>> {
   PowerTable(int n, const Integral<MOD>& g) {
     static_assert(sizeof(PowerTable) == sizeof(std::vector<Integral<MOD>>), "");
     this->resize(n + 1);
@@ -93,9 +93,10 @@ struct PowerTable : public std::vector<Integral<MOD>> {
 const int MOD = 998244353;
 using Mint = Integral<MOD>;
 using Binom = Binomial<MOD>;
+using Power = PowerTable<MOD>;
 
 // Binom binom(200000);
-// PowerTable<MOD> pw2(200000, 2);
+// Power pw2(200000, 2);
 
 template<int MOD = 998244353, int kPrimRoot = 3>
 void ntt(Integral<MOD> A[], int n, int inv) {
