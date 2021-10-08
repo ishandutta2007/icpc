@@ -278,6 +278,18 @@ Polynomial<T> operator%(Polynomial<T> lhs, Polynomial<T> rhs) {
 }
 
 template<typename T>
+T eval(const Polynomial<T>& poly, T a) {  // Returns Poly(a).
+  T ret = 0;
+  T w = 1;
+  for (int i = 0; i < poly.size(); ++i) {
+    ret += w * poly[i];
+    w *= a;
+  }
+  return ret;
+  // NOTE: It equals to (poly % Polynomial<T>{-a, 1}).at(0).
+}
+
+template<typename T>
 Polynomial<T> derivate(Polynomial<T> poly) {
   if (poly.size() <= 1) {
     return Polynomial<T>(1, 0);
