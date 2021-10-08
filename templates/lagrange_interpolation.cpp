@@ -44,6 +44,7 @@ Polynomial<T> operator * (T a, Polynomial<T> p) {
 template<typename T>
 Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>& y) {
   // https://en.wikipedia.org/wiki/Lagrange_polynomial
+  // O(n^2log(A))
   CHECK(x.size() > 0);
   int degree = x.size() - 1;
   std::vector<std::vector<T>> f(degree + 1);

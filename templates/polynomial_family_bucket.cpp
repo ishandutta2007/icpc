@@ -290,7 +290,7 @@ T eval(const Polynomial<T>& poly, T a) {  // Returns Poly(a).
 }
 
 template<typename T>
-std::vector<T> multiple_point_eval(const Polynomial<T>& poly, std::vector<T>& a) {  // Returns [eval(poly, w) for w in a]
+std::vector<T> multiple_point_eval(const Polynomial<T>& poly, const std::vector<T>& a) {  // Returns [eval(poly, w) for w in a]
   // https://www.luogu.com.cn/problem/P5050
   int m = a.size();
   std::vector<Polynomial<T>> bucket(m * 2 - 1);
@@ -451,6 +451,33 @@ T lagrange_inversion(Polynomial<T> poly, int n) {  // WARNING: Has not been inst
   CHECK(n > 0);
   poly.erase(poly.begin());
   return enforce_len(conditioned_mod_power(poly, n, n), n)[n - 1] / T(n);
+}
+
+template<typename T>
+Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>& y) {
+  // https://en.wikipedia.org/wiki/Lagrange_polynomial
+  // O(nlog^2(n)).
+  if (x.empty()) return Polynomial<T>(1, T(0));
+
+  std::function<Polynomial<T>(int,int)> calc_g = [&](int l, int r) -> Polynomial<T> {
+    if (l == r) {
+      return Polynomial<T>{-x[l], 1};
+    }
+    int mid = (l + r) >> 1;
+    return calc_g(l, mid) * calc_g(mid + 1, r);
+  };
+  std::vector<T> z = multiple_point_eval(derivate(calc_g(0, (int)x.size() - 1)), x);
+  using PolynomialPair = std::pair<Polynomial<T>, Polynomial<T>>;
+  std::function<PolynomialPair(int,int)> divide = [&](int l, int r) -> PolynomialPair {
+    if (l == r) {
+      return std::make_pair(Polynomial<T>(1, y[l] / z[l]), Polynomial<T>{-x[l], 1});
+    }
+    int mid = (l + r) >> 1;
+    PolynomialPair lhs = divide(l, mid);
+    PolynomialPair rhs = divide(mid + 1, r);
+    return std::make_pair(lhs.first * rhs.second + lhs.second * rhs.first, lhs.second * rhs.second);
+  };
+  return divide(0, (int)x.size() - 1).first;
 }
 
 using Poly = Polynomial<Integral<MOD>>;
