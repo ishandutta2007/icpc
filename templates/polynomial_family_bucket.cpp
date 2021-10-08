@@ -228,6 +228,11 @@ Polynomial<T> operator*(T a, Polynomial<T> p) {
 }
 
 template<typename T>
+Polynomial<T> operator*(const Polynomial<T>& p, T a) {
+  return a * p;
+}
+
+template<typename T>
 Polynomial<T> mod_inv(Polynomial<T> poly, int len = 0) {
   // https://www.luogu.com.cn/problem/P4238
   CHECK(poly.size() >= 1 && poly[0] != 0);
