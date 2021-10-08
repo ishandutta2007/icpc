@@ -489,17 +489,14 @@ Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>&
     mp_eval(mid + 1, r, poly);
   };
   mp_eval(0, m - 1, derivate(calc_g(0, (int)x.size() - 1)));
-  using PolynomialPair = std::pair<Polynomial<T>, Polynomial<T>>;
-  std::function<PolynomialPair(int,int)> divide = [&](int l, int r) -> PolynomialPair {
+  std::function<Polynomial<T>(int,int)> divide = [&](int l, int r) -> Polynomial<T> {
     if (l == r) {
-      return std::make_pair(Polynomial<T>(1, y[l] / z[l]), Polynomial<T>{-x[l], 1});
+      return Polynomial<T>(1, y[l] / z[l]);;
     }
     int mid = (l + r) >> 1;
-    PolynomialPair lhs = divide(l, mid);
-    PolynomialPair rhs = divide(mid + 1, r);
-    return std::make_pair(lhs.first * rhs.second + lhs.second * rhs.first, lhs.second * rhs.second);
+    return divide(l, mid) * bucket[get_id(mid + 1, r)] + divide(mid + 1, r) * bucket[get_id(l, mid)];
   };
-  return divide(0, (int)x.size() - 1).first;
+  return divide(0, (int)x.size() - 1);
 }
 
 using Poly = Polynomial<Integral<MOD>>;
