@@ -94,3 +94,4 @@ struct SegmentTree : public SegmentTreeBase<Node, SegmentTree> {
     return ret;
   }
 };
+
