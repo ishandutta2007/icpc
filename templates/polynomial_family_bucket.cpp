@@ -290,6 +290,41 @@ T eval(const Polynomial<T>& poly, T a) {  // Returns Poly(a).
 }
 
 template<typename T>
+std::vector<T> multiple_point_eval(const Polynomial<T>& poly, std::vector<T>& a) {  // Returns [eval(poly, w) for w in a]
+  // https://www.luogu.com.cn/problem/P5050
+  int m = a.size();
+  std::vector<Polynomial<T>> bucket(m * 2 - 1);
+  auto get_id = [](int l, int r) -> int {
+    return (l + r) | (l != r);
+  };
+  std::function<void(int,int)> prepare = [&](int l, int r) -> void {
+    Polynomial<T>& p = bucket[get_id(l, r)];
+    if (l == r) {
+      p = Polynomial<T>{-a[l], 1};
+      return;
+    }
+    int mid = (l + r) >> 1;
+    prepare(l, mid);
+    prepare(mid + 1, r);
+    p = bucket[get_id(l, mid)] * bucket[get_id(mid + 1, r)];
+  };
+  prepare(0, m - 1);
+  std::vector<T> result(m);
+  std::function<void(int, int, Polynomial<T>)> divide = [&](int l, int r, Polynomial<T> poly) -> void {
+    poly = poly % bucket[get_id(l, r)];
+    if (l == r) {
+      result[l] = poly.at(0);
+      return;
+    }
+    int mid = (l + r) >> 1;
+    divide(l, mid, poly);
+    divide(mid + 1, r, poly);
+  };
+  divide(0, m - 1, poly);
+  return result;
+}
+
+template<typename T>
 Polynomial<T> derivate(Polynomial<T> poly) {
   if (poly.size() <= 1) {
     return Polynomial<T>(1, 0);
