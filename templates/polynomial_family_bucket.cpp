@@ -258,7 +258,7 @@ Polynomial<T> mod_inv(Polynomial<T> poly, int len = 0) {
 }
 
 template<typename T>
-Polynomial<T> operator/(Polynomial<T> lhs, Polynomial<T> rhs) {  // Division with remainder.
+Polynomial<T> div(Polynomial<T> lhs, Polynomial<T> rhs) {  // Division with remainder.
   norm(lhs);
   norm(rhs);
   if (lhs.size() < rhs.size()) return Polynomial<T>(1, T(0));
@@ -273,7 +273,7 @@ Polynomial<T> operator/(Polynomial<T> lhs, Polynomial<T> rhs) {  // Division wit
 
 template<typename T>
 Polynomial<T> operator%(Polynomial<T> lhs, Polynomial<T> rhs) {
-  Polynomial<T> Q = lhs / rhs;
+  Polynomial<T> Q = div(lhs, rhs);
   return lhs - Q * rhs;
 }
 
