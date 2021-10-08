@@ -16,7 +16,7 @@ class SegmentTreeBase {
     return handler;
   }
 
- private:
+ protected:
   static int get_id(int l, int r) {
     return l + r | (l != r);
   }
@@ -27,6 +27,7 @@ class SegmentTreeBase {
   // Impl::down :: void down(int l, int mid, int r, Node& u, Node& lu, Node& ru).
   // Impl::up :: void up(int l, int mid, int r, Node& u, const Node& lu, const Node& ru).
 
+ private:
   template<typename Handler>
   void traverse_all(Handler&& handler, int l, int r) {
     if (l == r) {
