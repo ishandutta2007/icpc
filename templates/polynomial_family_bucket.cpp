@@ -258,6 +258,26 @@ Polynomial<T> mod_inv(Polynomial<T> poly, int len = 0) {
 }
 
 template<typename T>
+Polynomial<T> operator/(Polynomial<T> lhs, Polynomial<T> rhs) {  // Division with remainder.
+  norm(lhs);
+  norm(rhs);
+  if (lhs.size() < rhs.size()) return Polynomial<T>(1, T(0));
+  std::reverse(lhs.begin(), lhs.end());
+  std::reverse(rhs.begin(), rhs.end());
+  int len = (int)lhs.size() - 1 - (int)rhs.size() + 1 + 1;
+  Polynomial<T> Q = enforce_len(lhs * mod_inv(rhs, len), len);
+  std::reverse(Q.begin(), Q.end());
+  norm(Q);
+  return Q;
+}
+
+template<typename T>
+Polynomial<T> operator%(Polynomial<T> lhs, Polynomial<T> rhs) {
+  Polynomial<T> Q = lhs / rhs;
+  return lhs - Q * rhs;
+}
+
+template<typename T>
 Polynomial<T> derivate(Polynomial<T> poly) {
   if (poly.size() <= 1) {
     return Polynomial<T>(1, 0);
