@@ -459,14 +459,31 @@ Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>&
   // O(nlog^2(n)).
   if (x.empty()) return Polynomial<T>(1, T(0));
 
+  int m = x.size();
+  std::vector<Polynomial<T>> bucket(m * 2 - 1);
+  auto get_id = [](int l, int r) -> int {
+    return (l + r) | (l != r);
+  };
   std::function<Polynomial<T>(int,int)> calc_g = [&](int l, int r) -> Polynomial<T> {
+    Polynomial<T>& p = bucket[get_id(l, r)];
     if (l == r) {
-      return Polynomial<T>{-x[l], 1};
+      return p = Polynomial<T>{-x[l], 1};
     }
     int mid = (l + r) >> 1;
-    return calc_g(l, mid) * calc_g(mid + 1, r);
+    return p = calc_g(l, mid) * calc_g(mid + 1, r);
   };
-  std::vector<T> z = multiple_point_eval(derivate(calc_g(0, (int)x.size() - 1)), x);
+  std::vector<T> z(m);
+  std::function<void(int, int, Polynomial<T>)> mp_eval = [&](int l, int r, Polynomial<T> poly) -> void {
+    poly = poly % bucket[get_id(l, r)];
+    if (l == r) {
+      z[l] = poly.at(0);
+      return;
+    }
+    int mid = (l + r) >> 1;
+    mp_eval(l, mid, poly);
+    mp_eval(mid + 1, r, poly);
+  };
+  mp_eval(0, m - 1, derivate(calc_g(0, (int)x.size() - 1)));
   using PolynomialPair = std::pair<Polynomial<T>, Polynomial<T>>;
   std::function<PolynomialPair(int,int)> divide = [&](int l, int r) -> PolynomialPair {
     if (l == r) {
