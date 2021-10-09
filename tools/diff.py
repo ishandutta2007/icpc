@@ -1,8 +1,8 @@
 import click
+import filecmp
 import logging
 import subprocess
 import time
-import filecmp
 
 @click.group()
 def main():
@@ -28,7 +28,7 @@ def run(gen, binary, good, num_iterations, time_interval):
                 with open('good.out', 'w') as g:
                     subprocess.run(good, stdin=f, stdout=g, check=True)
                 if not filecmp.cmp('data.out', 'good.out'):
-                    logging.error('CATCH DIFFERENCE!!!')
+                    logging.error('Difference catched.')
                     return
         if time_interval > 0.0:
             time.sleep(time_interval)
