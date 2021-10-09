@@ -27,9 +27,9 @@ def run(gen, binary, good, num_iterations, time_interval):
             with open('data.in', 'r') as f:
                 with open('good.out', 'w') as g:
                     subprocess.run(good, stdin=f, stdout=g, check=True)
-                if not filecmp.cmp('data.out', 'good.out'):
-                    logging.error('Difference catched.')
-                    return
+            if not filecmp.cmp('data.out', 'good.out'):
+                logging.error('Difference catched.')
+                return
         if time_interval > 0.0:
             time.sleep(time_interval)
 
