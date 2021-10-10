@@ -2,8 +2,8 @@
 #ifdef ALGO
 #include "el_psy_congroo.hpp"
 #else
-#define DUMP(...) 1145141919810
-#define CHECK(...) (__VA_ARGS__)
+#define DUMP(...)
+#define CHECK(...)
 #endif
 
 const double eps = 1e-8;
