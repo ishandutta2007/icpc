@@ -67,8 +67,8 @@ struct VirtualGraph {
 
 /*
   VirtualGraph vgraph(
-      points,
       hld.dfn,
+      points,
       [&hld](int x, int y) -> int { return hld.get_lca(x, y); },
       [&scc](int x) -> int { return scc.cardinality[x]; },
       [&hld](int x, int lca) -> int {
