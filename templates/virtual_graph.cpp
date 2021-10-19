@@ -1,9 +1,4 @@
-struct Edge {
-  int v = 0;
-  int w = 1;
-  Edge(int v, int w = 1) : v(v), w(w) {}
-};
-
+template<typename Edge>
 struct VirtualGraph {
   const std::vector<int>& dfn;
 
@@ -30,39 +25,38 @@ struct VirtualGraph {
                         GetLca&& get_lca,
                         GetPointWeight&& get_point_weight,
                         GetEdgeWeight&& get_edge_weight) : dfn(dfn) {
-      std::sort(points.begin(), points.end(), [&](int x, int y) {
-        return dfn[x] < dfn[y];
-      });
-      points.erase(std::unique(points.begin(), points.end()), points.end());
-      for (int i = (int)points.size() - 1; i > 0; --i) {
-        points.emplace_back(get_lca(points[i], points[i - 1]));
-      }
-      std::sort(points.begin(), points.end(), [&](int x, int y) {
-        return dfn[x] < dfn[y];
-      });
-      points.erase(std::unique(points.begin(), points.end()), points.end());
+    std::sort(points.begin(), points.end(), [&](int x, int y) {
+      return dfn[x] < dfn[y];
+    });
+    points.erase(std::unique(points.begin(), points.end()), points.end());
+    for (int i = (int)points.size() - 1; i > 0; --i) {
+      points.emplace_back(get_lca(points[i], points[i - 1]));
+    }
+    std::sort(points.begin(), points.end(), [&](int x, int y) {
+      return dfn[x] < dfn[y];
+    });
+    points.erase(std::unique(points.begin(), points.end()), points.end());
 
-      original_points = points;
-      n = original_points.size();
-      edges.resize(n);
-      point_weight.resize(n);
+    original_points = points;
+    n = original_points.size();
+    edges.resize(n);
+    point_weight.resize(n);
 
-      for (int i = 0; i < points.size(); ++i) {
-        point_weight[i] = get_point_weight(points[i]);
-      }
-
-      for (int i = (int)points.size() - 1; i > 0; --i) {
-        int u = original_points[i];
-        int v = original_points[i - 1];
-        int lca = get_lca(u, v);
-        int ew = get_edge_weight(u, lca);
-        edges[get_index(dfn, original_points, lca)].emplace_back(i, ew);
-      }
+    for (int i = 0; i < points.size(); ++i) {
+      point_weight[i] = get_point_weight(points[i]);
     }
 
-  int get_index(int x) const {
-    return get_index(dfn, original_points, x);
+    for (int i = (int)points.size() - 1; i > 0; --i) {
+      int u = original_points[i];
+      int v = original_points[i - 1];
+      int lca = get_lca(u, v);
+      int ew = get_edge_weight(u, lca);
+      edges[get_index(dfn, original_points, lca)].emplace_back(i, ew);
+    }
   }
+
+  int get_index(int x) const { return get_index(dfn, original_points, x); }
+  int size() const { return n; }
 };
 
 /*
