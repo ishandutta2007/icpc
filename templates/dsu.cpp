@@ -12,7 +12,7 @@ struct Dsu {
     return dsu[x] == x ? x : dsu[x] = find(dsu[x]);
   }
 
-  bool is_connected(int x, int y) {
+  bool same(int x, int y) {
     x = find(x);
     y = find(y);
     return x == y;
