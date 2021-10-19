@@ -1,6 +1,6 @@
 template<typename Edge>
 struct TreeCentroidDecomposition {
-  int n;
+  int n = 0;
   std::vector<std::vector<Edge>> edges;
 
   std::vector<int> parent, sz, balance;
