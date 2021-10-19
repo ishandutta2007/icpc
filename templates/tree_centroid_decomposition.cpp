@@ -37,18 +37,18 @@ struct TreeCentroidDecomposition {
     return que.size();
   }
 
-  void divide_core(int root, int tot) {
+  void divide_core(int root, int tot, int level) {
   }
 
-  void divide(int root) {
+  void divide(int root, int level) {
     int tot = bfs(root);
     for (int i = tot - 1; i > 0; --i) if (balance[que[i]] < balance[root]) root = que[i];
     bfs(root);
 
-    divide_core(root, tot);
+    divide_core(root, tot, level);
 
     vis[root] = true;
-    for (const Edge& e : graph[root]) if (!vis[e.v]) divide(e.v);
+    for (const Edge& e : graph[root]) if (!vis[e.v]) divide(e.v, level + 1);
   }
 };
 
