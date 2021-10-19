@@ -3,7 +3,7 @@ struct VirtualGraph {
   const std::vector<int>& dfn;
 
   int n;
-  std::vector<std::vector<Edge>> edges;
+  std::vector<std::vector<Edge>> graph;
   std::vector<int> original_points;
   std::vector<int> point_weight;
 
@@ -39,7 +39,7 @@ struct VirtualGraph {
 
     original_points = points;
     n = original_points.size();
-    edges.resize(n);
+    graph.resize(n);
     point_weight.resize(n);
 
     for (int i = 0; i < points.size(); ++i) {
@@ -51,7 +51,7 @@ struct VirtualGraph {
       int v = original_points[i - 1];
       int lca = get_lca(u, v);
       int ew = get_edge_weight(u, lca);
-      edges[get_index(dfn, original_points, lca)].emplace_back(i, ew);
+      graph[get_index(dfn, original_points, lca)].emplace_back(i, ew);
     }
   }
 

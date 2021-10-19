@@ -14,16 +14,16 @@ struct Edge {
 };
 
 struct HeavyLightDecomposition {
-  explicit HeavyLightDecomposition(int n) : n(n), edges(n), header(n), dfn(n), rd(n), parent(n), depth(n), sz(n) {}
+  explicit HeavyLightDecomposition(int n) : n(n), graph(n), header(n), dfn(n), rd(n), parent(n), depth(n), sz(n) {}
 
   int n = 0;
-  std::vector<std::vector<Edge>> edges;
+  std::vector<std::vector<Edge>> graph;
   std::vector<int> header, dfn, rd, parent, depth, sz;
   int tim = 0;
 
   void get_sz(int u, int fa) {
     sz[u] = 1;
-    for (const Edge& e : edges[u]) {
+    for (const Edge& e : graph[u]) {
       int v = e.v;
       if (v == fa) continue;
       get_sz(v,u);
@@ -38,7 +38,7 @@ struct HeavyLightDecomposition {
     depth[u] = fa == -1 ? 0 : depth[fa] + 1;
     header[u] = color;
     int p = -1;
-    for (const Edge& e : edges[u]) {
+    for (const Edge& e : graph[u]) {
       int v = e.v;
       if (v == fa) continue;
       if (p == -1 || sz[v] > sz[p]) {
@@ -48,7 +48,7 @@ struct HeavyLightDecomposition {
     if (p != -1) {
       rebuild(p,u,color);
     }
-    for (const Edge& e : edges[u]) {
+    for (const Edge& e : graph[u]) {
       int v = e.v;
       if (v == fa || v == p) continue;
       rebuild(v,u,v);
@@ -241,8 +241,8 @@ int main() {
     for (int i = 0; i + 1 < n; ++i) {
       int x, y;
       reader >> x >> y; --x; --y;
-      hld.edges[x].emplace_back(y);
-      hld.edges[y].emplace_back(x);
+      hld.graph[x].emplace_back(y);
+      hld.graph[y].emplace_back(x);
     }
     hld.get_sz(0, -1);
     hld.rebuild(0, -1, 0);

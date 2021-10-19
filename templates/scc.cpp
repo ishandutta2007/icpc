@@ -6,14 +6,14 @@ struct Edge {
 
 struct DirectedAcyclicGraph {
   int n;
-  std::vector<std::vector<Edge>> edges;
+  std::vector<std::vector<Edge>> graph;
 
-  explicit DirectedAcyclicGraph(int n) : n(n), edges(n) {}
+  explicit DirectedAcyclicGraph(int n) : n(n), graph(n) {}
 
   std::vector<int> get_topological_order() const {
     std::vector<int> degree(n);
     for (int u = 0; u < n; ++u) {
-      for (const Edge& e : edges[u]) {
+      for (const Edge& e : graph[u]) {
         degree[e.v]++;
       }
     }
@@ -23,7 +23,7 @@ struct DirectedAcyclicGraph {
     }
     for (int at = 0; at < vec.size(); ++at) {
       int u = vec[at];
-      for (const Edge& e : edges[u]) {
+      for (const Edge& e : graph[u]) {
         if (--degree[e.v] == 0) {
           vec.emplace_back(e.v);
         }
@@ -36,19 +36,19 @@ struct DirectedAcyclicGraph {
 struct StronglyConnectedComponent {
   int n;
   std::vector<int> dfn, low, belong, stack, instack;
-  std::vector<std::vector<Edge>> edges;
+  std::vector<std::vector<Edge>> graph;
   int tim = 0, top = 0, tot = 0;
   std::vector<int> cardinality;
 
   explicit StronglyConnectedComponent(int n)
-    : n(n), dfn(n), low(n), belong(n), stack(n), instack(n), edges(n) {}
+    : n(n), dfn(n), low(n), belong(n), stack(n), instack(n), graph(n) {}
   virtual ~StronglyConnectedComponent() = default;
 
   void tarjan(int u) {
     dfn[u] = low[u] = ++tim;
     stack[top++] = u;
     instack[u] = 1;
-    for (const Edge& e : edges[u]) {
+    for (const Edge& e : graph[u]) {
       int v = e.v;
       if (!dfn[v]) {
         tarjan(v);
@@ -79,10 +79,10 @@ struct StronglyConnectedComponent {
   DirectedAcyclicGraph shrink() const {
     DirectedAcyclicGraph dag(tot);
     for (int u = 0; u < n; ++u) {
-      for (const Edge& e : edges[u]) {
+      for (const Edge& e : graph[u]) {
         int v = e.v;
         if (belong[u] != belong[v]) {
-          dag.edges[belong[u]].emplace_back(belong[v]);
+          dag.graph[belong[u]].emplace_back(belong[v]);
         }
       }
     }

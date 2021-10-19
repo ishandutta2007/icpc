@@ -9,7 +9,7 @@ struct Edge {
   bool visited,is_cut;
 }g[kM<<1];
 
-std::vector<int> edges[kN+kM];
+std::vector<int> graph[kN+kM];
 
 void add_edge(int u,int v) {
   g[etot].belong = -1; g[etot].visited = g[etot].is_cut = false;
@@ -61,7 +61,7 @@ void bcc() {
 }
 
 void build() {
-  std::fill(edges,edges+n+m,std::vector<int>());
+  std::fill(graph,graph+n+m,std::vector<int>());
   for (int u = 0; u < n; ++ u) {
     if (is_cut[u] || head[u]==-1) {
       int id = btot ++;
@@ -69,14 +69,14 @@ void build() {
       for (int i = head[u]; i != -1; i = g[i].next) {
         Edge &e = g[i];
         int v = e.belong;
-        edges[id].push_back(v);
-        edges[v].push_back(id);
+        graph[id].push_back(v);
+        graph[v].push_back(id);
       }
     }
   }
   for (int u = 0; u < btot; ++ u) {
-    std::sort(edges[u].begin(),edges[u].end());
-    edges[u].erase(std::unique(edges[u].begin(),edges[u].end()),edges[u].end());
+    std::sort(graph[u].begin(),graph[u].end());
+    graph[u].erase(std::unique(graph[u].begin(),graph[u].end()),graph[u].end());
   }
   for (int i = 0; i < m; ++ i) {
     int u = g[i<<1].v;

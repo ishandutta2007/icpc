@@ -1,13 +1,13 @@
 template<typename Edge>
 struct TreeCentroidDecomposition {
   int n = 0;
-  std::vector<std::vector<Edge>> edges;
+  std::vector<std::vector<Edge>> graph;
 
   std::vector<int> parent, sz, balance;
   std::vector<bool> vis;
   std::vector<int> que;
 
-  explicit TreeCentroidDecomposition(int n) : n(n), edges(n), parent(n), sz(n), balance(n), vis(n) {}
+  explicit TreeCentroidDecomposition(int n) : n(n), graph(n), parent(n), sz(n), balance(n), vis(n) {}
 
   int bfs(int source, int fa = -1) {
     int qf = 0;
@@ -18,7 +18,7 @@ struct TreeCentroidDecomposition {
       int u = que[qf++];
       sz[u] = 1;
       balance[u] = 0;
-      for (const Edge& e : edges[u]) {
+      for (const Edge& e : graph[u]) {
         int v = e.v;
         if (!vis[v] && parent[u] != v) {
           parent[v] = u;
@@ -48,7 +48,7 @@ struct TreeCentroidDecomposition {
     divide_core(root, tot);
 
     vis[root] = true;
-    for (const Edge& e : edges[root]) if (!vis[e.v]) divide(e.v);
+    for (const Edge& e : graph[root]) if (!vis[e.v]) divide(e.v);
   }
 };
 

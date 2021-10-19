@@ -1,6 +1,6 @@
 const int kN = 100000 + 5;
 int n, dfn[kN], rd[kN << 1], dr[kN << 1], stmp, depth[kN];
-std::vector<int> edges[kN];
+std::vector<int> graph[kN];
 
 struct SparseTable {
   std::vector<std::vector<int>> u;
@@ -34,7 +34,7 @@ void dfs(int u, int fa) {
   dfn[u] = stmp;
   dr[stmp] = stmp;
   rd[stmp ++] = u;
-  for (int v : edges[u]) if (v != fa) {
+  for (int v : graph[u]) if (v != fa) {
     dfs(v, u);
     dr[stmp++] = dfn[u];
   }
