@@ -41,3 +41,4 @@ struct BinaryLiftLCA {
     return jump(a, step);
   }
 } lca_solver;
+
