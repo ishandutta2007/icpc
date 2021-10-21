@@ -1,15 +1,5 @@
-#include <bits/stdc++.h>
-#ifdef ALGO
-#include "el_psy_congroo.hpp"
-#else
-#define DUMP(...) 1145141919810
-#define CHECK(...) (__VA_ARGS__)
-#endif
-
-template<typename RandomAccessIterator>
-void radix_sort(RandomAccessIterator begin,
-                RandomAccessIterator end,
-                const std::function<int(const decltype(*begin)&)>& get_key) {
+template<typename RandomAccessIterator, typename GetKey>  // GetKey :: Element -> int
+void radix_sort(RandomAccessIterator begin, RandomAccessIterator end, GetKey&& get_key) {
   const int n = std::distance(begin, end);
   if (n == 0) return;
   int L = 1;
@@ -32,26 +22,5 @@ void radix_sort(RandomAccessIterator begin,
     }
     std::copy(b.begin(), b.end(), begin);
   }
-}
-
-void test() {
-  std::function<int(int)> get_key = [](int x) { return x; };
-  const int n = 10;
-  std::mt19937 rng(time(NULL));
-  std::vector<int> a(n);
-  for (int i = 0; i < n; ++i) {
-    a[i] = rng() % 233;
-  }
-  DUMP(a);
-  radix_sort(a.begin(), a.end(), get_key);
-  DUMP(a);
-}
-
-int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-  std::istream& reader = std::cin;
-
-  test();
 }
 
