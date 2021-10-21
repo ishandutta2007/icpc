@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+#ifdef ALGO
+#include "el_psy_congroo.hpp"
+#else
+#define DUMP(...)
+#define CHECK(...)
+#endif
+
+namespace {
+
+struct Solver {
+
+  void solve(int ca, std::istream& reader) {
+  }
+};
+
+}  // namespace
+
+int main() {
+  std::ios::sync_with_stdio(false);
+  std::cin.tie(nullptr);
+  std::istream& reader = std::cin;
+
+  int cas = 1;
+  // reader >> cas;
+  for (int ca = 1; ca <= cas; ++ca) {
+    auto solver = std::make_unique<Solver>();
+    solver->solve(ca, reader);
+  }
+}
