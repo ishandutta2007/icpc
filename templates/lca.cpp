@@ -2,7 +2,16 @@ struct BinaryLiftLCA {
   std::vector<std::vector<int>> pjump;
   std::vector<int> depth;
 
-  void init(int size, int* parent, int* dist) {
+  struct Input {
+    int* parent = nullptr;
+    int* dist = nullptr;
+  };
+
+  void init(int size, const Input& input) {
+    init(size, input.parent, input.dist);
+  }
+
+  void init(int size, const int* parent, const int* dist) {
     int L = 1;
     while ((1 << L) < size) ++L;
     pjump.resize(L, std::vector<int>(size, -1));
