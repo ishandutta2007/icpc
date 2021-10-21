@@ -18,7 +18,8 @@ struct KuhnMunkres {
       }
     return false;
   }
-  int km(int n, int m) {
+
+  T km(int n, int m) {
     assert(this->n >= n);
     assert(this->m >= m);
     this->n = n;
@@ -37,14 +38,13 @@ struct KuhnMunkres {
         for (int i = 0; i < n; ++i) if (lv[i])
           for (int j = 0; j < m; ++j) if (!rv[j])
             d = std::min(d, la[i] + ra[j] - adj[i][j]);
-        for (int i = 0; i < n; ++i)
-          if (lv[i]) la[i] -= d, lv[i] = 0;
-        for (int i = 0; i < m; ++i)
-          if (rv[i]) ra[i] += d, rv[i] = 0;
+        for (int i = 0; i < n; ++i) if (lv[i]) la[i] -= d, lv[i] = 0;
+        for (int i = 0; i < m; ++i) if (rv[i]) ra[i] += d, rv[i] = 0;
       }
     }
-    int ret = 0;
+    T ret = 0;
     for (int i = 0; i < m; ++i) if (left[i] != -1) ret += adj[left[i]][i];
     return ret;
   }
 };
+
