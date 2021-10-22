@@ -1,9 +1,4 @@
-struct Edge {
-  int v = 0;
-  int w = 1;
-  Edge(int v, int w = 1) : v(v), w(w) {}
-};
-
+template<typename Edge>
 struct DirectedAcyclicGraph {
   int n;
   std::vector<std::vector<Edge>> graph;
@@ -33,6 +28,7 @@ struct DirectedAcyclicGraph {
   }
 };
 
+template<typename Edge>
 struct StronglyConnectedComponent {
   int n;
   std::vector<int> dfn, low, belong, stack, instack;
@@ -76,8 +72,8 @@ struct StronglyConnectedComponent {
     }
   }
 
-  DirectedAcyclicGraph shrink() const {
-    DirectedAcyclicGraph dag(tot);
+  DirectedAcyclicGraph<Edge> shrink() const {
+    DirectedAcyclicGraph<Edge> dag(tot);
     for (int u = 0; u < n; ++u) {
       for (const Edge& e : graph[u]) {
         int v = e.v;
