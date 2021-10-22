@@ -1,37 +1,47 @@
-const int kN = 100000 + 5;
+struct BiconnectedComponent {
+  struct Edge {
+    int v, next;
+  };
 
-int ntot,head[kN],etot,dfn[kN],low[kN],belong[kN],stack[kN],top,tot,tim,n,m;
-struct Edge {
-  int v,next;
-} g[501000];
+  int n = 0;
+  std::vector<int> head;
+  std::vector<Edge> g;
+  std::vector<int> dfn, low, belong;
+  std::vector<int> stack;
+  int stmp = 0;
+  int tot = 0;
 
-void add_edge(int u,int v) {
-  g[etot].v = v; g[etot].next = head[u]; head[u] = etot ++;
-}
+  BiconnectedComponent() = default;
+  explicit BiconnectedComponent(int n) : n(n), head(n, -1), dfn(n, -1), low(n), belong(n) {}
 
-void tarjan(int u,int pree) {
-  dfn[u] = low[u] = ++tim;
-  stack[top++] = u;
-  for (int i = head[u]; i != -1; i = g[i].next) {
-    int v = g[i].v;
-    if ((pree^i) == 1) continue;
-    if (!dfn[v]) tarjan(v,i);
-    low[u] = std::min(low[u],low[v]);
+  void add_edge(int u, int v) {
+    g.emplace_back(Edge{.v = v, .next = head[u]});
+    head[u] = (int)g.size() - 1;
   }
-  if (dfn[u]==low[u]) {
-    while (true) {
-      int v = stack[--top];
-      belong[v] = tot;
-      if (v==u) break;
+
+  void tarjan(int u, int pree) {
+    dfn[u] = low[u] = stmp++;
+    stack.emplace_back(u);
+    for (int i = head[u]; i != -1; i = g[i].next) {
+      int v = g[i].v;
+      if ((pree ^ i) == 1) continue;
+      if (dfn[v] == -1) tarjan(v, i);
+      low[u] = std::min(low[u], low[v]);
     }
-    tot ++;
+    if (dfn[u] == low[u]) {
+      while (true) {
+        int v = stack.back(); stack.pop_back();
+        belong[v] = tot;
+        if (v == u) break;
+      }
+      tot++;
+    }
   }
-}
 
-void bcc() {
-  tot = tim = top = 0;
-  memset(dfn,0,sizeof(dfn));
-  for (int i = 0; i < n; ++ i) {
-    if (dfn[i] == 0) tarjan(i,-1);
+  void bcc() {
+    for (int i = 0; i < n; ++i) {
+      if (dfn[i] == -1) tarjan(i, -1);
+    }
   }
-}
+};
+
