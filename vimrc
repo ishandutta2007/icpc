@@ -85,9 +85,7 @@ nnoremap <leader>q :!time ./%< <%<.in<cr>
 
 if has('unix')
   nnoremap <leader>1 :!xclip -selection clipboard -o >%<.in<cr>
-endif
-
-if has('macunix')
+elseif has('macunix')
   nnoremap <leader>1 :!pbpaste >%<.in<cr>
 endif
 
