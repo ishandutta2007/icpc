@@ -1,14 +1,14 @@
 const int INF = 0x3f3f3f3f;
 
-int km(int n,int m,int graph[N][N]) {
-  // 返回最小完美匹配
-  // 下标为1..n,1..m
-  std::vector<int> u(n + 1),v(m + 1),p(m + 1),way(m + 1);
+int km(int n, int m, const std::vector<std::vector<int>>& graph) {
+  // Returns the MINIMUM perfect matching.
+  // Index: 1..n, 1..m
+  std::vector<int> u(n + 1), v(m + 1), p(m + 1), way(m + 1);
   for (int i = 1; i <= n; ++ i) {
     p[0] = i;
     int j0 = 0;
-    vector<int> minv(m + 1,INF);
-    vector<bool> used(m + 1,false);
+    std::vector<int> minv(m + 1, INF);
+    std::vector<bool> used(m + 1,false);
     do {
       used[j0] = true;
       int i0 = p[j0],delta = INF,j1;
@@ -35,3 +35,4 @@ int km(int n,int m,int graph[N][N]) {
   }
   return -v[0];
 }
+
