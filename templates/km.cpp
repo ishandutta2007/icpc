@@ -6,7 +6,7 @@ struct KuhnMunkres {
   std::vector<std::vector<T>> adj;
   std::vector<T> la, ra;
 
-  KuhnMunkres(int n, int m) : n(n), m(m), lv(n), rv(m), left(m), adj(n, std::vector<T>(m, -inf)), la(n), ra(m) {}
+  KuhnMunkres(int n, int m) : n(n), m(m), lv(n), rv(m), left(m, -1), adj(n, std::vector<T>(m, -inf)), la(n), ra(m) {}
 
   bool expath(int u) {
     lv[u] = 1;
@@ -19,12 +19,7 @@ struct KuhnMunkres {
     return false;
   }
 
-  T km(int n, int m) {
-    assert(this->n >= n);
-    assert(this->m >= m);
-    this->n = n;
-    this->m = m;
-    std::fill(left.begin(), left.end(), -1);
+  T km() {
     for (int i = 0; i < n; ++i) {
       la[i] = -inf;
       for (int j = 0; j < m; ++j) la[i] = std::max(la[i], adj[i][j]);
