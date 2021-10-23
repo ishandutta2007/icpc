@@ -15,7 +15,7 @@ std::pair<T, std::vector<int>> km(int n, int m, const std::vector<std::vector<T>
       int i0 = p[j0], j1;
       T delta = inf;
       for (int j = 1; j <= m; ++ j)
-        if (!used[j]) {
+        if (!used[j] && adj[i0][j] != inf) {
           T cur = adj[i0][j] - u[i0] - v[j];
           if (cur < minv[j])
             minv[j] = cur, way[j] = j0;
