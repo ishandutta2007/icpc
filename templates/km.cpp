@@ -31,7 +31,7 @@ struct KuhnMunkres {
       while (!expath(u)) {
         T d = inf;
         for (int i = 0; i < n; ++i) if (lv[i])
-          for (int j = 0; j < m; ++j) if (!rv[j])
+          for (int j = 0; j < m; ++j) if (!rv[j] && adj[i][j] != -inf)
             d = std::min(d, la[i] + ra[j] - adj[i][j]);
         for (int i = 0; i < n; ++i) if (lv[i]) la[i] -= d, lv[i] = 0;
         for (int i = 0; i < m; ++i) if (rv[i]) ra[i] += d, rv[i] = 0;
