@@ -62,7 +62,7 @@ struct Monoid {
   bool id() const { return false; }
 };
 
-Monoid operator * (const Monoid& lhs, const Monoid& rhs) {
+Monoid operator*(const Monoid& lhs, const Monoid& rhs) {
 }
 
 struct Node {
