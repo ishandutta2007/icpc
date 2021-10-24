@@ -93,4 +93,5 @@ endif
 
 " Add Template
 autocmd BufNewFile *.cpp 0r ~/.vim/icpc/algo_header
+autocmd BufNewFile *.hs 0r ~/.vim/icpc/haskell_header
 autocmd BufWritePre * %s/\s\+$//e

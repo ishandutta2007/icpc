@@ -1,0 +1,17 @@
+{-# LANGUAGE Strict #-}
+{-# OPTIONS_GHC -O2 #-}
+
+import Data.Foldable
+import Data.List
+import Data.Int
+import Data.Char
+import qualified Data.Text as Text
+import qualified Data.Text.IO as TextIO
+
+getIntegrals :: (Integral a) => IO [a]
+getIntegrals = map (integral . Text.unpack) . Text.words <$> TextIO.getLine
+  where
+    integral :: (Integral a) => String -> a
+    integral = foldl' (\n c -> n * 10 + fromIntegral (ord c - ord '0')) 0
+
+main = undefined
