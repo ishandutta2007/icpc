@@ -35,6 +35,7 @@ class SegmentTreeBase {
       return;
     }
     int mid = (l + r) >> 1;
+    Impl::down(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
     traverse_all(std::forward<Handler>(handler), l, mid);
     traverse_all(std::forward<Handler>(handler), mid + 1, r);
     Impl::up(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
