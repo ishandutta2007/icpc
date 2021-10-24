@@ -16,6 +16,8 @@ class SegmentTreeBase {
     return handler;
   }
 
+  int size() const { return n; }
+
  protected:
   static int get_id(int l, int r) {
     return l + r | (l != r);
