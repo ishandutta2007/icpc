@@ -1,7 +1,9 @@
-template<typename T, bool kUseMax>
+template<typename T, typename Comparator = std::less<T>>
 struct SparseTable {
   std::vector<std::vector<T>> u;
   std::vector<int> lg;
+  Comparator cmp;
+
   void build(const std::vector<T>& a) {
     int n = a.size(), L = 1;
     while ((1 << L) <= n) ++L;
@@ -12,24 +14,18 @@ struct SparseTable {
     for (int i = 0; i < n; ++ i) u[i][0] = a[i];
     for (int j = 1; (1 << j) <= n; ++ j) {
       for (int i = 0; i + (1 << j) <= n; ++ i) {
-        if constexpr(kUseMax) {
-          u[i][j] = std::max(u[i][j - 1], u[i + (1 << (j - 1))][j - 1]);
-        } else {
-          u[i][j] = std::min(u[i][j - 1], u[i + (1 << (j - 1))][j - 1]);
-        }
+        u[i][j] = select(u[i][j - 1], u[i + (1 << (j - 1))][j - 1]);
       }
     }
   }
   T ask(int a, int b) const {  // [a, b]
     if (a > b || a < 0 || b >= u.size()) throw;
     int k = lg[b - a + 1];
-    if constexpr(kUseMax) {
-      return std::max(u[a][k], u[b - (1 << k) + 1][k]);
-    } else {
-      return std::min(u[a][k], u[b - (1 << k) + 1][k]);
-    }
+    return select(u[a][k], u[b - (1 << k) + 1][k]);
   }
+  T select(const T& lhs, const T& rhs) const { return cmp(lhs, rhs) ? lhs : rhs; }
 };
 
-// SparseTable<int, true> st;
+// SparseTable<int> st;
+// SparseTable<int, std::greater<int>> st;
 
