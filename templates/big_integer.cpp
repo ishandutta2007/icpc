@@ -1,4 +1,3 @@
-
 template<typename BaseType = int16_t, BaseType BASE = 10>
 struct BigInteger {
  public:
