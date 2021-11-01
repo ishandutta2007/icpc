@@ -1,3 +1,4 @@
+
 template<typename BaseType = int16_t, BaseType BASE = 10>
 struct BigInteger {
  public:
@@ -113,6 +114,15 @@ struct BigInteger {
   BaseType signbit() const { return signbit_; }
   const std::vector<BaseType>& digits() const { return digits_; }
   bool is_zero() const { return digits_.size() == 1 && digits_[0] == 0; }
+  std::string to_string(const std::string& seperator = "_") const {
+    std::string ret;
+    if (signbit() == -1) ret += std::string("-") + seperator;
+    for (int i = (int)digits_.size() - 1; i >= 0; --i) {
+      ret += std::to_string(digits_[i]);
+      if (i > 0) ret += seperator;
+    }
+    return ret;
+  }
  private:
   BaseType signed_digit(int pos) const { return signbit_ * digits_[pos]; }
   void norm() { norm(digits_); if (is_zero()) signbit_ = 1; }
@@ -123,12 +133,6 @@ struct BigInteger {
 
 template<typename BaseType, BaseType BASE>
 std::string to_string(const BigInteger<BaseType, BASE>& integer, const std::string& seperator = "_") {
-  std::string ret;
-  if (integer.signbit() == -1) ret += std::string("-") + seperator;
-  for (int i = (int)integer.digits().size() - 1; i >= 0; --i) {
-    ret += std::to_string(integer.digits()[i]);
-    if (i > 0) ret += seperator;
-  }
-  return ret;
+  return integer.to_string(seperator);
 }
 
