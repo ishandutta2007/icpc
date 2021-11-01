@@ -121,7 +121,7 @@ struct BigInteger {
   std::vector<BaseType> digits_;
 };
 
-template<typename BaseType = int8_t, BaseType BASE = 10>
+template<typename BaseType, BaseType BASE>
 std::string to_string(const BigInteger<BaseType, BASE>& integer, const std::string& seperator = "_") {
   std::string ret;
   if (integer.signbit() == -1) ret += std::string("-") + seperator;
