@@ -1,7 +1,7 @@
 struct PrimeTable {
   std::vector<int> primes;
-  std::vector<int> mu;
   std::vector<int> min_div;
+  std::vector<int8_t> mu;
 
   PrimeTable() = default;
   explicit PrimeTable(int n) { prepare_primes(n); }
