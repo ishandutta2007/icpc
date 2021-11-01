@@ -100,6 +100,12 @@ struct BigInteger {
     return *this;
   }
   BigInteger operator/(const BigInteger& other) const { BigInteger ret = *this; ret /= other; return ret; }
+  BigInteger& operator%=(const BigInteger& other) {
+    BigInteger divider = (*this) / other;
+    (*this) -= divider * other;
+    return *this;
+  }
+  BigInteger operator%(const BigInteger& other) const { BigInteger ret = *this; ret %= other; return ret; }
   BigInteger abs() const { BigInteger ret = *this; ret.signbit_ = 1; return ret; }
   bool operator==(const BigInteger& other) const {
     if (signbit_ != other.signbit()) return false;
