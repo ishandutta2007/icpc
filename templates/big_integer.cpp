@@ -13,6 +13,19 @@ struct BigInteger {
     for (; x; x /= BASE) digits_.emplace_back(x % BASE);
     if (digits_.empty()) digits_.emplace_back(0);
   }
+  template<typename Enable = typename std::enable_if<BASE == 10>::type>
+  static BigInteger from_string(const std::string& str) {
+    if (str.empty()) return BigInteger(0);
+    BigInteger ret;
+    ret.digits_.clear();
+    int l = 0, r = (int)str.length() - 1;
+    if (str[l] == '-') ret.signbit_ = -1, ++l;
+    assert(l <= r);
+    for (int i = l; i <= r; ++i) assert(std::isdigit(str[i]));
+    for (int i = r; i >= l; --i) ret.digits_.emplace_back(str[i] - '0');
+    ret.norm();
+    return ret;
+  }
   BigInteger operator-() const { if (is_zero()) return *this; BigInteger ret = *this; ret.signbit_ *= -1; return ret; }
   BigInteger& operator+=(const BigInteger& other) {
     std::vector<BaseType> tmp(std::max(digits_.size(), other.digits().size()) + 1);
@@ -34,12 +47,8 @@ struct BigInteger {
     }
     for (int i = 0; i < tmp.size(); ++i) {
       tmp[i] += carry;
-      if (tmp[i] < 0) {
-        tmp[i] += BASE;
-        carry = -1;
-      } else {
-        carry = 0;
-      }
+      if (tmp[i] < 0) tmp[i] += BASE, carry = -1;
+      else carry = 0;
     }
     norm(tmp);
     digits_.swap(tmp);
