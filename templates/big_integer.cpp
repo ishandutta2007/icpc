@@ -1,7 +1,7 @@
 template<typename BaseType = int16_t, BaseType BASE = 10>
 struct BigInteger {
  public:
-  static_assert(std::numeric_limits<BaseType>::max() / BASE >= BASE + BASE, "BASE^2 should be in range");
+  static_assert(std::numeric_limits<BaseType>::max() / BASE / 2 >= BASE, "BASE^2 should be in range");
   BigInteger() : digits_(1, 0) {}
   template<typename T> BigInteger(T x) {  // Implicit conversion is allowed.
     static_assert(std::is_integral<T>::value, "T should be an integral type.");
