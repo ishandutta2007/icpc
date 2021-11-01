@@ -80,10 +80,28 @@ struct BigInteger {
   }
   BigInteger operator*(const BigInteger& other) const { BigInteger ret = *this; ret *= other; return ret; }
   BigInteger& operator/=(const BigInteger& other) {
-    // TODO
-    throw;
+    std::vector<std::pair<BigInteger, BaseType>> pws{{other.abs(), 1}};
+    for (BaseType p = (BASE - 1) >> 1; p; p >>= 1) pws.emplace_back(std::make_pair(pws.back().first * 2, pws.back().second * 2));
+    std::reverse(pws.begin(), pws.end());
+    BigInteger residue(0);
+    BigInteger result(0);
+    for (int i = (int)digits_.size() - 1; i >= 0; --i) {
+      residue.digits_.insert(residue.digits_.begin(), digits_[i]);
+      residue.norm();
+      result.digits_.insert(result.digits_.begin(), 0);
+      result.norm();
+      for (const auto& [pw, multiple] : pws) if (residue >= pw) {
+        residue -= pw;
+        result.digits_[0] += multiple;
+      }
+    }
+    digits_ = result.digits();
+    signbit_ *= other.signbit();
+    norm();
+    return *this;
   }
   BigInteger operator/(const BigInteger& other) const { BigInteger ret = *this; ret /= other; return ret; }
+  BigInteger abs() const { BigInteger ret = *this; ret.signbit_ = 1; return ret; }
   bool operator==(const BigInteger& other) const {
     if (signbit_ != other.signbit()) return false;
     if (digits_.size() != other.digits().size()) return false;
@@ -141,6 +159,10 @@ struct Solver {
     DUMP(BigInteger(-123) < BigInteger(-1234));
     DUMP(BigInteger(123) < BigInteger(-1234));
     DUMP(BigInteger(-1234) < BigInteger(123));
+    DUMP(BigInteger(-1234) / BigInteger(123));
+    DUMP(BigInteger(-1234) / BigInteger(1));
+    DUMP(BigInteger(-1234) / BigInteger(-1));
+    DUMP(BigInteger(-1));
   }
 };
 
