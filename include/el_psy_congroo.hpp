@@ -8,6 +8,7 @@ std::string to_string(const char* s) { return to_string(std::string(s)); }
 std::string to_string(char c) { return std::string(1, c); }
 std::string to_string(bool flag) { return flag ? "true" : "false"; }
 std::string to_string(short x) { return std::to_string((int)(x)); }
+std::string to_string(int8_t x) { return std::to_string((int)(x)); }
 std::string to_string(const std::vector<bool>& vec);
 template<typename A, typename B>
 std::string to_string(const std::pair<A, B>& pair);
