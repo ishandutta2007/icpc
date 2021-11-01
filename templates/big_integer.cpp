@@ -1,13 +1,3 @@
-#include <bits/stdc++.h>
-#ifdef ALGO
-#include "el_psy_congroo.hpp"
-#else
-#define DUMP(...)
-#define CHECK(...)
-#endif
-
-namespace {
-
 template<typename BaseType = int16_t, BaseType BASE = 10>
 struct BigInteger {
  public:
@@ -140,44 +130,5 @@ std::string to_string(const BigInteger<BaseType, BASE>& integer, const std::stri
     if (i > 0) ret += seperator;
   }
   return ret;
-}
-
-struct Solver {
-
-  void solve(int ca, std::istream& reader) {
-    BigInteger w(15);
-    DUMP((-w).signbit());
-    DUMP(w);
-    DUMP(-w);
-    DUMP(-BigInteger(0));
-    DUMP(BigInteger(123456) + BigInteger(-1000000));
-    DUMP(BigInteger(123) * BigInteger(10001));
-    DUMP(BigInteger(123) * BigInteger(101));
-    std::cout << to_string(BigInteger(123456) + BigInteger(-1000000), "") << std::endl;
-    DUMP(BigInteger(-1) < BigInteger(0));
-    DUMP(BigInteger(-1234) < BigInteger(-123));
-    DUMP(BigInteger(-123) < BigInteger(-1234));
-    DUMP(BigInteger(123) < BigInteger(-1234));
-    DUMP(BigInteger(-1234) < BigInteger(123));
-    DUMP(BigInteger(-1234) / BigInteger(123));
-    DUMP(BigInteger(-1234) / BigInteger(1));
-    DUMP(BigInteger(-1234) / BigInteger(-1));
-    DUMP(BigInteger(-1));
-  }
-};
-
-}  // namespace
-
-int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-  std::istream& reader = std::cin;
-
-  int cas = 1;
-  // reader >> cas;
-  for (int ca = 1; ca <= cas; ++ca) {
-    auto solver = std::make_unique<Solver>();
-    solver->solve(ca, reader);
-  }
 }
 
