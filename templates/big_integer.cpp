@@ -136,3 +136,5 @@ std::string to_string(const BigInteger<BaseType, BASE>& integer, const std::stri
   return integer.to_string(seperator);
 }
 
+using Bint = BigInteger<int16_t, 10>;
+
