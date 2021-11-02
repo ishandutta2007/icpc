@@ -138,7 +138,7 @@ struct BigInteger {
     return ret;
   }
  private:
-  BaseType signed_digit(int pos) const { return signbit_ * digits_[pos]; }
+  BaseType signed_digit(int pos) const { return signbit_ == 1 ? digits_[pos] : -digits_[pos]; }
   void norm() { norm(digits_); if (is_zero()) signbit_ = 1; }
   void norm(std::vector<BaseType>& digits) { while (digits.size() > 1 && digits.back() == 0) digits.pop_back(); }
   BaseType signbit_ = 1;
