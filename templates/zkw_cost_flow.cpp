@@ -25,7 +25,7 @@ struct CostFlow {
     head[v] = (int)g.size() - 1;
   }
 
-  std::pair<T, T> mcmf(int s, int t) {  // <cost, flow>
+  std::pair<T, T> mcmf(int s, int t) {  // <flow, cost>
     this->s = s;
     this->t = t;
     T cost = 0, flow = 0, f = 0;
@@ -39,7 +39,7 @@ struct CostFlow {
       }
       if (modlabel()) break;
     }
-    return std::make_pair(cost, flow);
+    return std::make_pair(flow, cost);
   }
 
  private:
