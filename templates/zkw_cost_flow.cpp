@@ -1,58 +1,81 @@
-const int INF = 0x3f3f3f3f;
-template<int kN> struct CostFlow {
-  int s,t,vis[kN],d[kN],head[kN],cur[kN],etot;
-  struct Edge {int v,cap,cost,next;} g[555555];
-  void add_edge(int u,int v,int cap,int cost) {
-    g[etot].v = v; g[etot].cap = cap; g[etot].cost = cost; g[etot].next = head[u]; head[u] = etot ++;
-    g[etot].v = u; g[etot].cap = 0; g[etot].cost = -cost; g[etot].next = head[v]; head[v] = etot ++;
+template<typename T>
+struct CostFlow {
+ public:
+  static constexpr T inf = std::numeric_limits<T>::max();
+  int n = 0;
+  int s = -1, t = -1;
+  std::vector<bool> vis;
+  std::vector<T> d;
+  std::vector<int> head, cur;
+
+  struct Edge {
+    int v, next;
+    T cap, cost;
+  };
+  std::vector<Edge> g;
+
+  CostFlow() = default;
+  explicit CostFlow(int n) : n(n), vis(n), d(n), head(n, -1), cur(n) {}
+
+  void add_edge(int u, int v, T cap, T cost) {
+    g.emplace_back(Edge{.v = v, .cap = cap, .cost = cost, .next = head[u]});
+    head[u] = (int)g.size() - 1;
+    g.emplace_back(Edge{.v = u, .cap = 0, .cost = -cost, .next = head[v]});
+    head[v] = (int)g.size() - 1;
   }
-  void init() {
-    memset(head,-1,sizeof(head)); etot = 0;
+
+  std::pair<T, T> mcmf(int s, int t) {  // <cost, flow>
+    this->s = s;
+    this->t = t;
+    T cost = 0, flow = 0, f = 0;
+    std::fill(d.begin(), d.end(), 0);
+    while (true) {
+      cur = head;
+      while (f = aug(s, inf)) {
+        flow += f;
+        cost += f * d[s];
+        std::fill(vis.begin(), vis.end(), false);
+      }
+      if (modlabel()) break;
+    }
+    return std::make_pair(cost, flow);
   }
-  int aug(int u,int a) {
-    if (u==t) return a;
-    vis[u] = 1;
-    int flow = 0,f;
+
+ private:
+  T aug(int u, T a) {
+    if (u == t) return a;
+    vis[u] = true;
+    T flow = 0, f = 0;
     for (int &i = cur[u]; i != -1; i = g[i].next) {
       Edge &e = g[i];
-      if (e.cap && !vis[e.v] && d[u]==d[e.v]+e.cost)
-        if (f = aug(e.v,min(a,e.cap))) {
+      if (e.cap && !vis[e.v] && d[u] == d[e.v] + e.cost) {
+        if (f = aug(e.v, std::min(a, e.cap))) {
           flow += f;
           e.cap -= f;
-          g[i^1].cap += f;
+          g[i ^ 1].cap += f;
           a -= f;
-          if (a==0) break;
+          if (a == 0) break;
         }
+      }
     }
     return flow;
   }
+
   bool modlabel() {
-    int tmp = INF;
-    for (int u = 0; u < kN; u ++) if (vis[u]) {
+    T tmp = inf;
+    for (int u = 0; u < n; ++u) if (vis[u]) {
       for (int i = head[u]; i != -1; i = g[i].next) {
         Edge &e = g[i];
         if (e.cap && !vis[e.v])
-          tmp = min(tmp,d[e.v]+e.cost-d[u]);
+          tmp = min(tmp, d[e.v] + e.cost - d[u]);
       }
     }
-    if (tmp==INF) return true;
-    for (int u = 0; u < kN; u ++) if (vis[u]) {
-      vis[u] = 0;
+    if (tmp == inf) return true;
+    for (int u = 0; u < n; ++u) if (vis[u]) {
+      vis[u] = false;
       d[u] += tmp;
     }
     return false;
   }
-  void mcmf(int _s,int _t,int &cost,int &flow) {
-    s = _s; t = _t; cost = flow = 0; int f;
-    memset(d,0,sizeof(d));
-    while (true) {
-      memcpy(cur,head,sizeof(head));
-      while (f=aug(s,INF)) {
-        flow += f;
-        cost += f*d[s];
-        memset(vis,0,sizeof(vis));
-      }
-      if (modlabel()) break;
-    }
-  }
 };
+
