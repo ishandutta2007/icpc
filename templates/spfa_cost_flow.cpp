@@ -1,40 +1,33 @@
-template<typename T, int kN, int kE = 600000>
+template<typename T>
 struct CostFlow {
+ public:
   const T inf = std::numeric_limits<T>::max();
-  int s, t, head[kN], etot, prevv[kN], preve[kN];
-  T dis[kN];
-  struct Edge {int v, next; T cap, cost;} g[kE];
-  void init() {
-    memset(head, -1, sizeof(head)); etot = 0;
-  }
+  int n = 0;
+  int s = -1, t = -1;
+  std::vector<int> head, prevv, preve;
+  T dis;
+
+  struct Edge {
+    int v;
+    T cap, cost;
+    int next;
+  };
+  std::vector<Edge> g;
+
+  CostFlow() = default;
+  explicit CostFlow(int n) : n(n), head(n, -1), prevv(n), preve(n), dis(n, inf) {}
+
   void add_edge(int u, int v, T cap, T cost) {
-    g[etot].v = v; g[etot].cap = cap; g[etot].cost = cost; g[etot].next = head[u]; head[u] = etot++;
-    g[etot].v = u; g[etot].cap = 0; g[etot].cost = -cost; g[etot].next = head[v]; head[v] = etot++;
+    g.emplace_back(Edge{.v = v, .cap = cap, .cost = cost, .next = head[u]});
+    head[u] = (int)g.size() - 1;
+    g.emplace_back(Edge{.v = u, .cap = 0, .cost = -cost, .next = head[v]});
+    head[v] = (int)g.size() - 1;
   }
-  void spfa(int source) {
-    static int inq[kN], que[kN], qf, qe;
-    for (int i = 0; i < kN; i ++) dis[i] = inf;
-    dis[source] = 0;
-    qf = qe = 0;
-    que[qe++] = source;
-    while (qf != qe) {
-      int u = que[qf++]; inq[u] = 0; if (qf == kN) qf = 0;
-      for (int i = head[u]; i != -1; i = g[i].next) {
-        Edge &e = g[i];
-        if (e.cap && dis[e.v] > dis[u] + e.cost) {
-          dis[e.v] = dis[u] + e.cost;
-          prevv[e.v] = u; preve[e.v] = i;
-          if (!inq[e.v]) {
-            que[qe++] = e.v;
-            if (qe == kN) qe = 0;
-            inq[e.v] = 1;
-          }
-        }
-      }
-    }
-  }
-  void mcmf(int _s, int _t, T& cost, T& flow) {
-    s = _s; t = _t; cost = flow = 0;
+
+  std::pair<T, T> mcmf(int s, int t) {  // <flow, cost>
+    this->s = s;
+    this->t = t;
+    T flow = 0, cost = 0;
     while (true) {
       spfa(s);
       if (dis[t] == inf) break;
@@ -47,4 +40,28 @@ struct CostFlow {
         g[preve[u]].cap -= f, g[preve[u] ^ 1].cap += f;
     }
   }
+
+ private:
+  void spfa(int source) {
+    std::vector<bool> inq(n);
+    std::queue<int> que;
+    std::fill(dis.begin(), dis.end(), inf);
+    dis[source] = 0;
+    que.emplace(source);
+    while (!que.empty()) {
+      int u = que.front(); inq[u] = false; que.pop();
+      for (int i = head[u]; i != -1; i = g[i].next) {
+        Edge &e = g[i];
+        if (e.cap && dis[e.v] > dis[u] + e.cost) {
+          dis[e.v] = dis[u] + e.cost;
+          prevv[e.v] = u; preve[e.v] = i;
+          if (!inq[e.v]) {
+            que.emplace(e.v);
+            inq[e.v] = true;
+          }
+        }
+      }
+    }
+  }
 };
+
