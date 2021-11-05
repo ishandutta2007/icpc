@@ -68,7 +68,7 @@ struct CostFlow {
       for (int i = head[u]; i != -1; i = g[i].next) {
         Edge &e = g[i];
         if (e.cap && !vis[e.v])
-          tmp = min(tmp, d[e.v] + e.cost - d[u]);
+          tmp = std::min(tmp, d[e.v] + e.cost - d[u]);
       }
     }
     if (tmp == inf) return true;
