@@ -5,7 +5,7 @@ struct CostFlow {
   int n = 0;
   int s = -1, t = -1;
   std::vector<int> head, prevv, preve;
-  T dis;
+  std::vector<T> dis;
 
   struct Edge {
     int v;
