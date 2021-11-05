@@ -39,6 +39,7 @@ struct CostFlow {
       for (int u = t; u != s; u = prevv[u])
         g[preve[u]].cap -= f, g[preve[u] ^ 1].cap += f;
     }
+    return std::make_pair(flow, cost);
   }
 
  private:
