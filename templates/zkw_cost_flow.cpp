@@ -9,8 +9,9 @@ struct CostFlow {
   std::vector<int> head, cur;
 
   struct Edge {
-    int v, next;
+    int v;
     T cap, cost;
+    int next;
   };
   std::vector<Edge> g;
 
