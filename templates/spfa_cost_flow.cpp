@@ -8,9 +8,8 @@ struct CostFlow {
   std::vector<T> dis;
 
   struct Edge {
-    int v;
+    int v, next;
     T cap, cost;
-    int next;
   };
   std::vector<Edge> g;
 
@@ -18,9 +17,9 @@ struct CostFlow {
   explicit CostFlow(int n) : n(n), head(n, -1), prevv(n), preve(n), dis(n, inf) {}
 
   void add_edge(int u, int v, T cap, T cost) {
-    g.emplace_back(Edge{.v = v, .cap = cap, .cost = cost, .next = head[u]});
+    g.emplace_back(Edge{.v = v, .next = head[u], .cap = cap, .cost = cost});
     head[u] = (int)g.size() - 1;
-    g.emplace_back(Edge{.v = u, .cap = 0, .cost = -cost, .next = head[v]});
+    g.emplace_back(Edge{.v = u, .next = head[v], .cap = 0, .cost = -cost});
     head[v] = (int)g.size() - 1;
   }
 
@@ -52,7 +51,7 @@ struct CostFlow {
     while (!que.empty()) {
       int u = que.front(); inq[u] = false; que.pop();
       for (int i = head[u]; i != -1; i = g[i].next) {
-        Edge &e = g[i];
+        Edge& e = g[i];
         if (e.cap && dis[e.v] > dis[u] + e.cost) {
           dis[e.v] = dis[u] + e.cost;
           prevv[e.v] = u; preve[e.v] = i;

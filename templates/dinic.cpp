@@ -1,53 +1,70 @@
-template<int kN,typename T> 
+template<typename T>
 struct MaxFlow {
-  int s,t,head[kN],etot,que[kN],qf,qe,dis[kN],cur[kN];
-  struct Edge {int v,next; T cap;}g[501000];
-  void init() {
-    memset(head,-1,sizeof(head)); etot = 0;
+ public:
+  int n = 0;
+  int s = -1, t = -1;
+  std::vector<int> head, cur, dis;
+
+  struct Edge {
+    int v, next;
+    T cap;
+  };
+  std::vector<Edge> g;
+
+  MaxFlow() = default;
+  explicit MaxFlow(int n) : n(n), head(n, -1), cur(n), dis(n) {}
+
+  void add_edge(int u, int v, T cap) {
+    g.emplace_back(Edge{.v = v, .next = head[u], .cap = cap});
+    head[u] = (int)g.size() - 1;
+    g.emplace_back(Edge{.v = u, .next = head[v], .cap = 0});
+    head[v] = (int)g.size() - 1;
   }
-  void add_edge(int u,int v,T cap) {
-    g[etot].v = v; g[etot].next = head[u]; g[etot].cap = cap; head[u] = etot ++;
-    g[etot].v = u; g[etot].next = head[v]; g[etot].cap = 0; head[v] = etot ++;
+
+  T dinic(int s, int t) {
+    this->s = s;
+    this->t = t;
+    T flow = 0;
+    while (bfs()) flow += dfs(s, std::numeric_limits<T>::max());
+    return flow;
   }
+
+ private:
   bool bfs() {
-    memset(dis,-1,sizeof(dis));
-    memcpy(cur,head,sizeof(cur));
-    dis[t] = kN;
-    qf = qe = 0;
-    que[qe++] = t;
-    while (qf!=qe) {
-      int u = que[qf++];
+    std::queue<int> que;
+    std::fill(dis.begin(), dis.end(), -1);
+    cur = head;
+    dis[t] = n;
+    que.emplace(t);
+    while (!que.empty()) {
+      int u = que.front(); que.pop();
       for (int i = head[u]; i != -1; i = g[i].next) {
-        Edge &e = g[i];
-        if (g[i^1].cap && dis[e.v] == -1) {
+        Edge& e = g[i];
+        if (g[i ^ 1].cap && dis[e.v] == -1) {
           dis[e.v] = dis[u] - 1;
-          que[qe++] = e.v;
+          que.emplace(e.v);
         }
       }
     }
     return dis[s] != -1;
   }
-  T dfs(int u,T a) {
-    if (u==t) return a;
-    T flow = 0,f;
-    for (int &i = cur[u]; i != -1; i = g[i].next) {
-      Edge &e = g[i];
+
+  T dfs(int u, T a) {
+    if (u == t) return a;
+    T flow = 0, f = 0;
+    for (int& i = cur[u]; i != -1; i = g[i].next) {
+      Edge& e = g[i];
       if (e.cap && dis[e.v] > dis[u]) {
-        f = dfs(e.v,std::min(a,e.cap));
+        f = dfs(e.v, std::min(a, e.cap));
         flow += f;
         e.cap -= f;
-        g[i^1].cap += f;
+        g[i ^ 1].cap += f;
         a -= f;
-        if (a==0) break;
+        if (a == 0) break;
       }
     }
-    if (flow==0) dis[u] = -1;
-    return flow;
-  }
-  T dinic(int _s,int _t) {
-    s = _s; t = _t;
-    T flow = 0;
-    while (bfs()) flow += dfs(s,(T)1e30);
+    if (flow == 0) dis[u] = -1;
     return flow;
   }
 };
+

@@ -9,9 +9,8 @@ struct CostFlow {
   std::vector<int> head, cur;
 
   struct Edge {
-    int v;
+    int v, next;
     T cap, cost;
-    int next;
   };
   std::vector<Edge> g;
 
@@ -19,9 +18,9 @@ struct CostFlow {
   explicit CostFlow(int n) : n(n), vis(n), d(n), head(n, -1), cur(n) {}
 
   void add_edge(int u, int v, T cap, T cost) {
-    g.emplace_back(Edge{.v = v, .cap = cap, .cost = cost, .next = head[u]});
+    g.emplace_back(Edge{.v = v, .next = head[u], .cap = cap, .cost = cost});
     head[u] = (int)g.size() - 1;
-    g.emplace_back(Edge{.v = u, .cap = 0, .cost = -cost, .next = head[v]});
+    g.emplace_back(Edge{.v = u, .next = head[v], .cap = 0, .cost = -cost});
     head[v] = (int)g.size() - 1;
   }
 
@@ -47,8 +46,8 @@ struct CostFlow {
     if (u == t) return a;
     vis[u] = true;
     T flow = 0, f = 0;
-    for (int &i = cur[u]; i != -1; i = g[i].next) {
-      Edge &e = g[i];
+    for (int& i = cur[u]; i != -1; i = g[i].next) {
+      Edge& e = g[i];
       if (e.cap && !vis[e.v] && d[u] == d[e.v] + e.cost) {
         if (f = aug(e.v, std::min(a, e.cap))) {
           flow += f;
@@ -66,7 +65,7 @@ struct CostFlow {
     T tmp = inf;
     for (int u = 0; u < n; ++u) if (vis[u]) {
       for (int i = head[u]; i != -1; i = g[i].next) {
-        Edge &e = g[i];
+        Edge& e = g[i];
         if (e.cap && !vis[e.v])
           tmp = std::min(tmp, d[e.v] + e.cost - d[u]);
       }
