@@ -56,7 +56,7 @@ struct HeavyLightDecomposition {
 
   // Handler() :: void operator () (int side, int L, int R).
   template<typename Handler>
-  Handler traverse(Handler&& handler, int a, int b) {
+  Handler traverse(Handler&& handler, int a, int b, bool is_lca_included = true) {
     while (header[a] != header[b]) {
       if (depth[header[a]] > depth[header[b]]) {
         handler(0, dfn[header[a]], dfn[a]);
@@ -67,9 +67,9 @@ struct HeavyLightDecomposition {
       }
     }
     if (dfn[a] < dfn[b]) {
-      handler(1, dfn[a], dfn[b]);
-    } else {
-      handler(0, dfn[b], dfn[a]);
+      handler(1, dfn[a] + (!is_lca_included), dfn[b]);
+    } else if (dfn[b] < dfn[a] || is_lca_included) {
+      handler(0, dfn[b] + (!is_lca_included), dfn[a]);
     }
     return handler;
   }
