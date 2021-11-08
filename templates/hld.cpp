@@ -37,12 +37,12 @@ struct HeavyLightDecomposition {
       }
     }
     if (p != -1) {
-      rebuild(p,u,color);
+      rebuild(p, u, color);
     }
     for (const Edge& e : graph[u]) {
       int v = e.v;
       if (v == fa || v == p) continue;
-      rebuild(v,u,v);
+      rebuild(v, u, v);
     }
   }
 
