@@ -7,12 +7,17 @@ struct HeavyLightDecomposition {
 
   explicit HeavyLightDecomposition(int n) : n(n), graph(n), header(n), dfn(n), rd(n), parent(n), depth(n), sz(n) {}
 
+  void make() {
+    get_sz(0, -1);
+    rebuild(0, -1, 0);
+  }
+
   void get_sz(int u, int fa) {
     sz[u] = 1;
     for (const Edge& e : graph[u]) {
       int v = e.v;
       if (v == fa) continue;
-      get_sz(v,u);
+      get_sz(v, u);
       sz[u] += sz[v];
     }
   }
