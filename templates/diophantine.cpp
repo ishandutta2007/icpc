@@ -1,13 +1,8 @@
 template<typename T>
 T exgcd(T a, T b, T& x, T& y) {
-  if (a == 0) {
-    x = 0;
-    y = 1;
-    return b;
-  }
-  T p = b / a;
-  T g = exgcd(b - p * a, a, y, x);
-  x -= p * y;
+  if (b == 0) return x = 1, y = 0, a;
+  LL g = exgcd(b, a % b, y, x);
+  y -= a / b * x;
   return g;
 }
 
@@ -69,3 +64,4 @@ bool crt(long long k1, long long m1, long long k2, long long m2, long long& k, l
   assert(0 <= k && k < m);
   return true;
 }
+
