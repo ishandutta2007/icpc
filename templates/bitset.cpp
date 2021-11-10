@@ -1,20 +1,12 @@
-#include <bits/stdc++.h>
-#ifdef ALGO
-#include "el_psy_congroo.hpp"
-#else
-#define DUMP(...)
-#define CHECK(...)
-#endif
-
-// NOTE: Not been fully tested yet. Be careful when using it.
 struct BitSet {
   using ULL = unsigned long long;
-  int n;
+  int n = 0;
   std::vector<ULL> buckets;
 
   static int get_bucket_size(int n) { return ((n - 1) >> 6) + 1; }
   static int lowbit(ULL val) { return __builtin_ffsll(val) - 1; }
 
+  BitSet() = default;
   explicit BitSet(int n) : n(n), buckets(get_bucket_size(n)) { CHECK(n > 0); }
 
   // [0, n)
@@ -56,38 +48,34 @@ struct BitSet {
   int count() const { int ret = 0; for (ULL mask : buckets) ret += __builtin_popcountll(mask); return ret; }
   int size() const { return n; }
   int lowbit() const {
-    for (int i = 0; i < buckets.size(); ++i) if (buckets[i]) {
-      return (i << 6) + lowbit(buckets[i]);
-    }
+    for (int i = 0; i < buckets.size(); ++i) if (buckets[i]) return (i << 6) + lowbit(buckets[i]);
     return -1;
   }
 
-  BitSet& operator &= (const BitSet& other) {
+  BitSet& operator&=(const BitSet& other) {
     resize(std::max(size(), other.size()));
     int m = other.size();
     for (int i = ((m - 1) >> 6) + 1; i < (int)buckets.size(); ++i) buckets[i] = 0;
     for (int i = (m - 1) >> 6; i >= 0; --i) buckets[i] &= other.buckets[i];
     return *this;
   }
-  BitSet operator & (const BitSet& other) const { BitSet ret = *this; return ret &= other; }
+  BitSet operator&(const BitSet& other) const { BitSet ret = *this; return ret &= other; }
 
-  BitSet& operator |= (const BitSet& other) {
+  BitSet& operator|=(const BitSet& other) {
     resize(std::max(size(), other.size()));
     for (int i = 0; i < other.buckets.size(); ++i) buckets[i] |= other.buckets[i];
     return *this;
   }
-  BitSet operator | (const BitSet& other) const { BitSet ret = *this; return ret |= other; }
+  BitSet operator|(const BitSet& other) const { BitSet ret = *this; return ret |= other; }
 
-  BitSet operator ^= (const BitSet& other) {
+  BitSet operator^=(const BitSet& other) {
     resize(std::max(size(), other.size()));
     for (int i = 0; i < other.buckets.size(); ++i) buckets[i] ^= other.buckets[i];
     return *this;
   }
-  BitSet operator ^ (const BitSet& other) const { BitSet ret = *this; return ret ^= other; }
-
-  BitSet operator ~ () const { BitSet ret = *this; ret.flip(); return ret; }
-
-  BitSet& operator >>= (int m) {
+  BitSet operator^(const BitSet& other) const { BitSet ret = *this; return ret ^= other; }
+  BitSet operator~() const { BitSet ret = *this; ret.flip(); return ret; }
+  BitSet& operator>>=(int m) {
     CHECK(m >= 0);
     int p = m >> 6;
     int w = m & 63;
@@ -98,9 +86,8 @@ struct BitSet {
     }
     return *this;
   }
-  BitSet operator >> (int m) const { BitSet ret = *this; return ret >>= m; }
-
-  BitSet& operator <<= (int m) {
+  BitSet operator>>(int m) const { BitSet ret = *this; return ret >>= m; }
+  BitSet& operator<<=(int m) {
     CHECK(m >= 0);
     int p = m >> 6;
     int w = m & 63;
@@ -116,7 +103,7 @@ struct BitSet {
     align_last_bucket();
     return *this;
   }
-  BitSet operator << (int m) const { BitSet ret = *this; return ret <<= m; }
+  BitSet operator<<(int m) const { BitSet ret = *this; return ret <<= m; }
 
   int touch(int l, int r) const {  // return lowbit in [l, r]
     int lat = l >> 6;
