@@ -25,14 +25,17 @@ struct VecT {
   ~VecT() {}
 
   T length_sqr() const { return x * x + y * y; }
-  VecT rotate90() const { return VecT(-y, x); }
+
+  VecT rotated90() const { return VecT(-y, x); }
+  void rotate90() { *this = rotated90(); }
 
   double length() const { return hypot(x, y); }
-  VecT<std::common_type_t<T, double>> rotate(double angle) const {
+  VecT<std::common_type_t<T, double>> rotated(double angle) const {
     const double c = cos(angle), s = sin(angle);
     return VecT<std::common_type_t<T, double>>(x * c - y * s, x * s + y * c);
   }
-  template<typename U> VecT<U> convert() const { return VecT<U>(x, y); }
+  void rotate(double angle) { *this = rotated(angle); }
+  template<typename U> VecT<U> converted() const { return VecT<U>(x, y); }
 };
 
 // +
@@ -62,7 +65,7 @@ template<typename T, typename U> inline VecT<T>& operator *= (VecT<T>& v, U t) {
   return v;
 }
 template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (const VecT<T>& v, U t) {
-  auto ret = v.template convert<std::common_type_t<T, U>>();
+  auto ret = v.template converted<std::common_type_t<T, U>>();
   return ret *= t;
 }
 template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (U t, const VecT<T>& v) {
@@ -76,7 +79,7 @@ template<typename T, typename U> inline VecT<T>& operator /= (VecT<T>& v, U t) {
   return v;
 }
 template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator / (const VecT<T>& v, U t) {
-  auto ret = v.template convert<std::common_type_t<T, U>>();
+  auto ret = v.template converted<std::common_type_t<T, U>>();
   return ret /= t;
 }
 
@@ -200,11 +203,11 @@ void geom_test() {
   CHECK(has_intersection_segment_segment(PointT<int>(1, 0), PointT<int>(0, 1), PointT<int>(0, 1), PointT<int>(1, 2)));
   CHECK(!has_proper_intersection_segment_segment(PointT<int>(1, 0), PointT<int>(0, 1), PointT<int>(0, 1), PointT<int>(1, 2)));
   CHECK(has_proper_intersection_segment_segment(PointT<int>(1, 0), PointT<int>(0, 1), PointT<int>(0, 0), PointT<int>(1, 2)));
-  DUMP(PointT<int>(1, 1).rotate90());
-  DUMP(PointT<int>(1, 1).rotate(1.57));
-  DUMP(PointT<int>(1, 1).rotate(M_PI / 2));
-  DUMP(PointT<long long>(1, 10000).convert<double>());
-  DUMP(PointT<double>(1.7, -1.7).convert<int>());
+  DUMP(PointT<int>(1, 1).rotated90());
+  DUMP(PointT<int>(1, 1).rotated(1.57));
+  DUMP(PointT<int>(1, 1).rotated(M_PI / 2));
+  DUMP(PointT<long long>(1, 10000).converted<double>());
+  DUMP(PointT<double>(1.7, -1.7).converted<int>());
   DUMP(PointT<int>(2, 3) * 1.0);
   DUMP(PointT<double>(2.1, 3.1) * 1);
   DUMP(1.0 * PointT<double>(2.1, 3.1));
@@ -218,7 +221,7 @@ void geom_test() {
   CHECK(PointT<int>(0, 0) == PointT<int>(1, 1) / 2);
   CHECK(PointT<double>(0.5, 0.5) == PointT<int>(1, 1) / 2.0);
   DUMP(PointT<bool>(false, false));
-  CHECK(PointT<long double>(0.0, 1.0) == PointT<long double>(1.0, 0.0).rotate(M_PI / 2));
+  CHECK(PointT<long double>(0.0, 1.0) == PointT<long double>(1.0, 0.0).rotated(M_PI / 2));
 }
 
 int main() {
