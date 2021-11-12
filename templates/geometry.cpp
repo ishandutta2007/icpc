@@ -15,14 +15,22 @@ template<> inline int cmpT(long double x) { return x < -eps ? -1 : x > eps; }
 
 template<typename T>
 struct VecT {
-  T x = 0;
-  T y = 0;
+  union {
+    struct {
+      T x;
+      T y;
+    };
+    T elements[2] = {};
+  };
 
   static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type.");
 
   VecT() {}
   VecT(T x, T y) : x(x), y(y) {}
   ~VecT() {}
+
+  const T operator[](int index) const { return elements[index]; }
+  T& operator[](int index) { return elements[index]; }
 
   T length_sqr() const { return x * x + y * y; }
 
