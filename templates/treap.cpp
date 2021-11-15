@@ -1,7 +1,7 @@
-struct Treap *nill;
+struct Treap* nill;
 
 struct Treap {
-  Treap *ch[2] = {nill, nill};
+  Treap* ch[2] = {nill, nill};
   int sz = 1;
   bool reversed = false;
 
@@ -26,7 +26,7 @@ struct Treap {
   }
 };
 
-void split_by_sz(Treap *a, Treap *&b, Treap *&c, int sz) {
+void split_by_sz(Treap* a, Treap*& b, Treap*& c, int sz) {
   if (a == nill) {
     b = c = nill;
   } else if (sz == 0) {
@@ -57,7 +57,7 @@ bool roll(int a, int b) {
   return ran() % (a+b) < a;
 }
 
-void merge(Treap *&a, Treap *b, Treap *c) {
+void merge(Treap*& a, Treap* b, Treap* c) {
   if (b == nill) {
     a = c;
   } else if (c == nill) {
