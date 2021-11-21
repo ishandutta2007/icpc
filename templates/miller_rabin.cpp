@@ -8,7 +8,7 @@ struct MillerRabin {
   }
 
   static bool miller_rabin(LL n) {
-    // return true if n is a composite number.
+    // Return true if n is a composite number.
     LL x = n - 1, t = 0;
     while (~x & 1) x >>= 1, ++t;
     bool flag = true;
