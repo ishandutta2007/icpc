@@ -25,6 +25,7 @@ struct MillerRabin {
     if (!flag || n == 2) return false;
     return true;
   }
+
  private:
   static bool check(LL a, LL n, LL x, LL t) {
     // Return true if n is a composite number under the base `a`.
