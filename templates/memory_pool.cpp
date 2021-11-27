@@ -1,7 +1,8 @@
 template<typename T>
 class MemoryPool {
  public:
-  T* allocate() {
+  template<typename... Args>
+  T* allocate(Args... args) {
     if (__builtin_expect(pool_.empty(), false)) {
       T* arr = new T[kReAllocSize];
       for (int i = 0; i < kReAllocSize; ++i) {
@@ -10,7 +11,7 @@ class MemoryPool {
     }
 
     T* ret = pool_.back(); pool_.pop_back();
-    return new(ret) T{};
+    return new(ret) T(args...);
   }
 
   void free(T* ptr) {
@@ -22,3 +23,4 @@ class MemoryPool {
 
   std::vector<T*> pool_;
 };
+
