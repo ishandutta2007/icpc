@@ -4,7 +4,7 @@ static void fwt(T* A, int n, int inv) {
   // [x^k]fwt(x^{a_i}) = (-1)^{__builtin_popcount(k & a_i)}
   //
   // n should be a power of 2.
-  // inv == 1: forward; inv == -1: reverse.
+  // inv == 1: forward; inv == -1: inverse.
   const T inv2 = T(1) / 2;
   for (int l = 1; l << 1 <= n; l <<= 1) {
     for (int s = 0; s < n; ++ s) {
