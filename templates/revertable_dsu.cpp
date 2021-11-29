@@ -1,4 +1,5 @@
 struct RevertableDsu {
+ public:
   std::vector<int> dsu;
   std::vector<int> sz;
 
