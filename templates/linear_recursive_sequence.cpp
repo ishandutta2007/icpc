@@ -1,11 +1,3 @@
-#include <bits/stdc++.h>
-#ifdef ALGO
-#include "el_psy_congroo.hpp"
-#else
-#define DUMP(...) 1145141919810
-#define CHECK(...) (__VA_ARGS__)
-#endif
-
 template<typename T>
 using Polynomial = std::vector<T>;
 
@@ -15,7 +7,7 @@ void norm(Polynomial<T>& p) {
 }
 
 template<typename T>
-Polynomial<T> operator + (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
+Polynomial<T> operator+(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
   Polynomial<T> ret = lhs;
   ret.resize(std::max(lhs.size(), rhs.size()), T(0));
   for (int i = 0; i < rhs.size(); ++i) ret[i] += rhs[i];
@@ -24,7 +16,7 @@ Polynomial<T> operator + (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
 }
 
 template<typename T>
-Polynomial<T> operator - (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
+Polynomial<T> operator-(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
   Polynomial<T> ret = lhs;
   ret.resize(std::max(lhs.size(), rhs.size()), T(0));
   for (int i = 0; i < rhs.size(); ++i) ret[i] -= rhs[i];
@@ -33,8 +25,8 @@ Polynomial<T> operator - (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
 }
 
 template<typename T>
-Polynomial<T> operator * (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
-  CHECK(lhs.size() + rhs.size() > 0);
+Polynomial<T> operator*(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
+  assert(lhs.size() + rhs.size() > 0);
   Polynomial<T> ret(lhs.size() + rhs.size() - 1, T(0));
   for (int i = 0; i < lhs.size(); ++i)
     for (int j = 0; j < rhs.size(); ++j)
@@ -44,7 +36,7 @@ Polynomial<T> operator * (const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
 }
 
 template<typename T>
-Polynomial<T> operator * (T a, Polynomial<T> p) {
+Polynomial<T> operator*(T a, Polynomial<T> p) {
   for (int i = 0; i < p.size(); ++i) p[i] *= a;
   norm(p);
   return p;
@@ -52,10 +44,11 @@ Polynomial<T> operator * (T a, Polynomial<T> p) {
 
 template<typename T, typename Poly>
 struct LinearRecursiveSequenceSolver {
+ public:
   static T solve(const Poly& seq, long long n) {
     if (n < seq.size()) return seq[n];
     const Poly coef = berlekamp_massey(seq);
-    CHECK(!coef.empty() && coef.back() == T(1));
+    assert(!coef.empty() && coef.back() == T(1));
     const Poly p = power(Poly{T(0), T(1)}, n, coef);
     T ret = 0;
     for (int i = 0; i < p.size(); ++i) {
@@ -93,12 +86,13 @@ struct LinearRecursiveSequenceSolver {
       }
     }
     std::reverse(C.begin(), C.end());
-    CHECK(!C.empty() && C.back() == T(1));
+    assert(!C.empty() && C.back() == T(1));
     return C;
   }
 
+ private:
   static Poly reduce(Poly p, const Poly& coef) {
-    CHECK(!coef.empty() && coef.back() == T(1));
+    assert(!coef.empty() && coef.back() == T(1));
     int m = (int)coef.size() - 1;
     for (int i = (int)p.size() - 1; i >= m; --i) if (p[i].val()) {
       T v = p[i];
@@ -122,3 +116,4 @@ struct LinearRecursiveSequenceSolver {
 };
 
 // using LinearRecSeqSolver = LinearRecursiveSequenceSolver<Integral<MOD>, Polynomial<Integral<MOD>>>;
+
