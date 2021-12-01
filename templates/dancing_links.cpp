@@ -51,7 +51,7 @@ private:
     return u;
   }
 
-#define FOR_CHAIN(i,A,s) for (int i = A[s]; i != s; i = A[i])
+#define FOR_CHAIN(i, A, s) for (int i = A[s]; i != s; i = A[i])
   void remove(int c) {
     L[R[c]] = L[c];
     R[L[c]] = R[c];
