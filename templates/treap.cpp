@@ -8,8 +8,7 @@ struct Treap {
   static void initialize() {
     if (nill == nullptr) {
       static Treap nill_storage;
-      nill = &nill_storage;
-      nill = new(nill) Treap();
+      nill = new(&nill_storage) Treap();
       nill->sz = 0;
     }
   }

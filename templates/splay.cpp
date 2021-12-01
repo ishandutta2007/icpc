@@ -5,13 +5,13 @@ struct Node {
   Node* ch[2] = {nill, nill};
   bool reverse_tag = false;
 
-  int sz = 0;
+  int sz = 1;
 
   static void initialize() {
     if (nill == nullptr) {
       static Node nill_storage;
-      nill = &nill_storage;
-      nill = new(nill) Node();
+      nill = new(&nill_storage) Node();
+      nill->sz = 0;
     }
   }
 

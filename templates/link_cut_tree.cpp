@@ -31,8 +31,8 @@ struct Node {
   static void initialize() {
     if (nill == nullptr) {
       static Node nill_storage;
-      nill = &nill_storage;
-      nill = new(nill) Node();
+      nill = new(&nill_storage) Node();
+      nill->sz = 0;
     }
   }
 
