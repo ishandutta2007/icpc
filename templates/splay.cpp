@@ -9,7 +9,8 @@ struct Node {
 
   static void initialize() {
     if (nill == nullptr) {
-      nill = new Node();
+      static Node nill_storage;
+      nill = &nill_storage;
       nill = new(nill) Node();
     }
   }
