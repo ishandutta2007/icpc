@@ -70,11 +70,12 @@ private:
 
     remove(c);
     FOR_CHAIN(i, D, c) {
-      selected_row_labels.emplace_back(row_label[i]);
       FOR_CHAIN(j, R, i) remove(col_label[j]);
-      if (dfs(dep + 1, selected_row_labels)) return true;
+      if (dfs(dep + 1, selected_row_labels)) {
+        selected_row_labels.emplace_back(row_label[i]);
+        return true;
+      }
       FOR_CHAIN(j, L, i) restore(col_label[j]);
-      selected_row_labels.pop_back();
     }
     restore(c);
 
