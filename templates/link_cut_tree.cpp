@@ -6,7 +6,7 @@
 #define CHECK(...) (__VA_ARGS__)
 #endif
 
-struct Node* nill;
+struct Node* nill = nullptr;
 
 // Note: Generally speaking, all modifications should act only on the root of the splay tree after access().
 struct Node {
@@ -28,6 +28,13 @@ struct Node {
   };
   VirtualSummary virtual_summary;
 
+  static void initialize() {
+    if (nill == nullptr) {
+      nill = new Node();
+      nill = new(nill) Node();
+    }
+  }
+
   Node() {}
   explicit Node(int val) : val(val), vmax(val) {}
 
@@ -40,13 +47,13 @@ struct Node {
   void down() {
     if (this == nill) return;
     if (rev_tag) {
+      ch[0]->reverse();
+      ch[1]->reverse();
       rev_tag = false;
-      ch[0]->rev();
-      ch[1]->rev();
     }
   }
 
-  void rev() {
+  void reverse() {
     std::swap(ch[0],ch[1]);
     rev_tag ^= 1;
   }
@@ -66,11 +73,12 @@ struct Node {
   bool d() const { return fa->ch[1] == this; }
   bool is_splay_root() const { return fa == nill || (fa->ch[0] != this && fa->ch[1] != this); }
   void D() { if (!is_splay_root()) fa->D(); down(); }
-  void setc(Node *p, int c) { ch[c] = p; p->fa = this; up(); }
+  void setc(Node* o, int c) { ch[c] = o; o->fa = this; up(); }
 
   void rot() {
-    Node *f = fa, *ff = fa->fa;
     int c = d(), cc = fa->d();
+    Node* ff = fa->fa;
+    Node* f = fa;
     f->setc(ch[c ^ 1], c);
     this->setc(f, c ^ 1);
     if (ff->ch[cc] == f) ff->setc(this, cc);
@@ -114,7 +122,7 @@ struct Node {
   }
 
   Node* make_root() {
-    access()->rev();
+    access()->reverse();
     down();
     return this;
   }

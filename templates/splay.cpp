@@ -1,10 +1,18 @@
-struct Node *nill;
+struct Node* nill = nullptr;
 
 struct Node {
-  Node* ch[2] = {nill, nill};
   Node* fa = nill;
+  Node* ch[2] = {nill, nill};
+  bool rev_tag = false;
+
   int sz = 0;
-  bool rev = false;
+
+  static void initialize() {
+    if (nill == nullptr) {
+      nill = new Node();
+      nill = new(nill) Node();
+    }
+  }
 
   void up() {
     if (this == nill) return;
@@ -13,22 +21,20 @@ struct Node {
 
   void down() {
     if (this == nill) return;
-    if (!rev) return;
-    rev = false;
-    ch[0]->reverse();
-    ch[1]->reverse();
+    if (rev_tag) {
+      ch[0]->reverse();
+      ch[1]->reverse();
+      rev_tag = false;
+    }
+  }
+
+  void reverse() {
+    rev_tag ^= 1;
+    std::swap(ch[0], ch[1]);
   }
 
   bool d() const { return fa->ch[1]==this; }
-  void reverse() {
-    rev ^= 1;
-    std::swap(ch[0], ch[1]);
-  }
-  void setc(Node* o, int c) {
-    ch[c] = o;
-    o->fa = this;
-    up();
-  }
+  void setc(Node* o, int c) { ch[c] = o; o->fa = this; up(); }
   void rot() {
     int c = d(), cc = fa->d();
     Node* z = fa->fa;
@@ -37,18 +43,14 @@ struct Node {
     setc(tmp, c ^ 1);
     z->setc(this, cc);
   }
-  void D() {
-    if (this == nill) return;
-    fa->D();
-    down();
-  }
-  void splay(Node* aim = nill) {
-    D();
-    while (fa != aim) {
+  void D() { if (fa != nill) fa->D(); down(); }
+
+  Node* splay(Node* aim = nill) {
+    for (D(); fa != aim; rot()) {
       if (fa->fa != aim) {
-        d()==fa->d() ? fa->rot() : rot();
+        d() == fa->d() ? fa->rot() : rot();
       }
-      rot();
     }
+    return this;
   }
 };
