@@ -1,13 +1,3 @@
-#include <bits/stdc++.h>
-#ifdef ALGO
-#include "el_psy_congroo.hpp"
-#else
-#define DUMP(...)
-#define CHECK(...)
-#endif
-
-namespace {
-
 // https://en.wikipedia.org/wiki/Dancing_Links
 // Given a 0/1 matrix, select a group of rows so that every column is exactly covered for once.
 struct DancingLinks {
@@ -30,6 +20,8 @@ struct DancingLinks {
   }
 
   // Note: The column 0 is preserved, do not use it in building contraints.
+  // Which means contraints are labeled as 1, 2, .., num_columns.
+  // But for row_label, it can be anything you like.
   void add_row(int r, const std::vector<int>& line) {
     int first = num_nodes;
     for (int i = 0; i < line.size(); ++i) {
@@ -98,75 +90,4 @@ private:
   }
 #undef FOR_CHAIN
 };
-
-// https://www.luogu.com.cn/problem/P1784
-struct Solver {
-
-  int encode(int x, int y, int c) const {
-    return x * 81 + y * 9 + c;
-  }
-
-  std::tuple<int, int, int> decode(int code) const {
-    code --;
-    int c = code % 9 + 1;
-    int y = code / 9 % 9;
-    int x = code / 81;
-    return std::make_tuple(x, y, c);
-  }
-
-  void solve(int ca, std::istream& reader) {
-    std::vector<std::vector<int>> table(9, std::vector<int>(9));
-    for (int i = 0; i < 9; ++i) {
-      for (int j = 0; j < 9; ++j) {
-        reader >> table[i][j];
-      }
-    }
-    DancingLinks solver(81 + 9 * 3 * 9);
-
-    for (int i = 0; i < 9; ++ i) {
-      for (int j = 0; j < 9; ++ j) {
-        int b = i / 3 * 3 + j / 3;
-        for (int c = 1; c <= 9; ++ c) {
-          if (table[i][j] != 0 && table[i][j] != c) continue;
-          std::vector<int> vec;
-          vec.emplace_back(1 + i * 9 + j);
-          vec.emplace_back(1 + 81 + b * 9 + c - 1);
-          vec.emplace_back(1 + 81 + 81 + i * 9 + c - 1);
-          vec.emplace_back(1 + 81 + 81 + 81 + j * 9 + c - 1);
-          solver.add_row(encode(i, j, c), vec);
-        }
-      }
-    }
-    std::vector<int> cho;
-    if (!solver.solve(cho)) puts("fuck");
-    else {
-      std::vector<std::vector<int>> result(9, std::vector<int>(9));
-      for (int code : cho) {
-        int i, j, c;
-        std::tie(i, j, c) = decode(code);
-        result[i][j] = c;
-      }
-      for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 9; ++j) {
-          printf("%d%c", result[i][j], " \n"[j + 1 == 9]);
-        }
-      }
-    }
-  }
-};
-
-}  // namespace
-
-int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-  std::istream& reader = std::cin;
-
-  int cas = 1;
-  // reader >> cas;
-  for (int ca = 1; ca <= cas; ++ca) {
-    auto solver = std::make_unique<Solver>();
-    solver->solve(ca, reader);
-  }
-}
 
