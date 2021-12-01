@@ -34,7 +34,7 @@ struct Splay {
     std::swap(ch[0], ch[1]);
   }
 
-  bool d() const { return fa->ch[1]==this; }
+  bool d() const { return fa->ch[1] == this; }
   void setc(Splay* o, int c) { ch[c] = o; o->fa = this; up(); }
   void rot() {
     int c = d(), cc = fa->d();
