@@ -2,13 +2,6 @@
 // Given a 0/1 matrix, select a group of rows so that every column is exactly covered for once.
 struct DancingLinks {
  public:
-  int num_columns = 0;
-  std::vector<int> num_selected_nodes_in_column;
-
-  int num_nodes = 0;
-  std::vector<int> L, R, U, D;  // Orthogonal linked list.
-  std::vector<int> row_label, col_label;  // row/column label of each node.
-
   explicit DancingLinks(int num_columns) : num_columns(num_columns), num_selected_nodes_in_column(num_columns, 0) {
     for (int i = 0; i <= num_columns; ++i) {
       int u = allocate_node();
@@ -89,5 +82,12 @@ private:
     return false;
   }
 #undef FOR_CHAIN
+
+  int num_columns = 0;
+  std::vector<int> num_selected_nodes_in_column;
+
+  int num_nodes = 0;
+  std::vector<int> L, R, U, D;  // Orthogonal linked list.
+  std::vector<int> row_label, col_label;  // row/column label of each node.
 };
 
