@@ -2,7 +2,7 @@
 // Given a 0/1 matrix, select a group of rows so that every column is exactly covered for once.
 struct DancingLinks {
  public:
-  explicit DancingLinks(int num_columns) : num_columns(num_columns), num_selected_nodes_in_column(num_columns, 0) {
+  explicit DancingLinks(int num_columns) : num_columns(num_columns), num_selected_nodes_in_column(num_columns + 1, 0) {
     for (int i = 0; i <= num_columns; ++i) {
       int u = allocate_node();
       --L[u];
@@ -17,8 +17,7 @@ struct DancingLinks {
   // But for row_label, it can be anything you like.
   void add_row(int r, const std::vector<int>& line) {
     int first = num_nodes;
-    for (int i = 0; i < line.size(); ++i) {
-      int c = line[i];
+    for (int c : line) {
       int u = allocate_node();
       --L[u];
       ++R[u];
