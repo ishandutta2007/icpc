@@ -3,7 +3,7 @@ struct Node* nill = nullptr;
 struct Node {
   Node* fa = nill;
   Node* ch[2] = {nill, nill};
-  bool rev_tag = false;
+  bool reverse_tag = false;
 
   int sz = 0;
 
@@ -22,15 +22,15 @@ struct Node {
 
   void down() {
     if (this == nill) return;
-    if (rev_tag) {
+    if (reverse_tag) {
       ch[0]->reverse();
       ch[1]->reverse();
-      rev_tag = false;
+      reverse_tag = false;
     }
   }
 
   void reverse() {
-    rev_tag ^= 1;
+    reverse_tag ^= 1;
     std::swap(ch[0], ch[1]);
   }
 

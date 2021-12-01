@@ -1,22 +1,31 @@
-struct Treap* nill;
+struct Treap* nill = nullptr;
 
 struct Treap {
   Treap* ch[2] = {nill, nill};
   int sz = 1;
-  bool reversed = false;
+  bool reverse_tag = false;
+
+  static void initialize() {
+    if (nill == nullptr) {
+      static Treap nill_storage;
+      nill = &nill_storage;
+      nill = new(nill) Treap();
+      nill->sz = 0;
+    }
+  }
 
   void reverse() {
     if (this == nill) return;
     std::swap(ch[0], ch[1]);
-    reversed ^= 1;
+    reverse_tag ^= 1;
   }
 
   void down() {
     if (this == nill) return;
-    if (reversed) {
+    if (reverse_tag) {
       ch[0]->reverse();
       ch[1]->reverse();
-      reversed = false;
+      reverse_tag = false;
     }
   }
 
@@ -84,11 +93,5 @@ Handler on_interval(Handler&& handler, Treap*& root, int l, int r) {
   merge(b, a, b);
   merge(root, b, c);
   return handler;
-}
-
-void treap_init() {
-  nill = new Treap;
-  nill->ch[0] = nill->ch[1] = nill;
-  nill->sz = 0;
 }
 

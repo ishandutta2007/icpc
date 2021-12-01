@@ -13,7 +13,7 @@ struct Node {
   // Fundamental fields for splay/LCT.
   Node* fa = nill;
   Node* ch[2] = {nill, nill};
-  bool rev_tag = false;
+  bool reverse_tag = false;
 
   // Node's own information.
   int val = 0;
@@ -47,16 +47,16 @@ struct Node {
 
   void down() {
     if (this == nill) return;
-    if (rev_tag) {
+    if (reverse_tag) {
       ch[0]->reverse();
       ch[1]->reverse();
-      rev_tag = false;
+      reverse_tag = false;
     }
   }
 
   void reverse() {
     std::swap(ch[0],ch[1]);
-    rev_tag ^= 1;
+    reverse_tag ^= 1;
   }
 
   void join_as_virtual_child(VirtualSummary& virtual_summary) const {
