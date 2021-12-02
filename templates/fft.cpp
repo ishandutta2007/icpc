@@ -14,7 +14,7 @@ struct Complex {
 
 struct FastFourierTransform {
  public:
-  static void multiply(int* x, int lx, int* y, int ly, int* z) {
+  static void multiply(const int* x, int lx, const int* y, int ly, int* z) {
     FastFourierTransform fft(lx + ly);
     int L = fft.L;
     std::vector<Complex> p(L), q(L);
@@ -25,6 +25,38 @@ struct FastFourierTransform {
     for (int i = 0; i < L; ++ i) p[i] = p[i] * q[i];
     fft.fft(&p[0], L, -1);
     for (int i = 0; i < lx + ly - 1; ++ i) z[i] = int(p[i].x + .5);
+  }
+
+  static void multiply_mod_any(const int* x, int lx, const int* y, int ly, int* z, const int mod) {
+    FastFourierTransform fft(lx + ly);
+    int L = fft.L;
+    std::vector<Complex> a(L), b(L), c(L), d(L);
+    for (int i = 0; i < lx; ++i) {
+      a[i].x = x[i] >> 15;
+      b[i].x = x[i] & 32767;
+    }
+    for (int i = 0; i < ly; ++i) {
+      c[i].x = y[i] >> 15;
+      d[i].x = y[i] & 32767;
+    }
+    fft.fft(&a[0], L, 1);
+    fft.fft(&b[0], L, 1);
+    fft.fft(&c[0], L, 1);
+    fft.fft(&d[0], L, 1);
+    for (int i = 0; i < L; ++i) {
+      Complex ta = a[i], tb = b[i], tc = c[i], td = d[i];
+      a[i] = ta * tc;
+      b[i] = ta * td + tb * tc;
+      c[i] = tb * td;
+    }
+    fft.fft(&a[0], L, -1);
+    fft.fft(&b[0], L, -1);
+    fft.fft(&c[0], L, -1);
+    for (int i = 0; i < lx + ly - 1; ++ i) {
+      z[i] = (((long long)(a[i].x + .5) % mod << 30) +
+              ((long long)(b[i].x + .5) % mod << 15) +
+              (long long)(c[i].x + .5) % mod) % mod;
+    }
   }
 
   explicit FastFourierTransform(int lim = 1) {
@@ -74,6 +106,7 @@ void example() {
   int a[3] = {1, 2, 3}, b[4] = {1, 2, 3, 4};
   int c[6];
   FastFourierTransform::multiply(a, 3, b, 4, c);
+  FastFourierTransform::multiply_mod_any(a, 3, b, 4, c, 123456);
   for (int i = 0; i < 6; ++ i)
     printf("%d%c", c[i], " \n"[i + 1 == 6]);
   // 1 4 10 16 17 12
