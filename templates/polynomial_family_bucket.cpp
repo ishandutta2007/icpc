@@ -439,7 +439,7 @@ Polynomial<T> mod_euler_transform(const Polynomial<T>& poly, int len = 0) {
   for (int i = 1; i < len; ++i) {
     inv[i] = Mint(i).inv();
   }
-  for (int i = 1; i < poly.size(); ++i) if (poly[i].val()) {
+  for (int i = 1; i < poly.size() && i < len; ++i) if (poly[i].val()) {
     for (int j = 1; i * j < len; ++j) {
       P[i * j] += poly[i] * inv[j];
     }
