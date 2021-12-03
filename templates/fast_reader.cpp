@@ -1,14 +1,21 @@
-struct IO {
-  IO(FILE *in = stdin) : in(in) {}
+struct FastReader {
+ public:
+  FastReader(FILE* in = stdin) : buffer(LENGTH), in(in) {}
 
-  IO& operator >> (int& x) {
+  FastReader& operator>>(int& x) {
     x = next_int();
     return *this;
   }
 
+  FastReader& operator>>(std::string& str) {
+    str = next_string();
+    return *this;
+  }
+
+private:
   int next_char() {
     if (position == length) {
-      position = 0, length = fread(buffer, 1, LENGTH, in);
+      position = 0, length = fread(&buffer[0], 1, LENGTH, in);
     }
     if (position == length) {
       eof = true;
@@ -42,22 +49,23 @@ struct IO {
     return x * s;
   }
 
-  void next_string(char *s) {
+  std::string next_string() {
     int c = next_char();
     while (c <= 32) {
       c = next_char();
     }
+    std::stringstream ss;
     for (; c > 32; c = next_char()) {
-      *s++ = c;
+      ss << char(c);
     }
-    *s = 0;
+    return ss.str();
   }
 
-private:
   static const int LENGTH = 1 << 16;
 
-  char buffer[LENGTH];
+  std::vector<char> buffer;
   int position = 0, length = 0;
   bool eof = false;
-  FILE *in;
+  FILE* in = stdin;
 };
+
