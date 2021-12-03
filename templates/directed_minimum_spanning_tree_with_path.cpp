@@ -1,13 +1,3 @@
-#include <bits/stdc++.h>
-#ifdef ALGO
-#include "el_psy_congroo.hpp"
-#else
-#define DUMP(...)
-#define CHECK(...)
-#endif
-
-namespace {
-
 struct DirectedMinimumSpanningTree {
  public:
   void add_edge(int u, int v, int cost, int id) {
@@ -134,43 +124,4 @@ struct DirectedMinimumSpanningTree {
   std::vector<Cost*> cov;
   std::vector<std::unique_ptr<Cost>> cov_storage;
 };
-
-struct Solver {
-
-  void solve(int ca, std::istream& reader) {
-    int n, m;
-    scanf("%d%d", &n, &m);
-    DirectedMinimumSpanningTree dmst;
-    for(int i=0; i<m; i++) {
-      int x, y, z;
-      scanf("%d%d%d", &x, &y, &z);
-      --x, --y;
-      dmst.add_edge(x, y, z, i);
-    }
-    std::vector<int> path;
-    int ans = dmst.solve(0, n, &path);
-    if(ans < 0) {
-      puts("-1");
-    } else {
-      printf("%d\n", ans);
-      for(int i = 0; i < path.size(); ++i) printf("%d ", path[i] + 1);
-      printf("\n");
-    }
-  }
-};
-
-}  // namespace
-
-int main() {
-  std::ios::sync_with_stdio(false);
-  std::cin.tie(nullptr);
-  std::istream& reader = std::cin;
-
-  int cas = 1;
-  // reader >> cas;
-  for (int ca = 1; ca <= cas; ++ca) {
-    auto solver = std::make_unique<Solver>();
-    solver->solve(ca, reader);
-  }
-}
 
