@@ -62,7 +62,7 @@ unsigned ran() {
 }
 
 bool roll(int a, int b) {
-  return ran() % (a+b) < a;
+  return ran() % (a + b) < a;
 }
 
 void merge(Treap*& a, Treap* b, Treap* c) {
@@ -85,7 +85,9 @@ void merge(Treap*& a, Treap* b, Treap* c) {
 
 template<typename Handler>
 Handler on_interval(Handler&& handler, Treap*& root, int l, int r) {
-  Treap *a, *b, *c;
+  Treap* a = nullptr;
+  Treap* b = nullptr;
+  Treap* c = nullptr;
   split_by_sz(root, b, c, r);
   split_by_sz(b, a, b, l - 1);
   handler(b);
