@@ -14,9 +14,8 @@ struct DirectedMinimumSpanningTree {
     g.emplace_back(Edge{.u = u, .v = v, .c = create_cost(cost, id), .from = u, .to = v, .val = cost});
   }
 
-  int solve(int root, int n, int m, std::vector<int>* path = nullptr) {
-    int i, j, k, cnt, id;
-
+  int solve(int root, int n, std::vector<int>* path = nullptr) {
+    int m = g.size();
     std::vector<int> vis(n);
     std::vector<Cost*> least(n);
     std::vector<int> in(n);  // pre
@@ -24,6 +23,7 @@ struct DirectedMinimumSpanningTree {
 
     int ret = 0;
     while(true) {
+      int i, j, k, cnt, id;
       vis.resize(n);
       least.assign(n, nullptr);
       in.assign(n, -1);
@@ -145,15 +145,15 @@ struct Solver {
       int x, y, z;
       scanf("%d%d%d", &x, &y, &z);
       --x, --y;
-      dmst.add_edge(x, y, z, i + 1);
+      dmst.add_edge(x, y, z, i);
     }
     std::vector<int> path;
-    int ans = dmst.solve(0, n, m, &path);
+    int ans = dmst.solve(0, n, &path);
     if(ans < 0) {
       puts("-1");
     } else {
       printf("%d\n", ans);
-      for(int i = 0; i < path.size(); ++i) printf("%d ", path[i]);
+      for(int i = 0; i < path.size(); ++i) printf("%d ", path[i] + 1);
       printf("\n");
     }
   }
