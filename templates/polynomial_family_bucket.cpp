@@ -499,5 +499,26 @@ Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>&
   return divide(0, (int)x.size() - 1);
 }
 
+template<typename T, typename OnLeaf>
+void double_online_divide_and_conquer(OnLeaf&& on_leaf, int l, int r, const Polynomial<T>& A, Polynomial<T>& B) {
+  // Note: The order of A and B matters, and you need to update Poly A yourself via `on_leaf`.
+  if (l == r) {
+    on_leaf(l, r);
+    return;
+  }
+  int mid = (l + r) >> 1;
+  auto update = [&](const Polynomial<T>& A, const Polynomial<T>& B, Polynomial<T>& output) {
+    Polynomial<T> P, Q;
+    for (int i = l; i <= mid; ++i) P.touch(i - l) = A.at(i);
+    for (int i = 0; i <= std::min(r - l, mid); ++i) Q.touch(i) = B.at(i);
+    Polynomial<T> W = P * Q;
+    for (int i = mid + 1; i <= r; ++i) output.touch(i) += W.at(i - l);
+  };
+  double_online_divide_and_conquer(std::forward<OnLeaf>(on_leaf), l, mid, A, B);
+  update(A, B, B);
+  if (l > 1) update(B, A, B);
+  double_online_divide_and_conquer(std::forward<OnLeaf>(on_leaf), mid + 1, r, A, B);
+}
+
 using Poly = Polynomial<Integral<MOD>>;
 
