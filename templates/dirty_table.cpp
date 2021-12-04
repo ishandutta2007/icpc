@@ -2,7 +2,7 @@ template<typename T>
 struct DirtyTable {
  public:
   DirtyTable() = default;
-  DirtyTable(int n, T default_value) : table(n, default_value), vis(n, 0) {}
+  DirtyTable(int n, T default_value = T(0)) : table(n, default_value), vis(n, 0) {}
 
   void clear() { ++stmp; }
 

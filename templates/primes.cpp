@@ -34,15 +34,16 @@ struct PrimeTable {
     }
   }
 
-  bool is_prime(long long x) const {
+  template<typename T>
+  bool is_prime(T x) const {
     if (x < 2) return false;
     if (x < min_div.size()) return min_div[x] == x;
-    for (long long w = 2; w * w <= x; ++w) if (x % w == 0) return false;
+    for (T w = 2; w * w <= x; ++w) if (x % w == 0) return false;
     return true;
   }
 
   template<typename T>
-  std::vector<typename std::pair<T, T>> factorize(T x) const {
+  std::vector<typename std::pair<T, T>> get_canonical_representation(T x) const {
     assert(x >= 1);
     std::vector<typename std::pair<T, T>> ret;  // <prime, cnt>
     for (T i = 2; x >= min_div.size() && i * i <= x; ++i) if (x % i == 0) {
@@ -60,6 +61,25 @@ struct PrimeTable {
       ret.emplace_back(x, 1);
     }
     return ret;
+  }
+
+  template<typename T>
+  std::vector<T> get_factors(T x) const {
+    assert(x >= 1);
+    const std::vector<typename std::pair<T, T>> repr = get_canonical_representation(x);
+    std::vector<T> factors;
+    std::function<void(int, T)> enumerate_factors = [&](int at, T val) -> void {
+      factors.emplace_back(val);
+      for (int i = at; i < repr.size(); ++i) {
+        T tmp = val;
+        for (int j = 0; j < repr[i].second; ++j) {
+          tmp *= repr[i].first;
+          enumerate_factors(i + 1, tmp);
+        }
+      }
+    };
+    enumerate_factors(0, 1);
+    return factors;
   }
 };
 
