@@ -64,7 +64,7 @@ struct PrimeTable {
   }
 
   template<typename T>
-  std::vector<T> get_factors(T x) const {
+  std::vector<T> get_factors(T x) const {  // Note: Not in ascending order.
     assert(x >= 1);
     const std::vector<typename std::pair<T, T>> repr = get_canonical_representation(x);
     std::vector<T> factors;
