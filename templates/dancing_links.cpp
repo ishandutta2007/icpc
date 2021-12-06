@@ -39,7 +39,7 @@ struct DancingLinks {
     return true;
   }
 
-private:
+ private:
   int allocate_node() {
     int u = num_nodes++;
     L.emplace_back(u);
