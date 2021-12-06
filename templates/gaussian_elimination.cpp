@@ -1,7 +1,5 @@
-// WARNING: MAYBE WRONG, NOT VERIFIED AT ALL!!!
 template<typename T>
 struct GaussianElimination {
-
   static int dcmp(T x) { constexpr T eps = 1e-8; return x < -eps ? -1 : x > eps; }
 
   static int solve(std::vector<std::vector<T>>& A, std::vector<T>& extra_column) {
@@ -39,4 +37,12 @@ struct GaussianElimination {
     return 1;
   }
 };
+
+void test() {
+  std::vector<std::vector<double>> A{{2, 1, -1}, {-3, -1, 2}, {-2, 1, 2}};
+  std::vector<double> X{8, -11, -3};
+  GaussianElimination<double>::solve(A, X);
+  DUMP(A);  // {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}}
+  DUMP(X);  // {2, 3, -1}
+}
 
