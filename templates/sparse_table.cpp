@@ -1,9 +1,6 @@
 template<typename T, typename Comparator = std::less<T>>
 struct SparseTable {
-  std::vector<std::vector<T>> u;
-  std::vector<int> lg;
-  Comparator cmp;
-
+ public:
   void build(const std::vector<T>& a) {
     int n = a.size(), L = 1;
     while ((1 << L) <= n) ++L;
@@ -23,7 +20,13 @@ struct SparseTable {
     int k = lg[b - a + 1];
     return select(u[a][k], u[b - (1 << k) + 1][k]);
   }
+  int size() const { return u.size(); }
+ private:
   T select(const T& lhs, const T& rhs) const { return cmp(lhs, rhs) ? lhs : rhs; }
+
+  std::vector<std::vector<T>> u;
+  std::vector<int> lg;
+  Comparator cmp;
 };
 
 // SparseTable<int> st;
