@@ -37,3 +37,4 @@ class Fenwick {
  private:
   std::vector<T> bits;
 };
+

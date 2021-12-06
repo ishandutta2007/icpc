@@ -1,5 +1,3 @@
-#include <bits/stdc++.h>
-
 struct Complex {
   double x = 0.0;
   double y = 0.0;
@@ -112,6 +110,3 @@ void example() {
   // 1 4 10 16 17 12
 }
 
-int main() {
-  example();
-}

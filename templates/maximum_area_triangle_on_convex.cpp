@@ -1,5 +1,5 @@
-// 已经被hack了...
-// 详见https://arxiv.org/pdf/1705.11035.pdf
+// Already hacked.
+// See https://arxiv.org/pdf/1705.11035.pdf for details.
 
 LL f() {
   auto vec = getConvex();
@@ -29,3 +29,4 @@ LL f() {
   }
   return area(ba,bb,bc);
 }
+

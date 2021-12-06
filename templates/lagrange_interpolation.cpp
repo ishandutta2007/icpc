@@ -91,3 +91,4 @@ template<typename T>
 T sum_over_segment(const Polynomial<T>& a, int l, int r) {  // [l, r]
   return eval(sum_from_l(a, l, a.size()), T(r));
 }
+

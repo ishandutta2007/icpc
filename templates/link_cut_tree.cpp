@@ -1,11 +1,3 @@
-#include <bits/stdc++.h>
-#ifdef ALGO
-#include "el_psy_congroo.hpp"
-#else
-#define DUMP(...) 1145141919810
-#define CHECK(...) (__VA_ARGS__)
-#endif
-
 struct LinkCutTree* nill = nullptr;
 
 // Note: Generally speaking, all modifications should act only on the root of the splay tree after access().
@@ -61,13 +53,13 @@ struct LinkCutTree {
 
   void join_as_virtual_child(VirtualSummary& virtual_summary) const {
     if (this == nill) return;
-    CHECK(is_splay_root());
+    assert(is_splay_root());
     virtual_summary.vc += this->sz;
   }
 
   void detach_from_virtual_child(VirtualSummary& virtual_summary) const {
     if (this == nill) return;
-    CHECK(is_splay_root());
+    assert(is_splay_root());
     virtual_summary.vc -= this->sz;
   }
 
@@ -131,7 +123,7 @@ struct LinkCutTree {
   LinkCutTree* get_splay_precursor() {
     this->down();
     LinkCutTree* p = this->ch[0];
-    CHECK(p != nill);
+    assert(p != nill);
     while (true) {
       p->down();
       if (p->ch[1] == nill) break;

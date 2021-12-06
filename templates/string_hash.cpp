@@ -34,3 +34,4 @@ struct StringHash {
     return L - 1;
   }
 };
+

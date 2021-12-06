@@ -1,11 +1,3 @@
-#include <bits/stdc++.h>
-#ifdef ALGO
-#include "el_psy_congroo.hpp"
-#else
-#define DUMP(...)
-#define CHECK(...)
-#endif
-
 const double eps = 1e-8;
 
 template<typename T> inline int cmpT(T x) { return x < 0 ? -1 : x > 0; }
@@ -232,6 +224,3 @@ void geom_test() {
   CHECK(PointT<long double>(0.0, 1.0) == PointT<long double>(1.0, 0.0).rotated(M_PI / 2));
 }
 
-int main() {
-  geom_test();
-}

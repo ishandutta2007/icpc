@@ -1,7 +1,5 @@
 struct BinaryLiftLCA {
-  std::vector<std::vector<int>> pjump;
-  std::vector<int> depth;
-
+ public:
   struct Input {
     int* parent = nullptr;
     int* dist = nullptr;
@@ -49,5 +47,9 @@ struct BinaryLiftLCA {
     }
     return jump(a, step);
   }
-} lca_solver;
+
+ private:
+  std::vector<std::vector<int>> pjump;
+  std::vector<int> depth;
+};
 
