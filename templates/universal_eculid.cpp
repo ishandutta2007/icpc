@@ -6,14 +6,14 @@ const Mint inv2 = Mint(2).inv();
 struct Info {
   Mint f, g, h;
   Mint u, r;
+
+  static Info identity() { return Info{.f = 0, .g = 0, .h = 0, .u = 0, .r = 0}; }
+  static Info up() { return Info{.f = 0, .g = 0, .h = 0, .u = 1, .r = 0}; }
+  static Info right() { return Info{.f = 0, .g = 0, .h = 0, .u = 0, .r = 1}; }
 };
 
-const Info f0 = Info{.f = 0, .g = 0, .h = 0, .u = 0, .r = 0};
-const Info fu = Info{.f = 0, .g = 0, .h = 0, .u = 1, .r = 0};
-const Info fr = Info{.f = 0, .g = 0, .h = 0, .u = 0, .r = 1};
-
 // Should be associative.
-Info operator * (const Info& lhs, const Info& rhs) {
+Info operator*(const Info& lhs, const Info& rhs) {
   Info ret;
   ret.u = lhs.u + rhs.u;
   ret.r = lhs.r + rhs.r;
@@ -24,7 +24,7 @@ Info operator * (const Info& lhs, const Info& rhs) {
 }
 
 Info power(Info a, int b) {
-  Info ret = f0;
+  Info ret = Info::identity();
   for (; b; b >>= 1, a = a * a) if (b & 1) ret = ret * a;
   return ret;
 }
@@ -44,6 +44,7 @@ Info universal_euclid(int a, int b, int c, int n, const Info& fu, const Info& fr
 // www.luogu.com.cn/blog/ILikeDuck/mo-neng-ou-ji-li-dei-suan-fa
 // www.luogu.com.cn/problem/P5170
 void solve(int a, int b, int c, int n) {
-  Info result = power(fu, b / c) * fr * universal_euclid(a, b % c, c, n, fu, fr);
+  Info result = power(Info::up(), b / c) * Info::right() * universal_euclid(a, b % c, c, n, Info::up(), Info::right());
   printf("%d %d %d\n", result.f.val(), result.h.val(), result.g.val());
 }
+
