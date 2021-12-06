@@ -18,7 +18,6 @@ std::string to_string(const Line& line) {
 }
 
 struct DynamicHull : public std::multiset<Line> {
-  // Maintain an upper side convex hull of lines.
   // Two operation types are supported:
   // - Insert a new line with slope equals to m and intercept equals to b.
   // - Given a param x, find the maximum value of m * x + b among lines.
