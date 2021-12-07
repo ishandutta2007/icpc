@@ -4,7 +4,7 @@ struct Simpson {
   // F :: double -> double
   // e.g. double f(double x) { return std::sqrt(1 + 4 * a * a * x * x); }
   template<typename F>
-  static double calc(double L, double R, F&& f) {
+  static double integrate(double L, double R, F&& f) {
     return asr(L, R, 1e-5, simpson(L, R, std::forward<F>(f)), std::forward<F>(f));
   }
 
