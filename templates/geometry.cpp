@@ -17,9 +17,9 @@ struct VecT {
 
   static_assert(std::is_arithmetic<T>::value, "T should be an arithmetic type.");
 
-  VecT() {}
+  VecT() = default;
   VecT(T x, T y) : x(x), y(y) {}
-  ~VecT() {}
+  ~VecT() = default;
 
   const T operator[](int index) const { return elements[index]; }
   T& operator[](int index) { return elements[index]; }
