@@ -95,6 +95,11 @@ template<typename T> inline bool operator == (const VecT<T>& lhs, const VecT<T>&
 template<typename T> inline bool operator != (const VecT<T>& lhs, const VecT<T>& rhs) { return !(lhs == rhs); }
 
 template<typename T>
+VecT<std::common_type_t<T, double>> lerp(const VecT<T>& start, const VecT<T>& end, double ratio) {
+  return VecT<std::common_type_t<T, double>>(start.x + (end.x - start.x) * ratio, start.y + (end.y - start.y) * ratio);
+}
+
+template<typename T>
 std::string to_string(const VecT<T>& v) {
   return std::string("VecT{x=") + std::to_string(v.x) + ",y=" + std::to_string(v.y) + "}";
 }
@@ -222,5 +227,6 @@ void geom_test() {
   CHECK(PointT<double>(0.5, 0.5) == PointT<int>(1, 1) / 2.0);
   DUMP(PointT<bool>(false, false));
   CHECK(PointT<long double>(0.0, 1.0) == PointT<long double>(1.0, 0.0).rotated(M_PI / 2));
+  CHECK(PointT<double>(0.4, 0.4) == lerp(PointT<int>(0, 0), PointT<int>(1, 1), 0.4));
 }
 
