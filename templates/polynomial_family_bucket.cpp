@@ -212,9 +212,7 @@ Polynomial<T> operator*(Polynomial<T> lhs, Polynomial<T> rhs) {
   rhs.resize(L, 0);
   ntt(lhs, L, 1);
   ntt(rhs, L, 1);
-  for (int i = 0; i < L; ++i) {
-    lhs[i] *= rhs[i];
-  }
+  for (int i = 0; i < L; ++i) lhs[i] *= rhs[i];
   ntt(lhs, L, -1);
   norm(lhs);
   return lhs;
