@@ -21,7 +21,7 @@ struct VecT {
   VecT(T x, T y) : x(x), y(y) {}
   ~VecT() = default;
 
-  const T operator[](int index) const { return elements[index]; }
+  const T& operator[](int index) const { return elements[index]; }
   T& operator[](int index) { return elements[index]; }
 
   T length_sqr() const { return x * x + y * y; }

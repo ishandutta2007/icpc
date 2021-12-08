@@ -26,6 +26,9 @@ struct Quaternion {
   Quaternion(T q0, T q1, T q2, T q3) : q0(q0), q1(q1), q2(q2), q3(q3) {}
   ~Quaternion() = default;
 
+  const T& operator[](int index) const { return elements[index]; }
+  T& operator[](int index) { return elements[index]; }
+
   bool operator==(const Quaternion& other) const {
     for (int i = 0; i < 4; ++i) if (dcmp(elements[i] - other.elements[i]) != 0) return false;
     return true;
