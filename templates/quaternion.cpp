@@ -57,9 +57,7 @@ struct Quaternion {
   Quaternion& operator*=(const Quaternion& other) { return (*this) = (*this) * other; }
 
   template<typename U>
-  Quaternion<U> converted() const {
-    return std::is_same<T, U>::value ? *this : Quaternion<U>(q0, q1, q2, q3);
-  }
+  Quaternion<U> converted() const { return Quaternion<U>(q0, q1, q2, q3); }
 
   Quaternion& operator*=(T scale) {
     for (int i = 0; i < 4; ++i) elements[i] *= scale;

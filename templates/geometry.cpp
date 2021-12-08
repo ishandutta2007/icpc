@@ -36,63 +36,36 @@ struct VecT {
   }
   void rotate(double angle) { *this = rotated(angle); }
   template<typename U> VecT<U> converted() const { return VecT<U>(x, y); }
+
+  VecT& operator+=(const VecT& other) { x += other.x; y += other.y; return *this; }
+  VecT operator+(const VecT& other) const { VecT ret = *this; return ret += other; }
+
+  VecT& operator-=(const VecT& other) { x -= other.x; y -= other.y; return *this; }
+  VecT operator-(const VecT& other) const { VecT ret = *this; return ret -= other; }
+
+  VecT& operator*=(T scale) { x *= scale; y *= scale; return *this; }
+  template<typename Scalar>
+  VecT<std::common_type_t<T, Scalar>> operator*(Scalar scale) const {
+    return converted<std::common_type_t<T, Scalar>>() *= scale;
+  }
+
+  VecT& operator/=(T scale) { assert(scale > 0); return (*this) *= T(1) / scale; }
+  template<typename Scalar>
+  VecT<std::common_type_t<T, Scalar>> operator/(Scalar scale) const {
+    return converted<std::common_type_t<T, Scalar>>() /= scale;
+  }
+
+  bool operator<(const VecT& other) const {
+    if (cmpT(x - other.x) == 0) return cmpT(y - other.y) < 0;
+    return cmpT(x - other.x) < 0;
+  }
+  bool operator>(const VecT& other) const { return other < (*this); }
+  bool operator==(const VecT& other) const { return cmpT(x - other.x) == 0 && cmpT(y - other.y) == 0; }
+  bool operator!=(const VecT& other) const { return !((*this) == other); }
 };
 
-// +
-template<typename T> inline VecT<T>& operator += (VecT<T>& lhs, const VecT<T>& rhs) {
-  lhs.x += rhs.x;
-  lhs.y += rhs.y;
-  return lhs;
-}
-template<typename T> inline VecT<T> operator + (VecT<T> lhs, const VecT<T>& rhs) {
-  return lhs += rhs;
-}
-
-// -
-template<typename T> inline VecT<T>& operator -= (VecT<T>& lhs, const VecT<T>& rhs) {
-  lhs.x -= rhs.x;
-  lhs.y -= rhs.y;
-  return lhs;
-}
-template<typename T> inline VecT<T> operator - (VecT<T> lhs, const VecT<T>& rhs) {
-  return lhs -= rhs;
-}
-
-// *
-template<typename T, typename U> inline VecT<T>& operator *= (VecT<T>& v, U t) {
-  v.x *= t;
-  v.y *= t;
-  return v;
-}
-template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (const VecT<T>& v, U t) {
-  auto ret = v.template converted<std::common_type_t<T, U>>();
-  return ret *= t;
-}
-template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator * (U t, const VecT<T>& v) {
-  return v * t;
-}
-
-// /
-template<typename T, typename U> inline VecT<T>& operator /= (VecT<T>& v, U t) {
-  v.x /= t;
-  v.y /= t;
-  return v;
-}
-template<typename T, typename U> inline VecT<std::common_type_t<T, U>> operator / (const VecT<T>& v, U t) {
-  auto ret = v.template converted<std::common_type_t<T, U>>();
-  return ret /= t;
-}
-
-// <
-template<typename T> inline bool operator < (const VecT<T>& lhs, const VecT<T>& rhs) {
-  if (cmpT(lhs.x - rhs.x) == 0) return cmpT(lhs.y - rhs.y) < 0;
-  return cmpT(lhs.x - rhs.x) < 0;
-}
-template<typename T> inline bool operator > (const VecT<T>& lhs, const VecT<T>& rhs) { return rhs < lhs; }
-template<typename T> inline bool operator == (const VecT<T>& lhs, const VecT<T>& rhs) {
-  return cmpT(lhs.x - rhs.x) == 0 && cmpT(lhs.y - rhs.y) == 0;
-}
-template<typename T> inline bool operator != (const VecT<T>& lhs, const VecT<T>& rhs) { return !(lhs == rhs); }
+template<typename T, typename Scalar>
+inline VecT<std::common_type_t<T, Scalar>> operator*(Scalar scale, const VecT<T>& v) { return v * scale; }
 
 template<typename T>
 VecT<std::common_type_t<T, double>> lerp(const VecT<T>& start, const VecT<T>& end, double ratio) {
