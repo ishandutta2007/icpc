@@ -58,8 +58,8 @@ struct Quaternion {
     return std::is_same<T, U>::value ? *this : Quaternion<U>(q0, q1, q2, q3);
   }
 
-  Quaternion& operator*=(T scalar) {
-    for (int i = 0; i < 4; ++i) elements[i] *= scalar;
+  Quaternion& operator*=(T scale) {
+    for (int i = 0; i < 4; ++i) elements[i] *= scale;
     return *this;
   }
   template<typename Scalar>
@@ -67,7 +67,7 @@ struct Quaternion {
     return converted<std::common_type_t<T, Scalar>>() *= scale;
   }
 
-  Quaternion& operator/=(T scalar) { return (*this) *= T(1) / scalar; }
+  Quaternion& operator/=(T scale) { return (*this) *= T(1) / scale; }
   template<typename Scalar>
   Quaternion<std::common_type_t<T, Scalar>> operator/(Scalar scale) const {
     return (*this) * (Scalar(1) / scale);
