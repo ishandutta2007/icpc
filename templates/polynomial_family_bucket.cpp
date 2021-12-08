@@ -497,6 +497,27 @@ Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>&
   return divide(0, (int)x.size() - 1);
 }
 
+template<typename T>
+T interpolation(const std::vector<T>& x, const std::vector<T>& y, const T& p) {
+  return eval(lagrange_polynomial(x, y), p);
+}
+
+template<typename T>
+Polynomial<T> eval_sum_from_l(const Polynomial<T>& poly, T l) {
+  const int n = poly.size();
+  std::vector<T> x;
+  for (int i = 0; i <= n; ++i) x.emplace_back(l + i);
+  std::vector<T> y = multiple_point_eval(poly, x);
+  for (int i = 1; i < y.size(); ++i) y[i] += y[i - 1];
+  return lagrange_polynomial(x, y);
+}
+
+template<typename T>
+T eval_sum_over_segment(const Polynomial<T>& poly, T l, T r) {  // [l, r]
+  // \sum_{x=l}^{r} eval(poly, x)
+  return eval(eval_sum_from_l(poly, l), r);
+}
+
 template<typename T, typename OnLeaf>
 void double_online_divide_and_conquer(OnLeaf&& on_leaf, int l, int r, const Polynomial<T>& A, Polynomial<T>& B) {
   // Note: The order of A and B matters, and you need to update Poly A yourself via `on_leaf`.

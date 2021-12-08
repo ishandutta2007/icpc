@@ -75,20 +75,21 @@ T interpolation(const std::vector<T>& x, const std::vector<T>& y, const T& p) {
 }
 
 template<typename T>
-Polynomial<T> sum_from_l(const Polynomial<T>& a, int l, int n) {
+Polynomial<T> eval_sum_from_l(const Polynomial<T>& poly, T l) {
+  const int n = poly.size();
   std::vector<T> x;
   for (int i = 0; i <= n; ++i) x.emplace_back(l + i);
   std::vector<T> y;
   T cur(0);
   for (int i = 0; i <= n; ++i) {
-    cur += eval(a, x[i]);
+    cur += eval(poly, x[i]);
     y.emplace_back(cur);
   }
   return lagrange_polynomial(x, y);
 }
 
 template<typename T>
-T sum_over_segment(const Polynomial<T>& a, int l, int r) {  // [l, r]
-  return eval(sum_from_l(a, l, a.size()), T(r));
+T eval_sum_over_segment(const Polynomial<T>& poly, T l, T r) {  // [l, r]
+  return eval(eval_sum_from_l(poly, l), T(r));
 }
 
