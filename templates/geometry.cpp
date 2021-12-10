@@ -84,7 +84,7 @@ template<typename T> using PointT = VecT<T>;
 template<typename T> using PolygonT = std::vector<PointT<T>>;
 
 template<typename T>
-bool polar_cmp(const VecT<T>& a,const VecT<T>& b) {
+bool polar_cmp(const VecT<T>& a, const VecT<T>& b) {
   if (cmpT(a.y) * cmpT(b.y) <= 0) {
     if (cmpT(a.y) > 0 || cmpT(b.y) > 0) return cmpT(a.y - b.y) < 0;
     if (cmpT(a.y) == 0 && cmpT(b.y) == 0) return cmpT(a.x - b.x) < 0;
