@@ -83,10 +83,10 @@ nnoremap <leader>e :!g++ % -std=c++17 -O2 -D ALGO -I ~/.vim/icpc/include -Wno-un
 nnoremap <leader>w :!./%<<cr>
 nnoremap <leader>q :!time ./%< <%<.in<cr>
 
-if has('unix')
-  nnoremap <leader>1 :!xclip -selection clipboard -o >%<.in<cr>
-elseif has('macunix')
+if has('macunix')
   nnoremap <leader>1 :!pbpaste >%<.in<cr>
+elseif has('unix')
+  nnoremap <leader>1 :!xclip -selection clipboard -o >%<.in<cr>
 endif
 
 " set mouse=a
