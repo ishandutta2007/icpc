@@ -10,6 +10,7 @@ struct Splay {
   static void initialize() {
     if (nill == nullptr) {
       static Splay nill_storage;
+      nill = &nill_storage;
       nill = new(&nill_storage) Splay();
       nill->sz = 0;
     }

@@ -23,6 +23,7 @@ struct LinkCutTree {
   static void initialize() {
     if (nill == nullptr) {
       static LinkCutTree nill_storage;
+      nill = &nill_storage;
       nill = new(&nill_storage) LinkCutTree();
       nill->sz = 0;
     }
