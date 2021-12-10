@@ -36,7 +36,11 @@ struct Splay {
   }
 
   bool d() const { return fa->ch[1] == this; }
-  void setc(Splay* o, int c) { ch[c] = o; o->fa = this; up(); }
+  void setc(Splay* o, int c) {
+    if (this != nill) ch[c] = o;
+    if (o != nill) o->fa = this;
+    up();
+  }
   void rot() {
     int c = d(), cc = fa->d();
     Splay* z = fa->fa;

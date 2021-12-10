@@ -67,7 +67,11 @@ struct LinkCutTree {
   bool d() const { return fa->ch[1] == this; }
   bool is_splay_root() const { return fa == nill || (fa->ch[0] != this && fa->ch[1] != this); }
   void D() { if (!is_splay_root()) fa->D(); down(); }
-  void setc(LinkCutTree* o, int c) { ch[c] = o; o->fa = this; up(); }
+  void setc(LinkCutTree* o, int c) {
+    if (this != nill) ch[c] = o;
+    if (o != nill) o->fa = this;
+    up();
+  }
 
   void rot() {
     int c = d(), cc = fa->d();
