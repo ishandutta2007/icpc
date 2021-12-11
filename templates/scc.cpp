@@ -78,7 +78,7 @@ struct StronglyConnectedComponent {
       for (const Edge& e : graph[u]) {
         int v = e.v;
         if (belong[u] != belong[v]) {
-          dag.graph[belong[u]].emplace_back(belong[v]);
+          dag.graph[belong[u]].emplace_back(Edge{.v = belong[v]});
         }
       }
     }
