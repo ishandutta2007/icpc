@@ -2,6 +2,19 @@
 
 #pragma once
 
+namespace {
+
+template<typename T>
+struct has_const_iterator {
+ private:
+  template<typename C> static char test(typename C::const_iterator*);
+  template<typename C> static int test(...);
+ public:
+  enum { value = sizeof(test<T>(0)) == sizeof(char) };
+};
+
+}  // namespace
+
 using std::to_string;
 std::string to_string(const std::string& s) { return '"' + s + '"'; }
 std::string to_string(const char* s) { return to_string(std::string(s)); }
@@ -15,7 +28,9 @@ std::string to_string(const std::pair<A, B>& pair);
 template<typename A, typename B, typename C>
 std::string to_string(const std::tuple<A, B, C>& tuple);
 template<typename Container>
-std::string to_string(const Container& v);
+typename std::enable_if<has_const_iterator<Container>::value, std::string>::type to_string(const Container& v);
+template<typename T>
+std::string to_string(T* ptr);
 std::string debug_concat();
 template<typename Head, typename... Tail>
 std::string debug_concat(Head head, Tail... tail);
@@ -34,7 +49,7 @@ std::string to_string(const std::tuple<A, B, C>& tuple) {
     to_string(std::get<2>(tuple)) + ")";
 }
 template<typename Container>
-std::string to_string(const Container& v) {
+typename std::enable_if<has_const_iterator<Container>::value, std::string>::type to_string(const Container& v) {
   bool first = true; std::string ret = "{";
   for (const auto& x : v) {
     if (first) first = false; else ret += ", "; ret += to_string(x);
@@ -45,6 +60,12 @@ std::string to_string(const std::vector<bool>& vec) {
   for (int i = 0; i < vec.size(); ++i) {
     ss << (vec[i] ? 1 : 0);
   }
+  return ss.str();
+}
+template<typename T>
+std::string to_string(T* ptr) {
+  std::stringstream ss;
+  ss << ptr;
   return ss.str();
 }
 std::string debug_concat() { return ""; }
