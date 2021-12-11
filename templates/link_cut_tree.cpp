@@ -34,6 +34,7 @@ struct LinkCutTree {
 
   void up() {
     if (this == nill) return;
+    down();  // In case children's order matter.
     vmax = std::max(val, std::max(ch[0]->vmax, ch[1]->vmax));
     sz = 1 + virtual_summary.vc + ch[0]->sz + ch[1]->sz;
   }
@@ -48,6 +49,7 @@ struct LinkCutTree {
   }
 
   void reverse() {
+    if (this == nill) return;
     std::swap(ch[0],ch[1]);
     reverse_tag ^= 1;
   }

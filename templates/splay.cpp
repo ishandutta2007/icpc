@@ -18,6 +18,7 @@ struct Splay {
 
   void up() {
     if (this == nill) return;
+    down();  // In case children's order matter.
     sz = ch[0]->sz + ch[1]->sz + 1;
   }
 
@@ -31,6 +32,7 @@ struct Splay {
   }
 
   void reverse() {
+    if (this == nill) return;
     reverse_tag ^= 1;
     std::swap(ch[0], ch[1]);
   }
