@@ -45,11 +45,13 @@ struct Integral {
     for ( ; b; b >>= 1, a = a * a % MOD) if (b & 1) ret = ret * a % MOD; return ret;
   }
   Integral inv() const { return power(MOD - 2); }
+
+  std::string to_string() const { return std::string("{") + std::to_string(val()) + "}"; }
 };
 
 template<int MOD>
 std::string to_string(const Integral<MOD>& v) {
-  return std::string("{") + std::to_string(v.val()) + "}";
+  return v.to_string();
 }
 
 template<int MOD, bool kAllowBruteForce = false>
