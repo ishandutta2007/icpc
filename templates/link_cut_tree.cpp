@@ -96,9 +96,10 @@ struct LinkCutTree {
   LinkCutTree* access() {
     for (LinkCutTree *p = this, *q = nill; p != nill; ) {
       p->splay();
-      p->ch[1]->join_as_virtual_child(p->virtual_summary);
       q->detach_from_virtual_child(p->virtual_summary);
+      LinkCutTree* r = p->ch[1];
       p->setc(q, 1);
+      r->join_as_virtual_child(p->virtual_summary);
       q = p;
       p = p->fa;
     }
