@@ -98,7 +98,7 @@ struct LinkCutTree {
       p->splay();
       p->ch[1]->join_as_virtual_child(p->virtual_summary);
       q->detach_from_virtual_child(p->virtual_summary);
-      p->setc(q,1);
+      p->setc(q, 1);
       q = p;
       p = p->fa;
     }
