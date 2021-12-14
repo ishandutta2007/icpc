@@ -131,7 +131,7 @@ struct LinkCutTree {
   LinkCutTree* get_splay_precursor() {
     this->down();
     LinkCutTree* p = this->ch[0];
-    assert(p != nill);
+    if (p == nill) return nill;
     while (true) {
       p->down();
       if (p->ch[1] == nill) break;
