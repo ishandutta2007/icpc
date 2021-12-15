@@ -61,5 +61,16 @@ struct Splay {
     }
     return this;
   }
+
+  Splay* get_kth(int k) {
+    if (this == nill || k > this->sz) return nill;
+    Splay* v = this;
+    while (true) {
+      v->down();
+      if (v->ch[0]->sz >= k) v = v->ch[0];
+      else if (v->ch[0]->sz + 1 == k) return v;
+      else k -= v->ch[0]->sz + 1, v = v->ch[1];
+    }
+  }
 };
 
