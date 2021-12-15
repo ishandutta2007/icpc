@@ -24,7 +24,7 @@ struct HeavyLightDecomposition {
 
   void rebuild(int u, int fa, int color) {
     rd[tim] = u;
-    dfn[u] = tim ++;
+    dfn[u] = tim++;
     parent[u] = fa;
     depth[u] = fa == -1 ? 0 : depth[fa] + 1;
     header[u] = color;
