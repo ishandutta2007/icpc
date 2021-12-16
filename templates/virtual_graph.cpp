@@ -60,7 +60,7 @@ struct VirtualGraph {
 };
 
 /*
-  VirtualGraph vgraph(
+  VirtualGraph<Edge> vgraph(
       hld.dfn,
       points,
       [&hld](int x, int y) -> int { return hld.get_lca(x, y); },
