@@ -7,13 +7,13 @@ struct DirtyTable {
   void clear() { ++stmp; }
   T get(int p) const { return vis[p] == stmp ? table[p] : default_value; }
   bool contains(int p) const { return vis[p] == stmp; }
-  void update(int p, T val) { table[p] = val; vis[p] = stmp; }
-  void plus_one(int p) { update(p, get(p) + 1); }
-  void minus_one(int p) { update(p, get(p) - 1); }
+  void set(int p, T val) { table[p] = val; vis[p] = stmp; }
+  void plus_one(int p) { set(p, get(p) + 1); }
+  void minus_one(int p) { set(p, get(p) - 1); }
 
   bool minify(int p, T val) {
     if (vis[p] != stmp) {
-      update(p, val);
+      set(p, val);
       return true;
     } else if (table[p] > val) {
       table[p] = val;
@@ -24,7 +24,7 @@ struct DirtyTable {
 
   bool enlarge(int p, T val) {
     if (vis[p] != stmp) {
-      update(p, val);
+      set(p, val);
       return true;
     } else if (table[p] < val) {
       table[p] = val;
