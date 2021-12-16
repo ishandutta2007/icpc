@@ -50,8 +50,8 @@ struct VirtualGraph {
       int u = original_points[i];
       int v = original_points[i - 1];
       int lca = get_lca(u, v);
-      int ew = get_edge_weight(u, lca);
-      graph[get_index(dfn, original_points, lca)].emplace_back(Edge{.v = i, .w = ew});
+      graph[get_index(dfn, original_points, lca)].emplace_back(
+          Edge{.v = i, .w = get_edge_weight(u, lca)});
     }
   }
 
