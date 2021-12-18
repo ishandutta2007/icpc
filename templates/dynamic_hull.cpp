@@ -5,8 +5,6 @@ struct DynamicHull {
   // Two operation types are supported:
   // - Insert a new line with slope equals to k and intercept equals to m.
   // - Given a param x, find the maximum value of k * x + m among lines_.
-  DynamicHull() = default;
-  ~DynamicHull() = default;
 
   struct Line {
     static constexpr LL inf = std::numeric_limits<LL>::max();
@@ -53,11 +51,5 @@ struct DynamicHull {
   }
 
   std::multiset<Line> lines_;
-
-  // Disallow copy move and assign.
-  DynamicHull(const DynamicHull& other) = delete;
-  DynamicHull operator=(const DynamicHull& other) = delete;
-  DynamicHull(DynamicHull&& other) = delete;
-  DynamicHull operator=(DynamicHull&& other) = delete;
 };
 
