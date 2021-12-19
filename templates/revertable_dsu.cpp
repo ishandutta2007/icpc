@@ -7,6 +7,12 @@ struct RevertableDsu {
     std::iota(dsu.begin(), dsu.end(), 0);
   }
 
+  bool same(int x, int y) {
+    x = find(x);
+    y = find(y);
+    return x == y;
+  }
+
   int find(int x) {
     while (x != dsu[x]) x = dsu[x];
     return x;
