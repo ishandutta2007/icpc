@@ -86,6 +86,7 @@ struct LinkCutTree {
   }
 
   LinkCutTree* splay() {
+    if (this == nill) return nill;
     for (D(); !is_splay_root(); rot()) {
       if (!fa->is_splay_root())
         d() == fa->d() ? fa->rot() : rot();
