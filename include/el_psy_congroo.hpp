@@ -88,9 +88,9 @@ std::string debug_concat(Head&& head, Tail&&... tail) {
 }  // namespace
 
 #define DUMP(...) { \
-  std::stringstream ss; \
-  ss << "[" << #__VA_ARGS__ << "]:" << debug_concat(__VA_ARGS__); \
-  std::cerr << ss.str() << std::endl; \
+  std::stringstream _D_ss; \
+  _D_ss << "[" << #__VA_ARGS__ << "]:" << debug_concat(__VA_ARGS__); \
+  std::cerr << _D_ss.str() << std::endl; \
 }
 #define CHECK(...) { \
   if (!(__VA_ARGS__)) { \
