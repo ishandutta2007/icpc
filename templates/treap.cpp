@@ -1,4 +1,3 @@
-
 struct Treap {
   static Treap* nill;
 

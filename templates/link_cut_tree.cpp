@@ -1,4 +1,3 @@
-
 // Note: Generally speaking, all modifications should act only on the root of the splay tree after access().
 struct LinkCutTree {
   static LinkCutTree* nill;
