@@ -1,6 +1,7 @@
-struct Treap* nill = nullptr;
 
 struct Treap {
+  static Treap* nill;
+
   Treap* ch[2] = {nill, nill};
   int sz = 1;
   bool reverse_tag = false;
@@ -35,15 +36,17 @@ struct Treap {
   }
 };
 
+Treap* Treap::nill = nullptr;
+
 void split_by_sz(Treap* a, Treap*& b, Treap*& c, int sz) {
-  if (a == nill) {
-    b = c = nill;
+  if (a == Treap::nill) {
+    b = c = Treap::nill;
   } else if (sz == 0) {
-    b = nill;
+    b = Treap::nill;
     c = a;
   } else if (a->sz == sz) {
     b = a;
-    c = nill;
+    c = Treap::nill;
   } else if (a->ch[0]->sz >= sz) {
     a->down();
     c = a;
@@ -67,9 +70,9 @@ bool roll(int a, int b) {
 }
 
 void merge(Treap*& a, Treap* b, Treap* c) {
-  if (b == nill) {
+  if (b == Treap::nill) {
     a = c;
-  } else if (c == nill) {
+  } else if (c == Treap::nill) {
     a = b;
   } else if (roll(b->sz, c->sz)) {
     a = b;

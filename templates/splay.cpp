@@ -1,6 +1,6 @@
-struct Splay* nill = nullptr;
-
 struct Splay {
+  static Splay* nill;
+
   Splay* fa = nill;
   Splay* ch[2] = {nill, nill};
   bool reverse_tag = false;
@@ -73,4 +73,6 @@ struct Splay {
     }
   }
 };
+
+Splay* Splay::nill = nullptr;
 
