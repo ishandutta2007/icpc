@@ -54,6 +54,7 @@ struct Splay {
   void D() { if (fa != nill) fa->D(); down(); }
 
   Splay* splay(Splay* aim = nill) {
+    if (this == nill) return;
     for (D(); fa != aim; rot()) {
       if (fa->fa != aim) {
         d() == fa->d() ? fa->rot() : rot();
@@ -63,7 +64,7 @@ struct Splay {
   }
 
   Splay* get_kth(int k) {
-    if (this == nill || k > this->sz) return nill;
+    if (this == nill || k <= 0 || k > this->sz) return nill;
     Splay* v = this;
     while (true) {
       v->down();
