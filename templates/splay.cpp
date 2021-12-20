@@ -54,7 +54,7 @@ struct Splay {
   void D() { if (fa != nill) fa->D(); down(); }
 
   Splay* splay(Splay* aim = nill) {
-    if (this == nill) return;
+    if (this == nill) return this;
     for (D(); fa != aim; rot()) {
       if (fa->fa != aim) {
         d() == fa->d() ? fa->rot() : rot();
