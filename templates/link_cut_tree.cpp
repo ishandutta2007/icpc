@@ -100,6 +100,7 @@ struct LinkCutTree {
       LinkCutTree* r = p->ch[1];
       p->setc(q, 1);
       r->join_as_virtual_child(p->virtual_summary);
+      p->up();
       q = p;
       p = p->fa;
     }
