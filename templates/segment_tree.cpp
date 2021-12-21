@@ -97,5 +97,7 @@ struct SegmentTree : public SegmentTreeBase<Node, SegmentTree> {
     }, L, R);
     return ret;
   }
+
+  Monoid query_all() { return get_node(0, size() - 1).m; }
 };
 
