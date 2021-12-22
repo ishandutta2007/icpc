@@ -6,7 +6,7 @@ struct BinaryLiftLCA {
   };
 
   void initialize(int size, const Input& input) {
-    init(size, input.parent, input.dist);
+    initialize(size, input.parent, input.dist);
   }
 
   void initialize(int size, const int* parent, const int* dist) {
