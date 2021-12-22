@@ -75,7 +75,6 @@ struct SegmentTreeBeats {
     void update(int dt) {
       if (dt) {
         vmax += dt;
-        submax += dt;
         tag += dt;
       }
     }
