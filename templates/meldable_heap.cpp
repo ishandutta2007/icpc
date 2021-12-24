@@ -22,7 +22,9 @@ struct MeldableHeap {
     return ret;
   }
 
-  void insert(T val) {
+  void push(const T& val) { insert(val); }
+
+  void insert(const T& val) {
     ++size_;
     Node* v = new Node;
     v->val = val;
