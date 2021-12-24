@@ -7,6 +7,11 @@ struct MeldableHeap {
   int size() const { return size_; }
   bool empty() const { return root_ == nullptr || size() == 0; }
 
+  T top() const {
+    assert(!empty());
+    return root_->val;
+  }
+
   T pop() {
     assert(!empty());
     Node* v = merge(root_->lc, root_->rc);
