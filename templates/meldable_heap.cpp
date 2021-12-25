@@ -4,6 +4,9 @@ struct MeldableHeap {
   MeldableHeap() = default;
   ~MeldableHeap() { release(root_); }
 
+  MeldableHeap& operator=(MeldableHeap&& other) = default;
+  MeldableHeap(MeldableHeap&& other) = default;
+
   int size() const { return size_; }
   bool empty() const { return root_ == nullptr || size() == 0; }
 
@@ -68,5 +71,9 @@ struct MeldableHeap {
   Node* root_ = nullptr;
   int size_ = 0;
   Comparator cmp_;
+
+  // Copy are not allowed.
+  MeldableHeap(const MeldableHeap& other) = delete;
+  MeldableHeap& operator=(const MeldableHeap& other) = delete;
 };
 
