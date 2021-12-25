@@ -73,7 +73,7 @@ struct Node {
 };
 
 struct SegmentTree : public SegmentTreeBase<Node, SegmentTree> {
-  explicit SegmentTree(int n) : SegmentTreeBase(n) {}
+  explicit SegmentTree(int n = 0) : SegmentTreeBase(n) {}
   virtual ~SegmentTree() = default;
 
   static void down(int l, int mid, int r, Node& u, Node& lu, Node& ru) {
