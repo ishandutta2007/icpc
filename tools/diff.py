@@ -1,6 +1,8 @@
 import click
 import filecmp
+import glob
 import logging
+import pathlib
 import subprocess
 import time
 
@@ -32,6 +34,27 @@ def run(gen, binary, good, num_iterations, time_interval):
                 return
         if time_interval > 0.0:
             time.sleep(time_interval)
+
+@main.command()
+@click.option('--data-dir', required=True)
+@click.option('--binary', required=True)
+@click.option('--output-dir', default='./tmp')
+@click.option('--input-suffix', default='.in')
+@click.option('--output-suffix', default='.out')
+def from_data(data_dir, binary, output_dir, input_suffix, output_suffix):
+    pathlib.Path(output_dir).mkdir(exist_ok=True)
+    for input_file in glob.glob(data_dir + "/*" + input_suffix):
+        logging.info('Processing {}'.format(input_file))
+        with open(input_file, 'r') as f:
+            expected_output_file = pathlib.PurePath(data_dir, pathlib.PurePath(input_file).stem + output_suffix)
+            output_file = pathlib.PurePath(output_dir, pathlib.PurePath(input_file).stem + output_suffix)
+            try:
+                with open(output_file, 'w') as g:
+                    subprocess.run(binary, stdin=f, stdout=g, check=True)
+                if not filecmp.cmp(expected_output_file, output_file):
+                    logging.error('Difference catched when processing {}.'.format(input_file))
+            except:
+                logging.error('Processing {} fail, just skip'.format(input_file))
 
 if __name__ == '__main__':
     main()
