@@ -31,7 +31,9 @@ struct CostFlow {
     std::fill(d.begin(), d.end(), 0);
     while (true) {
       cur = head;
-      while (f = aug(s, inf)) {
+      while (true) {
+        f = aug(s, inf);
+        if (f == 0) break;
         flow += f;
         cost += f * d[s];
         std::fill(vis.begin(), vis.end(), false);
@@ -49,7 +51,8 @@ struct CostFlow {
     for (int& i = cur[u]; i != -1; i = g[i].next) {
       Edge& e = g[i];
       if (e.cap && !vis[e.v] && d[u] == d[e.v] + e.cost) {
-        if (f = aug(e.v, std::min(a, e.cap))) {
+        f = aug(e.v, std::min(a, e.cap));
+        if (f) {
           flow += f;
           e.cap -= f;
           g[i ^ 1].cap += f;
