@@ -41,6 +41,26 @@ struct CostFlow {
     return std::make_pair(flow, cost);
   }
 
+  std::vector<std::tuple<int, int, T, T>> get_cuts(int s, int t) const {  // <u, v, original_cap, cost>
+    std::vector<bool> mark(n);
+    std::function<void(int)> remark = [&](int u) {
+      if (mark[u]) return;
+      mark[u] = true;
+      for (int i = head[u]; i != -1; i = g[i].next) {
+        if (g[i].cap) remark(g[i].v);
+      }
+    };
+    remark(s);
+    std::vector<std::tuple<int, int, T>> cuts;
+    for (int u = 0; u < n; ++u) if (mark[u]) {
+      for (int i = head[u]; i != -1; i = g[i].next) if (!mark[g[i].v]) {
+        assert(g[i].cap == 0);
+        cuts.emplace_back(u, g[i].v, g[i ^ 1].cap, g[i].cost);
+      }
+    }
+    return cuts;
+  }
+
  private:
   void spfa(int source) {
     std::vector<bool> inq(n);
