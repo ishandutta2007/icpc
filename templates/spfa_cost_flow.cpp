@@ -5,7 +5,7 @@ struct CostFlow {
   int n = 0;
   int s = -1, t = -1;
   std::vector<int> head, prevv, preve;
-  std::vector<T> dis;
+  std::vector<T> dist;
 
   struct Edge {
     int v, next;
@@ -14,7 +14,7 @@ struct CostFlow {
   std::vector<Edge> g;
 
   CostFlow() = default;
-  explicit CostFlow(int n) : n(n), head(n, -1), prevv(n), preve(n), dis(n, inf) {}
+  explicit CostFlow(int n) : n(n), head(n, -1), prevv(n), preve(n), dist(n, inf) {}
 
   void add_edge(int u, int v, T cap, T cost) {
     g.emplace_back(Edge{.v = v, .next = head[u], .cap = cap, .cost = cost});
@@ -29,11 +29,11 @@ struct CostFlow {
     T flow = 0, cost = 0;
     while (true) {
       spfa(s);
-      if (dis[t] == inf) break;
+      if (dist[t] == inf) break;
       T f = inf;
       for (int u = t; u != s; u = prevv[u])
         f = std::min(f, g[preve[u]].cap);
-      cost += f * dis[t];
+      cost += f * dist[t];
       flow += f;
       for (int u = t; u != s; u = prevv[u])
         g[preve[u]].cap -= f, g[preve[u] ^ 1].cap += f;
@@ -45,15 +45,15 @@ struct CostFlow {
   void spfa(int source) {
     std::vector<bool> inq(n);
     std::queue<int> que;
-    std::fill(dis.begin(), dis.end(), inf);
-    dis[source] = 0;
+    std::fill(dist.begin(), dist.end(), inf);
+    dist[source] = 0;
     que.emplace(source);
     while (!que.empty()) {
       int u = que.front(); inq[u] = false; que.pop();
       for (int i = head[u]; i != -1; i = g[i].next) {
         Edge& e = g[i];
-        if (e.cap && dis[e.v] > dis[u] + e.cost) {
-          dis[e.v] = dis[u] + e.cost;
+        if (e.cap && dist[e.v] > dist[u] + e.cost) {
+          dist[e.v] = dist[u] + e.cost;
           prevv[e.v] = u; preve[e.v] = i;
           if (!inq[e.v]) {
             que.emplace(e.v);
