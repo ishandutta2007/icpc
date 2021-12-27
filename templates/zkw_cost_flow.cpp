@@ -43,7 +43,7 @@ struct CostFlow {
     return std::make_pair(flow, cost);
   }
 
-  std::vector<std::tuple<int, int, T, T>> get_cuts(int s, int t) const {  // <u, v, original_cap, cost>
+  std::vector<std::tuple<int, int, T, T>> get_minimum_cut(int s, int t) const {  // <u, v, original_cap, cost>
     std::vector<bool> mark(n);
     std::function<void(int)> remark = [&](int u) {
       if (mark[u]) return;
