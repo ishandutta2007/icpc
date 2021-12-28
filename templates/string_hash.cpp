@@ -25,7 +25,7 @@ struct StringHash {
     int L = 1, R = std::min(n - x, n - y);
     while (L <= R) {
       int mid = (L + R) >> 1;
-      if (get(x, x + mid - 1) == get(y, y + mid - 1)) {
+      if (hash(x, x + mid - 1) == hash(y, y + mid - 1)) {
         L = mid + 1;
       } else {
         R = mid - 1;
