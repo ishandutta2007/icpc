@@ -20,6 +20,9 @@ struct StringHash {
     }
   }
 
+  int size() const { return n; }
+  int length() const { return size(); }
+
   ULL hash(int l, int r) const {
     CHECK(l <= r);
     CHECK(r < n);
