@@ -22,7 +22,7 @@ struct StringHash {
   int size() const { return n; }
   int length() const { return size(); }
 
-  ULL hash(int l, int r) const {
+  ULL get(int l, int r) const {
     CHECK(l <= r);
     CHECK(r < n);
     return table[l] - table[r + 1] * pw[r - l + 1];
@@ -32,7 +32,7 @@ struct StringHash {
     int L = 1, R = std::min(n - x, n - y);
     while (L <= R) {
       int mid = (L + R) >> 1;
-      if (hash(x, x + mid - 1) == hash(y, y + mid - 1)) {
+      if (get(x, x + mid - 1) == get(y, y + mid - 1)) {
         L = mid + 1;
       } else {
         R = mid - 1;
