@@ -1,7 +1,6 @@
 struct StringHash {
   using ULL = unsigned long long;
   static const ULL seed = 214142131331;
-
   static std::vector<ULL> pw;
 
   int n;
