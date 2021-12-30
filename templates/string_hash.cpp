@@ -1,5 +1,5 @@
+template<typename HashType = unsigned long long>
 struct StringHash {
-  using HashType = unsigned long long;
   static HashType seed;
   static std::vector<HashType> pw;
 
@@ -42,6 +42,11 @@ struct StringHash {
   }
 };
 
-StringHash::HashType StringHash::seed = 214142131331;
-std::vector<StringHash::HashType> StringHash::pw;
+template<typename HashType>
+HashType StringHash<HashType>::seed = 214142131331;
+
+template<typename HashType>
+std::vector<HashType> StringHash<HashType>::pw;
+
+using Hash = StringHash<>;
 
