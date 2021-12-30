@@ -1,10 +1,10 @@
 struct StringHash {
-  using ULL = unsigned long long;
-  static const ULL seed = 214142131331;
-  static std::vector<ULL> pw;
+  using HashType = unsigned long long;
+  static HashType seed;
+  static std::vector<HashType> pw;
 
   int n;
-  std::vector<ULL> table;
+  std::vector<HashType> table;
 
   explicit StringHash(const std::string& str) : n(str.length()), table(str.length() + 1, 0) {
     for (int i = n - 1; i >= 0; --i) {
@@ -22,7 +22,7 @@ struct StringHash {
   int size() const { return n; }
   int length() const { return size(); }
 
-  ULL get(int l, int r) const {
+  HashType get(int l, int r) const {
     CHECK(l <= r);
     CHECK(r < n);
     return table[l] - table[r + 1] * pw[r - l + 1];
@@ -42,5 +42,6 @@ struct StringHash {
   }
 };
 
-std::vector<ULL> StringHash::pw;
+StringHash::HashType StringHash::seed = 214142131331;
+std::vector<StringHash::HashType> StringHash::pw;
 
