@@ -35,7 +35,7 @@ struct GaussianElimination {
     return true;
   }
 
-  // Return true if the matrix A has an inversion.
+  // Return true if matrix A has an inversion.
   static bool matrix_inversion(std::vector<std::vector<T>> A, std::vector<std::vector<T>>* nullable_inversion = nullptr) {
     const int num_rows = A.size();
     if (num_rows == 0) {
@@ -80,7 +80,7 @@ struct GaussianElimination {
     }
   }
 
-  // Eliminate the matrix A into upper triangular form.
+  // Eliminate matrix A into upper triangular form.
   // Return the determinant.
   static T gaussian_elimination_internal(std::vector<std::vector<T>>& A, std::vector<T>& extra_column) {
     const int num_rows = A.size();
