@@ -4,6 +4,7 @@ struct RevertableDsu {
   std::vector<int> sz;
 
   RevertableDsu() = default;
+
   explicit RevertableDsu(int n) : dsu(n), sz(n, 1) {
     std::iota(dsu.begin(), dsu.end(), 0);
   }
