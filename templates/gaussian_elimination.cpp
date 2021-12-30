@@ -4,6 +4,7 @@ struct GaussianElimination {
  public:
   static bool solve(std::vector<std::vector<T>>& A) {
     std::vector<T> extra_column(A.size());
+    // Always true.
     return solve(A, extra_column, nullptr);
   }
 
@@ -45,6 +46,35 @@ struct GaussianElimination {
         while (c < num_columns && !better(A[r][c], 0)) ++c;
         assert(c < num_columns);
         nullable_solution->at(c) = extra_column[r] / A[r][c];
+      }
+    }
+    return true;
+  }
+
+  // Return true if the matrix A has an inversion.
+  static bool matrix_inversion(std::vector<std::vector<T>> A, std::vector<std::vector<T>>* nullable_inversion = nullptr) {
+    const int num_rows = A.size();
+    if (num_rows == 0) {
+      if (nullable_inversion != nullptr) {
+        nullable_inversion->clear();
+      }
+      return true;
+    }
+    const int num_columns = A[0].size();
+    if (num_rows != num_columns) return false;
+    for (int r = 0; r < num_rows; ++r) {
+      for (int c = 0; c < num_columns; ++c) {
+        A[r].emplace_back(T(r == c ? 1 : 0));
+      }
+    }
+    solve(A);
+    for (int r = 0; r < num_rows; ++r) if (A[r][r] != T(1)) return false;
+    if (nullable_inversion != nullptr) {
+      nullable_inversion->assign(num_rows, std::vector<T>(num_columns, T(0)));
+      for (int r = 0; r < num_rows; ++r) {
+        for (int c = 0; c < num_columns; ++c) {
+          (*nullable_inversion)[r][c] = A[r][c + num_columns];
+        }
       }
     }
     return true;
