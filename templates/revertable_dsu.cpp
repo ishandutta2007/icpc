@@ -28,7 +28,7 @@ struct RevertableDsu {
     return true;
   }
 
-  int history_size() const { return history.size(); }
+  int get_history_size() const { return history.size(); }
 
   void revert(int h) {
     while (history.size() > h) {
