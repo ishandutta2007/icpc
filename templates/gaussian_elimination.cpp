@@ -1,40 +1,64 @@
+// T is required to be a field.
 template<typename T>
 struct GaussianElimination {
-  static int dcmp(T x) { constexpr T eps = 1e-8; return x < -eps ? -1 : x > eps; }
+ public:
+  static bool solve(std::vector<std::vector<T>>& A) {
+    std::vector<T> extra_column(A.size());
+    return solve(A, extra_column, nullptr);
+  }
 
-  static int solve(std::vector<std::vector<T>>& A, std::vector<T>& extra_column) {
-    static_assert(std::is_floating_point<T>::value, "Only support floating point types");
-    int i, j, k, col, maxr;
-    int num_rows = A.size();
-    assert(num_rows > 0);
+  // Return true if the linear system is solvable.
+  static bool solve(std::vector<std::vector<T>>& A, std::vector<T>& extra_column, std::vector<T>* nullable_solution = nullptr) {
+    const int num_rows = A.size();
     assert(extra_column.size() == num_rows);
-    int num_columns = A[0].size();
-    // Free variables are not handled.
-    for (k = 0, col = 0; k < A.size() && col < num_columns; ++k, ++col) {
-      while (col < num_columns) {
-        maxr = k;
-        for (i = k + 1; i < num_rows; ++i) {
-          if (dcmp(std::abs(A[i][col]) - std::abs(A[maxr][col])) > 0) maxr = i;
+    if (num_rows == 0) return true;
+    const int num_columns = A[0].size();
+
+    int i, j, row, col, bestr;
+    for (row = 0, col = 0; row < num_rows && col < num_columns; ++row, ++col) {
+      for (; col < num_columns; ++col) {
+        bestr = row;
+        for (i = row + 1; i < num_rows; ++i) {
+          if (better(A[i][col], A[bestr][col])) bestr = i;
         }
-        if (dcmp(A[maxr][col]) != 0) break;
-        ++col;
+        if (better(A[bestr][col], 0)) break;
       }
       if (col == num_columns) break;
-      if (k != maxr) {
-        for (j = col; j < num_columns; ++j) std::swap(A[k][j], A[maxr][j]);
-        std::swap(extra_column[k], extra_column[maxr]);
+      if (row != bestr) {
+        for (j = col; j < num_columns; ++j) std::swap(A[row][j], A[bestr][j]);
+        std::swap(extra_column[row], extra_column[bestr]);
       }
-      extra_column[k] /= A[k][col];
-      for (j = col + 1; j < num_columns; ++j) A[k][j] /= A[k][col];
-      A[k][col] = T(1);
+      extra_column[row] /= A[row][col];
+      for (j = col + 1; j < num_columns; ++j) A[row][j] /= A[row][col];
+      A[row][col] = T(1);
       for (i = 0; i < num_rows; ++i) {
-        if (i == k || A[i][col] == T(0)) continue;
-        extra_column[i] -= extra_column[k] * A[i][col];
-        for (j = col + 1; j < num_columns; ++j) A[i][j] -= A[k][j] * A[i][col];
+        if (i == row || A[i][col] == T(0)) continue;
+        extra_column[i] -= extra_column[row] * A[i][col];
+        for (j = col + 1; j < num_columns; ++j) A[i][j] -= A[row][j] * A[i][col];
         A[i][col] = 0;
       }
     }
-    return 1;
+    for (int r = row; r < num_rows; ++r) if (better(extra_column[r], 0)) return false;
+    if (nullable_solution != nullptr) {
+      nullable_solution->assign(num_columns, T(0));
+      for (int r = 0, c = 0; r < row; ++r) {
+        while (c < num_columns && !better(A[r][c], 0)) ++c;
+        assert(c < num_columns);
+        nullable_solution->at(c) = extra_column[r] / A[r][c];
+      }
+    }
+    return true;
+  }
+
+ private:
+  // Return true if x is better than y.
+  static bool better(T x, T y) {
+    if constexpr(std::is_floating_point<T>::value) {
+      constexpr T eps = 1e-8;
+      return std::abs(x) > std::abs(y) + eps;
+    } else {
+      return x != 0;
+    }
   }
 };
 
