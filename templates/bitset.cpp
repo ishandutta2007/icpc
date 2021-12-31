@@ -1,18 +1,18 @@
 struct Bitset {
  public:
   Bitset() = default;
-  explicit Bitset(int n) : n(n), buckets(get_bucket_size(n)) { CHECK(n > 0); }
+  explicit Bitset(int n) : n(n), buckets(get_bucket_size(n)) { assert(n > 0); }
 
-  void flip(int p) { CHECK(in_range(p)); buckets[p >> 6] ^= 1ULL << (p & 63); }
+  void flip(int p) { assert(in_range(p)); buckets[p >> 6] ^= 1ULL << (p & 63); }
   void flip() {
     for (int i = 0; i < buckets.size(); ++i) buckets[i] ^= -1ULL;
     align_last_bucket();
   }
-  void set(int p) { CHECK(in_range(p)); buckets[p >> 6] |= 1ULL << (p & 63); }
+  void set(int p) { assert(in_range(p)); buckets[p >> 6] |= 1ULL << (p & 63); }
   void set(int p, bool v) { if (v) set(p); else if (test(p)) flip(p); }
   void reset() { for (int i = 0; i < buckets.size(); ++i) buckets[i] = 0; }
 
-  bool test(int p) const { CHECK(in_range(p)); return buckets[p >> 6] >> (p & 63) & 1; }
+  bool test(int p) const { assert(in_range(p)); return buckets[p >> 6] >> (p & 63) & 1; }
   bool operator [] (int p) const { return test(p); }
   bool all() const {
     for (int i = 0; i + 1 < buckets.size(); ++i) {
@@ -55,7 +55,7 @@ struct Bitset {
   Bitset operator^(const Bitset& other) const { Bitset ret = *this; return ret ^= other; }
   Bitset operator~() const { Bitset ret = *this; ret.flip(); return ret; }
   Bitset& operator>>=(int m) {
-    CHECK(m >= 0);
+    assert(m >= 0);
     int p = m >> 6;
     int w = m & 63;
     for (int i = 0; i < buckets.size(); ++i) {
@@ -67,7 +67,7 @@ struct Bitset {
   }
   Bitset operator>>(int m) const { Bitset ret = *this; return ret >>= m; }
   Bitset& operator<<=(int m) {
-    CHECK(m >= 0);
+    assert(m >= 0);
     int p = m >> 6;
     int w = m & 63;
     for (int i = (int)buckets.size() - 1; i >= 0; --i) {
@@ -125,7 +125,7 @@ struct Bitset {
   }
   void align_last_bucket() { align_last_bucket_of(n); }
   void resize(int m) {
-    CHECK(m > 0);
+    assert(m > 0);
     buckets.resize(get_bucket_size(m), 0);
     if (m < n) align_last_bucket_of(m);
     n = m;
