@@ -82,6 +82,7 @@ struct Binomial final {
 
 template<int MOD>
 struct PowerTable final : public std::vector<Integral<MOD>> {
+  PowerTable() = default;
   PowerTable(int n, const Integral<MOD>& g) {
     static_assert(sizeof(PowerTable) == sizeof(std::vector<Integral<MOD>>), "");
     this->resize(n + 1);
