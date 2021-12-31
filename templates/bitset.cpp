@@ -4,13 +4,11 @@ struct Bitset {
   explicit Bitset(int n) : n(n), buckets(get_bucket_size(n)) { assert(n > 0); }
 
   void flip(int p) { assert(in_range(p)); buckets[p >> 6] ^= 1ULL << (p & 63); }
-  void flip() {
-    for (int i = 0; i < buckets.size(); ++i) buckets[i] ^= -1ULL;
-    align_last_bucket();
-  }
+  void flip() { for (int i = 0; i < buckets.size(); ++i) buckets[i] ^= -1ULL; align_last_bucket(); }
   void set(int p) { assert(in_range(p)); buckets[p >> 6] |= 1ULL << (p & 63); }
   void set(int p, bool v) { if (v) set(p); else if (test(p)) flip(p); }
   void reset() { for (int i = 0; i < buckets.size(); ++i) buckets[i] = 0; }
+  void resize(int m) { assert(m > 0); buckets.resize(get_bucket_size(m), 0); if (m < n) align_last_bucket_of(m); n = m; }
 
   bool test(int p) const { assert(in_range(p)); return buckets[p >> 6] >> (p & 63) & 1; }
   bool operator [] (int p) const { return test(p); }
@@ -124,12 +122,6 @@ struct Bitset {
     buckets[get_bucket_size(m) - 1] &= ((1ULL << (m & 63)) - 1);
   }
   void align_last_bucket() { align_last_bucket_of(n); }
-  void resize(int m) {
-    assert(m > 0);
-    buckets.resize(get_bucket_size(m), 0);
-    if (m < n) align_last_bucket_of(m);
-    n = m;
-  }
 
   int n = 0;
   std::vector<ULL> buckets;
