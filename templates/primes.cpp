@@ -57,7 +57,7 @@ struct PrimeTable {
       while (x % p == 0) ++cnt, x /= p;
       ret.emplace_back(p, cnt);
     }
-    if (x >= min_div.size()) {
+    if (x >= min_div.size() && x > 1) {
       ret.emplace_back(x, 1);
     }
     return ret;
