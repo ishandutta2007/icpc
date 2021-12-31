@@ -11,7 +11,7 @@ struct Integral {
   ~Integral() = default;
 
   template<typename T> T norm(T v) const {
-    if constexpr(std::is_same<long long, T>::value) {
+    if constexpr(sizeof(T) > sizeof(MOD)) {
       v %= MOD;
       if (v < 0) v += MOD;
     } else {
