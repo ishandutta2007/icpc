@@ -2,8 +2,11 @@ template<int MOD>
 struct Integral {
   int v_ = 0;
 
-  Integral(int v) : v_(norm(v)) {}  // Implicit conversion is allowed.
-  Integral(long long v) : v_(norm(v)) {}  // Implicit conversion is allowed.
+  // Implicit conversion is allowed.
+  Integral(int v) : v_(norm(v)) {}
+  Integral(long long v) : v_(norm(v)) {}
+  Integral(unsigned int v) : v_(norm(v)) {}
+  Integral(unsigned long long v) : v_(norm(v)) {}
   Integral() = default;
   ~Integral() = default;
 
