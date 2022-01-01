@@ -1,11 +1,11 @@
 template<typename Edge>
-struct HeavyLightDecomposition {
+struct TreeHeavyLightDecomposition {
   int n = 0;
   std::vector<std::vector<Edge>> graph;
   std::vector<int> header, dfn, rd, parent, depth, sz;
   int tim = 0;
 
-  explicit HeavyLightDecomposition(int n) : n(n), graph(n), header(n), dfn(n), rd(n), parent(n), depth(n), sz(n) {}
+  explicit TreeHeavyLightDecomposition(int n) : n(n), graph(n), header(n), dfn(n), rd(n), parent(n), depth(n), sz(n) {}
 
   void make() {
     get_sz(0, -1);
