@@ -6,7 +6,7 @@ struct Trie {
   Trie* fail = nullptr;
   std::vector<Trie*> go;
 
-  // OnLinkFail :: void(Trie* u, Trie* fail)
+  // OnLinkFail :: void(Trie* u, Trie* fail).
   // NOTE: u may equals to fail.
   template<typename OnLinkFail>
   void build_fails(OnLinkFail&& on_link_fail) {
