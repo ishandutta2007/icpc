@@ -5,6 +5,7 @@ struct TreeHeavyLightDecomposition {
   std::vector<int> header, dfn, rd, parent, depth, sz;
   int tim = 0;
 
+  TreeHeavyLightDecomposition() = default;
   explicit TreeHeavyLightDecomposition(int n) : n(n), graph(n), header(n), dfn(n), rd(n), parent(n), depth(n), sz(n) {}
 
   void make() {
