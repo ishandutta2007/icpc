@@ -33,7 +33,7 @@ struct Polynomial final : public std::vector<T> {
   Polynomial(std::initializer_list<T> initializer_list) : std::vector<T>(std::move(initializer_list)) {}
   Polynomial(std::vector<T> vec) : std::vector<T>(std::move(vec)) {}
   int size() const { return std::vector<T>::size(); }
-  T at(int pos) const { return pos >= 0 && pos < size() ? (*this)[pos] : T(0); }
+  T get(int pos) const { return pos >= 0 && pos < size() ? (*this)[pos] : T(0); }
   T& touch(int pos) { if (pos >= size()) std::vector<T>::resize(pos + 1, T(0)); return (*this)[pos]; }
   Polynomial mod(int n) const { return Polynomial(std::vector<T>(this->data(), this->data() + std::min(n, size()))); }
 };
@@ -189,7 +189,7 @@ T eval(const Polynomial<T>& poly, T a) {  // Returns Poly(a).
     w *= a;
   }
   return ret;
-  // NOTE: It equals to (poly % Polynomial<T>{-a, 1}).at(0).
+  // NOTE: It equals to (poly % Polynomial<T>{-a, 1}).get(0).
 }
 
 template<typename T>
@@ -216,7 +216,7 @@ std::vector<T> multiple_point_eval(const Polynomial<T>& poly, const std::vector<
   std::function<void(int, int, Polynomial<T>)> divide = [&](int l, int r, Polynomial<T> poly) -> void {
     poly = poly % bucket[get_id(l, r)];
     if (l == r) {
-      result[l] = poly.at(0);
+      result[l] = poly.get(0);
       return;
     }
     int mid = (l + r) >> 1;
@@ -379,7 +379,7 @@ Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>&
   std::function<void(int, int, Polynomial<T>)> mp_eval = [&](int l, int r, Polynomial<T> poly) -> void {
     poly = poly % bucket[get_id(l, r)];
     if (l == r) {
-      z[l] = poly.at(0);
+      z[l] = poly.get(0);
       return;
     }
     int mid = (l + r) >> 1;
@@ -428,10 +428,10 @@ void double_online_divide_and_conquer(OnLeaf&& on_leaf, int l, int r, const Poly
   int mid = (l + r) >> 1;
   auto update = [&](const Polynomial<T>& A, const Polynomial<T>& B, Polynomial<T>& output) {
     Polynomial<T> P, Q;
-    for (int i = l; i <= mid; ++i) P.touch(i - l) = A.at(i);
-    for (int i = 0; i <= std::min(r - l, mid); ++i) Q.touch(i) = B.at(i);
+    for (int i = l; i <= mid; ++i) P.touch(i - l) = A.get(i);
+    for (int i = 0; i <= std::min(r - l, mid); ++i) Q.touch(i) = B.get(i);
     Polynomial<T> W = P * Q;
-    for (int i = mid + 1; i <= r; ++i) output.touch(i) += W.at(i - l);
+    for (int i = mid + 1; i <= r; ++i) output.touch(i) += W.get(i - l);
   };
   double_online_divide_and_conquer(std::forward<OnLeaf>(on_leaf), l, mid, A, B);
   update(A, B, B);
