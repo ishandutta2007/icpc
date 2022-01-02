@@ -1,11 +1,19 @@
-template<int MOD = 998244353, int kPrimRoot = 3>
+template<int MOD>
+constexpr int get_primitive_root() {
+  if constexpr(MOD == 998244353) return 3;
+  else if constexpr(MOD == 924844033) return 5;
+  assert(false);
+}
+
+template<int MOD = 998244353>
 void ntt(Integral<MOD> A[], int n, int inv) {
   // inv == 1: ntt, == -1: intt
 
   // MOD == a * b ^ k + 1, n <= b ^ k.
   // 998244353 == (7 * 17) * 2 ^ 23 + 1.
   // This code works only when b == 2.
-  Integral<MOD> w = 1, d = Integral<MOD>(kPrimRoot).power((MOD - 1) / n), t;
+  constexpr int primitive_root = get_primitive_root<MOD>();
+  Integral<MOD> w = 1, d = Integral<MOD>(primitive_root).power((MOD - 1) / n), t;
   int i, j, c, s;
   if (inv == -1) {
     for (i = 1, j = n - 1; i < j; ++i, --j) std::swap(A[i], A[j]);
