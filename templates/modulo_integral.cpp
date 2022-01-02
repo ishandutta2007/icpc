@@ -58,20 +58,20 @@ std::string to_string(const Integral<MOD>& v) {
 
 template<int MOD, bool kAllowBruteForce = false>
 struct Binomial final {
-  std::vector<Integral<MOD>> factor, inv_factor;
+  std::vector<Integral<MOD>> fact, inv_fact;
 
-  explicit Binomial(int n = 0) : factor(n + 1), inv_factor(n + 1) {
-    factor[0] = 1;
-    for (int i = 1; i <= n; ++i) factor[i] = factor[i - 1] * i;
-    inv_factor[n] = factor[n].inv();
-    for (int i = n; i >= 1; --i) inv_factor[i - 1] = inv_factor[i] * i;
+  explicit Binomial(int n = 0) : fact(n + 1), inv_fact(n + 1) {
+    fact[0] = 1;
+    for (int i = 1; i <= n; ++i) fact[i] = fact[i - 1] * i;
+    inv_fact[n] = fact[n].inv();
+    for (int i = n; i >= 1; --i) inv_fact[i - 1] = inv_fact[i] * i;
   }
   ~Binomial() = default;
 
   template<typename T>
   Integral<MOD> operator()(T a, T b) const {
     if (a < b || b < 0) return 0;
-    if (a < factor.size()) return factor[a] * inv_factor[b] * inv_factor[a - b];
+    if (a < fact.size()) return fact[a] * inv_fact[b] * inv_fact[a - b];
     if constexpr(!kAllowBruteForce) {
       throw std::out_of_range("Binomial");
     } else {
