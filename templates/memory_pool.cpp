@@ -2,7 +2,7 @@ template<typename T>
 class MemoryPool {
  public:
   template<typename... Args>
-  T* allocate(Args... args) {
+  T* allocate(Args&&... args) {
     if (__builtin_expect(head == nullptr, false)) {
       char* arr = new char[kReAllocBytes];
       for (int i = 0; i < kBatchSize; ++i) {
@@ -15,7 +15,7 @@ class MemoryPool {
 
     T* ret = reinterpret_cast<T*>(head);
     head = head->next;
-    return new(ret) T(args...);
+    return new(ret) T(std::forward<Args>(args)...);
   }
 
   void free(T* ptr) {
