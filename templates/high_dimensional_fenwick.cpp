@@ -1,40 +1,36 @@
-template<typename T>
-class Fenwick {
+template<typename T, int num_dimensions>
+struct HighDimensionalFenwick {
  public:
-  Fenwick() = default;
-  virtual ~Fenwick() = default;
+  HighDimensionalFenwick() = default;
+  virtual ~HighDimensionalFenwick() = default;
 
   template<typename... Args>
-  explicit Fenwick(int n) : bits(n) {}
+  explicit HighDimensionalFenwick(int dim, Args&&... args) : bits(dim, HighDimensionalFenwick<T, num_dimensions - 1>(std::forward<Args>(args)...)) {}
 
   template<typename... Args>
-  explicit Fenwick(int n, Args... args) : bits(n, T(args...)) {}
-
-  template<typename... Args>
-  void update(int p, const T& val) {
-    for (int i = p; i < bits.size(); i += ~i & i + 1) bits[i] += val;
+  void update(int p, Args&&... args) {
+    for (int i = p; i < bits.size(); i += ~i & i + 1) bits[i].update(std::forward<Args>(args)...);
   }
 
   template<typename... Args>
-  void update(int p, Args... args) {
-    for (int i = p; i < bits.size(); i += ~i & i + 1) bits[i].update(args...);
-  }
-
-  template<typename U, typename... Args>
-  U query(int p) const {
-    U ret{};
-    for (int i = p; i >= 0; i -= ~i & i + 1) ret += bits[i];
-    return ret;
-  }
-
-  template<typename U, typename... Args>
-  U query(int p, Args... args) const {
-    U ret{};
-    for (int i = p; i >= 0; i -= ~i & i + 1) ret += bits[i].template query<U>(args...);
+  T query(int p, Args&&... args) const {
+    T ret{};
+    for (int i = p; i >= 0; i -= ~i & i + 1) ret += bits[i].query(std::forward<Args>(args)...);
     return ret;
   }
 
  private:
-  std::vector<T> bits;
+  std::vector<HighDimensionalFenwick<T, num_dimensions - 1>> bits;
+};
+
+template<typename T>
+struct HighDimensionalFenwick<T, 0> {
+ public:
+  HighDimensionalFenwick() = default;
+  virtual ~HighDimensionalFenwick() = default;
+  void update(const T& dt) { val = dt; }
+  T query() const { return val; }
+ private:
+  T val{};
 };
 
