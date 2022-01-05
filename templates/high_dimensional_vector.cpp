@@ -2,6 +2,7 @@ template<typename T, int num_dimensions>
 struct HighDimensionalVector {
   using type = std::vector<typename HighDimensionalVector<T, num_dimensions - 1>::type>;
 
+  static type create() { return type(); }
   template<typename... Args>
   static type create(int dim, Args&&... args) {
     return type(dim, HighDimensionalVector<T, num_dimensions - 1>::create(std::forward<Args>(args)...));
