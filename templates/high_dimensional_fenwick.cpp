@@ -28,7 +28,7 @@ struct HighDimensionalFenwick<T, 0> {
  public:
   HighDimensionalFenwick() = default;
   virtual ~HighDimensionalFenwick() = default;
-  void update(const T& dt) { val = dt; }
+  void update(const T& dt) { val += dt; }
   T query() const { return val; }
  private:
   T val{};
