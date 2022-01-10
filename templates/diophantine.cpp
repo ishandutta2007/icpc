@@ -9,6 +9,11 @@ T exgcd(T a, T b, T& x, T& y) {
 // a * x + b * y == c
 // g = |gcd(a, b)|
 // |x|, |y| <= max(|a|, |b|, |c|)
+//
+// General solution:
+//   xx = x + b / g * t
+//   yy = y - a / g * t
+//   for all t in Z
 template<typename T>
 bool diophantine(T a, T b, T c, T& x, T& y, T& g) {
   if (a == 0 && b == 0) return c == 0 ? (x = y = g = 0, true) : false;
