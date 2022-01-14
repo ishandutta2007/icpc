@@ -18,5 +18,5 @@ struct HighDimensionalVector<T, 0> {
 };
 
 template<typename T, int num_dimensions>
-using HDVector = HighDimensionalVector<T, num_dimensions>;
+using HDV = HighDimensionalVector<T, num_dimensions>;
 
