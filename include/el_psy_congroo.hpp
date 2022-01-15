@@ -25,6 +25,10 @@ template<typename A, typename B>
 std::string to_string(const std::pair<A, B>& pair);
 template<typename A, typename B, typename C>
 std::string to_string(const std::tuple<A, B, C>& tuple);
+template<typename A, typename B, typename C, typename D>
+std::string to_string(const std::tuple<A, B, C, D>& tuple);
+template<typename A, typename B, typename C, typename D, typename E>
+std::string to_string(const std::tuple<A, B, C, D, E>& tuple);
 template<typename Container>
 typename std::enable_if<has_const_iterator<Container>::value, std::string>::type to_string(const Container& v);
 template<typename T, std::size_t N>
@@ -47,6 +51,23 @@ std::string to_string(const std::tuple<A, B, C>& tuple) {
     to_string(std::get<0>(tuple)) + ", " +
     to_string(std::get<1>(tuple)) + ", " +
     to_string(std::get<2>(tuple)) + ")";
+}
+template<typename A, typename B, typename C, typename D>
+std::string to_string(const std::tuple<A, B, C, D>& tuple) {
+  return "(" +
+    to_string(std::get<0>(tuple)) + ", " +
+    to_string(std::get<1>(tuple)) + ", " +
+    to_string(std::get<2>(tuple)) + ", " +
+    to_string(std::get<3>(tuple)) + ")";
+}
+template<typename A, typename B, typename C, typename D, typename E>
+std::string to_string(const std::tuple<A, B, C, D, E>& tuple) {
+  return "(" +
+    to_string(std::get<0>(tuple)) + ", " +
+    to_string(std::get<1>(tuple)) + ", " +
+    to_string(std::get<2>(tuple)) + ", " +
+    to_string(std::get<3>(tuple)) + ", " +
+    to_string(std::get<4>(tuple)) + ")";
 }
 template<typename Container>
 typename std::enable_if<has_const_iterator<Container>::value, std::string>::type to_string(const Container& v) {
