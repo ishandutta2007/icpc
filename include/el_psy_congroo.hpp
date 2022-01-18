@@ -23,6 +23,10 @@ std::string to_string(int8_t x) { return std::to_string((int)(x)); }
 std::string to_string(const std::vector<bool>& vec);
 template<typename A, typename B>
 std::string to_string(const std::pair<A, B>& pair);
+template<typename A>
+std::string to_string(const std::tuple<A>& tuple);
+template<typename A, typename B>
+std::string to_string(const std::tuple<A, B>& tuple);
 template<typename A, typename B, typename C>
 std::string to_string(const std::tuple<A, B, C>& tuple);
 template<typename A, typename B, typename C, typename D>
@@ -44,6 +48,16 @@ std::string debug_concat(Head&& head, Tail&&... tail);
 template<typename A, typename B>
 std::string to_string(const std::pair<A, B>& pair) {
   return "(" + to_string(pair.first) + ", " + to_string(pair.second) + ")";
+}
+template<typename A>
+std::string to_string(const std::tuple<A>& tuple) {
+  return "(" + to_string(std::get<0>(tuple)) + ")";
+}
+template<typename A, typename B>
+std::string to_string(const std::tuple<A, B>& tuple) {
+  return "(" +
+    to_string(std::get<0>(tuple)) + ", " +
+    to_string(std::get<1>(tuple)) + ")";
 }
 template<typename A, typename B, typename C>
 std::string to_string(const std::tuple<A, B, C>& tuple) {
