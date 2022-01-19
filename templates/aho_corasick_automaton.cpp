@@ -8,8 +8,8 @@ struct Trie {
 
   // OnLinkFail :: void(Trie* u, Trie* fail).
   // NOTE: u may equals to fail.
-  template<typename OnLinkFail>
-  void build_fails(OnLinkFail&& on_link_fail) {
+  template<typename OnLinkFail = std::function<void(Trie*,Trie*)>>
+  void build_fails(OnLinkFail&& on_link_fail = [](Trie*, Trie*){}) {
     Trie* root = this;
     root->fail = root;
     on_link_fail(root, root);
