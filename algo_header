@@ -11,6 +11,9 @@ namespace {
 template<typename T, typename U> bool enlarge(T& a, U b) { if (a < b) return a = b, true; return false; }
 template<typename T, typename U> bool minify(T& a, U b) { if (a > b) return a = b, true; return false; }
 
+
+
+
 struct Solver {
 
   void solve(int ca, std::istream& reader) {
