@@ -10,7 +10,7 @@ struct TreeHeavyLightDecomposition {
 
   void make(int root = 0) {
     get_sz(root, -1);
-    rebuild(root, -1, 0);
+    rebuild(root, -1, root);
   }
 
   void get_sz(int u, int fa) {
