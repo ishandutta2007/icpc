@@ -37,10 +37,10 @@ class SegmentTreeBase {
       return;
     }
     int mid = (l + r) >> 1;
-    Impl::down(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
+    static_cast<Impl*>(this)->down(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
     traverse_all(std::forward<Handler>(handler), l, mid);
     traverse_all(std::forward<Handler>(handler), mid + 1, r);
-    Impl::up(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
+    static_cast<Impl*>(this)->up(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
   }
 
   template<typename Handler>
@@ -51,10 +51,10 @@ class SegmentTreeBase {
       return;
     }
     int mid = (l + r) >> 1;
-    Impl::down(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
+    static_cast<Impl*>(this)->down(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
     traverse(std::forward<Handler>(handler), L, R, l, mid);
     traverse(std::forward<Handler>(handler), L, R, mid + 1, r);
-    Impl::up(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
+    static_cast<Impl*>(this)->up(l, mid, r, get_node(l, r), get_node(l, mid), get_node(mid + 1, r));
   }
 
   int n;
@@ -76,11 +76,11 @@ struct SegmentTree : public SegmentTreeBase<Node, SegmentTree> {
   explicit SegmentTree(int n = 0) : SegmentTreeBase(n) {}
   virtual ~SegmentTree() = default;
 
-  static void down(int l, int mid, int r, Node& u, Node& lu, Node& ru) {
+  void down(int l, int mid, int r, Node& u, Node& lu, Node& ru) {
     // pass
   }
 
-  static void up(int l, int mid, int r, Node& u, const Node& lu, const Node& ru) {
+  void up(int l, int mid, int r, Node& u, const Node& lu, const Node& ru) {
     u.m = lu.m * ru.m;
   }
 
