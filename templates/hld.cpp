@@ -8,9 +8,9 @@ struct TreeHeavyLightDecomposition {
   TreeHeavyLightDecomposition() = default;
   explicit TreeHeavyLightDecomposition(int n) : n(n), graph(n), header(n), dfn(n), rd(n), parent(n), depth(n), sz(n) {}
 
-  void make() {
-    get_sz(0, -1);
-    rebuild(0, -1, 0);
+  void make(int root = 0) {
+    get_sz(root, -1);
+    rebuild(root, -1, 0);
   }
 
   void get_sz(int u, int fa) {
