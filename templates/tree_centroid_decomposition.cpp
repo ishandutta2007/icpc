@@ -9,6 +9,10 @@ struct TreeCentroidDecomposition {
 
   explicit TreeCentroidDecomposition(int n) : n(n), graph(n), parent(n), sz(n), balance(n), vis(n) {}
 
+  void make(int root = 0) {
+    divide(root, 0);
+  }
+
   void divide_core(int root, int tot, int level) {
   }
 
