@@ -1,6 +1,9 @@
 template<typename T, typename Comparator = std::less<T>>
 struct SparseTable {
  public:
+  SparseTable() = default;
+  explicit SparseTable(const std::vector<T>& a) { build(a); }
+
   void build(const std::vector<T>& a) {
     int n = a.size(), L = 1;
     while ((1 << L) <= n) ++L;
