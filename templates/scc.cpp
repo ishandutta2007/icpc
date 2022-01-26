@@ -3,7 +3,7 @@ struct DirectedAcyclicGraph {
   int n;
   std::vector<std::vector<Edge>> graph;
 
-  explicit DirectedAcyclicGraph(int n) : n(n), graph(n) {}
+  explicit DirectedAcyclicGraph(int n = 0) : n(n), graph(n) {}
 
   std::vector<int> get_topological_order() const {
     std::vector<int> degree(n);
