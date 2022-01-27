@@ -1,7 +1,7 @@
 struct Trie {
-  static int charset_size;
+  constexpr static int kCharsetSize = 26;
 
-  Trie() : go(charset_size) {}
+  Trie() : go(kCharsetSize) {}
 
   Trie* fail = nullptr;
   std::vector<Trie*> go;
@@ -17,7 +17,7 @@ struct Trie {
     que.emplace(root);
     while (!que.empty()) {
       Trie* u = que.front(); que.pop();
-      for (int ch = 0; ch < charset_size; ++ch) if (u->go[ch] != nullptr) {
+      for (int ch = 0; ch < kCharsetSize; ++ch) if (u->go[ch] != nullptr) {
         Trie* v = u->go[ch];
         Trie* f = u->fail;
         while (f != root && f->go[ch] == nullptr) f = f->fail;
@@ -28,6 +28,4 @@ struct Trie {
     }
   }
 };
-
-int Trie::charset_size = 26;
 
