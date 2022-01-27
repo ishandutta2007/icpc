@@ -7,7 +7,7 @@ struct Tree {
 
   explicit Tree(int n = 0) : n(n), graph(n), dfn(n), ed(n), rd(n), depth(n), parent(n), sz(n) {}
 
-  void make(int root) {
+  void make(int root = 0) {
     dfs(root, -1);
   }
 
