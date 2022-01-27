@@ -27,5 +27,22 @@ struct Trie {
       }
     }
   }
+
+  void make_shortcuts() {
+    Trie* root = this;
+    std::queue<Trie*> que;
+    que.emplace(root);
+    while (!que.empty()) {
+      Trie* u = que.front(); que.pop();
+      for (int ch = 0; ch < kCharsetSize; ++ch) if (u->go[ch] != nullptr) {
+        que.emplace(u->go[ch]);
+      }
+      for (int ch = 0; ch < kCharsetSize; ++ch) if (u->go[ch] == nullptr) {
+        Trie* f = u->fail;
+        while (f != root && f->go[ch] == nullptr) f = f->fail;
+        u->go[ch] = f->go[ch] == nullptr ? root : f->go[ch];
+      }
+    }
+  }
 };
 
