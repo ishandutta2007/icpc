@@ -77,7 +77,14 @@ struct Binomial final {
     } else {
       b = std::min(b, a - b);
       Integral<MOD> ret = 1;
-      for (T i = 1; i <= b; ++i) ret = ret * (a + 1 - i) / i;
+      for (T i = 1; i <= b; ++i) {
+        ret = ret * (a + 1 - i);
+        if (i < inv_fact.size()) {
+          ret = ret * inv_fact[i] * fact[i - 1];
+        } else {
+          ret = ret / i;
+        }
+      }
       return ret;
     }
   }
