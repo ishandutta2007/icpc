@@ -14,19 +14,18 @@ T exgcd(T a, T b, T& x, T& y) {
 //   xx = x + b / g * t
 //   yy = y - a / g * t
 //   for all t in Z
-template<typename T>
-bool diophantine(T a, T b, T c, T& x, T& y, T& g) {
+bool diophantine(long long a, long long b, long long c, long long& x, long long& y, long long& g) {
   if (a == 0 && b == 0) return c == 0 ? (x = y = g = 0, true) : false;
   if (a == 0) return (c % b == 0) ? (x = 0, y = c / b, g = std::abs(b), true) : false;
   if (b == 0) return (c % a == 0) ? (x = c / a, y = 0, g = std::abs(a), true) : false;
   g = exgcd(a, b, x, y);
   if (c % g != 0) return false;
-  T dx = c / a;
+  long long dx = c / a;
   c -= dx * a;
-  T dy = c / b;
+  long long dy = c / b;
   c -= dy * b;
-  x = dx + T((__int128)x * (c / g) % b);
-  y = dy + T((__int128)y * (c / g) % a);
+  x = dx + (long long)((__int128)x * (c / g) % b);
+  y = dy + (long long)((__int128)y * (c / g) % a);
   g = std::abs(g);
   return true;
 }
