@@ -31,18 +31,17 @@ bool diophantine(T a, T b, T c, T& x, T& y, T& g) {
   return true;
 }
 
-template<typename T = long long>
-bool chinese_remainder_theorem(T k1, T m1, T k2, T m2, T& k, T& m) {
+bool chinese_remainder_theorem(long long k1, long long m1, long long k2, long long m2, long long& k, long long& m) {
   k1 %= m1;
   if (k1 < 0) k1 += m1;
   k2 %= m2;
   if (k2 < 0) k2 += m2;
-  T x, y, g;
+  long long x, y, g;
   if (!diophantine(m1, -m2, k2 - k1, x, y, g)) {
     return false;
   }
-  T dx = m2 / g;
-  T delta = x / dx - (x % dx < 0);
+  long long dx = m2 / g;
+  long long delta = x / dx - (x % dx < 0);
   k = m1 * (x - dx * delta) + k1;
   m = m1 / g * m2;
   assert(0 <= k && k < m);
