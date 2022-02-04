@@ -55,6 +55,10 @@ struct TreeHeavyLightDecomposition {
     return ret;
   }
 
+  int get_dist(int a, int b) {
+    return depth[a] + depth[b] - 2 * depth[get_lca(a, b)];
+  }
+
   // Handler() :: void operator () (int side, int L, int R).
   template<typename Handler>
   Handler traverse(Handler&& handler, int a, int b, bool is_lca_included = true) {
