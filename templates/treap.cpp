@@ -88,9 +88,9 @@ void merge(Treap*& a, Treap* b, Treap* c) {
 
 template<typename Handler>
 Handler on_interval(Handler&& handler, Treap*& root, int l, int r) {
-  Treap* a = nullptr;
-  Treap* b = nullptr;
-  Treap* c = nullptr;
+  Treap* a = Treap::nill;
+  Treap* b = Treap::nill;
+  Treap* c = Treap::nill;
   split_by_sz(root, b, c, r);
   split_by_sz(b, a, b, l - 1);
   handler(b);
