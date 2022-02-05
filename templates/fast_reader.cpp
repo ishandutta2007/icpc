@@ -12,7 +12,7 @@ struct FastReader {
     return *this;
   }
 
-private:
+ private:
   int next_char() {
     if (position == length) {
       position = 0, length = fread(&buffer[0], 1, LENGTH, in);
