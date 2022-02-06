@@ -62,10 +62,15 @@ class SegmentTreeBase {
 };
 
 struct Monoid {
-  bool id() const { return false; }
+  bool identity() const { return id_; }
+  bool id_ = false;
+  static Monoid make_identity() { Monoid ret; ret.id_ = true; return ret; }
 };
 
 Monoid operator*(const Monoid& lhs, const Monoid& rhs) {
+  if (lhs.identity()) return rhs;
+  if (rhs.identity()) return lhs;
+  // TODO
 }
 
 struct Node {
@@ -91,7 +96,7 @@ struct SegmentTree : public SegmentTreeBase<Node, SegmentTree> {
   }
 
   Monoid query(int L, int R) {
-    Monoid ret{};
+    Monoid ret = Monoid::make_identity();
     traverse([&](int l, int r, Node& u) {
       ret = ret * u.m;
     }, L, R);
