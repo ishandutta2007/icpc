@@ -36,6 +36,7 @@ struct StronglyConnectedComponent {
   int tim = 0, top = 0, tot = 0;
   std::vector<int> cardinality;
 
+  StronglyConnectedComponent() = default;
   explicit StronglyConnectedComponent(int n)
     : n(n), dfn(n), low(n), belong(n), stack(n), instack(n), graph(n) {}
   virtual ~StronglyConnectedComponent() = default;
