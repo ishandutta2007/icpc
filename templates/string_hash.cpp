@@ -8,7 +8,7 @@ struct StringHash {
 
   explicit StringHash(const std::string& str) : n(str.length()), table(str.length() + 1, 0) {
     for (int i = n - 1; i >= 0; --i) {
-      table[i] = str[i] + table[i + 1] * seed;
+      table[i] = table[i + 1] * seed + str[i];
     }
     if (pw.size() <= str.length()) {
       int last = pw.size();
