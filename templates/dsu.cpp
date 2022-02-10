@@ -8,6 +8,8 @@ struct Dsu {
     std::iota(dsu.begin(), dsu.end(), 0);
   }
 
+  int size() const { return n; }
+
   int find(int x) {
     return dsu[x] == x ? x : dsu[x] = find(dsu[x]);
   }
