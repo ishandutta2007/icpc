@@ -1,3 +1,14 @@
+template<typename Edge>
+struct Graph {
+  int n = 0;
+  std::vector<std::vector<Edge>> graph;
+
+  Graph() = default;
+  explicit Graph(int n) : n(n), graph(n) {}
+
+  int size() const { return n; }
+};
+
 struct BiconnectedComponent {
   struct Edge {
     int v, next;
@@ -42,6 +53,29 @@ struct BiconnectedComponent {
     for (int i = 0; i < n; ++i) {
       if (dfn[i] == -1) tarjan(i, -1);
     }
+  }
+
+  template<typename Edge>
+  Graph<Edge> shrink() const {
+    Graph<Edge> result_graph(tot);
+    for (int u = 0; u < n; ++u) {
+      for (int i = head[u]; i != -1; i = g[i].next) {
+        int v = g[i].v;
+        if (belong[u] != belong[v]) {
+          result_graph.graph[belong[u]].emplace_back(Edge{.v = belong[v]});
+        }
+      }
+    }
+    for (int u = 0; u < tot; ++u) {
+      auto& vec = result_graph.graph[u];
+      std::sort(vec.begin(), vec.end(), [&](const Edge& lhs, const Edge& rhs) {
+        return lhs.v < rhs.v;
+      });
+      vec.erase(std::unique(vec.begin(), vec.end(), [&](const Edge& lhs, const Edge& rhs) {
+        return lhs.v == rhs.v;
+      }), vec.end());
+    }
+    return result_graph;
   }
 };
 
