@@ -3,6 +3,8 @@ import logging
 import pathlib
 import random
 
+SCRIPT_DIR = pathlib.Path(__file__).parent.absolute()
+
 @click.group()
 def main():
     logger = logging.getLogger()
@@ -10,7 +12,7 @@ def main():
 
 @main.command()
 def any():
-    for path in pathlib.Path('./data/hints').iterdir():
+    for path in (SCRIPT_DIR / 'data' / 'hints').iterdir():
         logging.info(str(path))
         with open(path, 'r') as f:
             lines = f.readlines()
@@ -20,13 +22,13 @@ def any():
 
 @main.command()
 def idea():
-    with open('./data/hints/ideas.txt', 'r') as f:
+    with open(SCRIPT_DIR / './data/hints/ideas.txt', 'r') as f:
         ideas = f.readlines()
     print(ideas[random.randint(0, len(ideas) - 1)])
 
 @main.command()
 def debug():
-    with open('./data/hints/bugs.txt', 'r') as f:
+    with open(SCRIPT_DIR / './data/hints/bugs.txt', 'r') as f:
         bugs = f.readlines()
     print(bugs[random.randint(0, len(bugs) - 1)])
 
