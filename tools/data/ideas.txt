@@ -1,0 +1,4 @@
+Binary search?
+Try some small cases?
+Monotonicity?
+Bruteforce?
