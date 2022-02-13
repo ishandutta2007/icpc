@@ -1,5 +1,5 @@
 '''
-Usage: python3 draw_graph.py < example_graph.txt
+Usage: python3 draw_graph.py < ./data/example_graph.txt
 '''
 
 import matplotlib.pyplot as plt
