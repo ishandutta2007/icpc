@@ -9,6 +9,16 @@ def main():
     logger.setLevel(logging.INFO)
 
 @main.command()
+def any():
+    for path in pathlib.Path('./data/hints').iterdir():
+        logging.info(str(path))
+        with open(path, 'r') as f:
+            lines = f.readlines()
+        for line in lines:
+            print(line.strip())
+        print()
+
+@main.command()
 def idea():
     with open('./data/hints/ideas.txt', 'r') as f:
         ideas = f.readlines()
