@@ -28,6 +28,8 @@ struct BiconnectedComponent {
   void add_edge(int u, int v) {
     g.emplace_back(Edge{.v = v, .next = head[u]});
     head[u] = (int)g.size() - 1;
+    g.emplace_back(Edge{.v = u, .next = head[v]});
+    head[v] = (int)g.size() - 1;
   }
 
   void tarjan(int u, int pree) {
