@@ -11,7 +11,7 @@ def main():
     logger.setLevel(logging.INFO)
 
 @main.command()
-def any():
+def all():
     for path in (_SCRIPT_DIR / 'data' / 'hints').iterdir():
         logging.info(str(path))
         with open(path, 'r') as f:
