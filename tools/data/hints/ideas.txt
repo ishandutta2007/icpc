@@ -1,4 +1,5 @@
 Binary search?
+Classification?
 Try some small cases?
 Monotonicity?
 Bruteforce?
