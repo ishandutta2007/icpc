@@ -71,7 +71,7 @@ struct StringHash {
 };
 
 template<typename HashType>
-HashType StringHash<HashType>::seed = 214142131331;
+HashType StringHash<HashType>::seed = 214131331;
 
 template<typename HashType>
 std::vector<HashType> StringHash<HashType>::pw;
