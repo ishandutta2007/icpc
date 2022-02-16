@@ -1,3 +1,8 @@
+// template<int MOD>
+// bool operator<(const Integral<MOD>& lhs, const Integral<MOD>& rhs) {
+//   return lhs.val() < rhs.val();
+// }
+
 template<typename HashType = unsigned long long>
 struct StringHash {
   static HashType seed;
