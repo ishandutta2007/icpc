@@ -29,9 +29,6 @@ struct LinkCutTree {
     }
   }
 
-  LinkCutTree() {}
-  explicit LinkCutTree(int val) : val(val), vmax(val) {}
-
   void up() {
     if (this == nill) return;
     down();  // In case children's order matter.
