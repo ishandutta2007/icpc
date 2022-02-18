@@ -139,6 +139,18 @@ struct LinkCutTree {
     return p;
   }
 
+  LinkCutTree* get_splay_successor() {
+    this->down();
+    LinkCutTree* p = this->ch[1];
+    if (p == nill) return nill;
+    while (true) {
+      p->down();
+      if (p->ch[0] == nill) break;
+      p = p->ch[0];
+    }
+    return p;
+  }
+
   LinkCutTree* get_max() {
     LinkCutTree* p = this;
     while (true) {
