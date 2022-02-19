@@ -81,5 +81,20 @@ struct PrimeTable {
     enumerate_factors(0, 1);
     return factors;
   }
+
+  template<typename T>
+  std::vector<T> get_factors_with_nonzero_mu(T x) const {  // Note: Not in ascending order.
+    assert(x >= 1);
+    const std::vector<typename std::pair<T, T>> repr = get_canonical_representation(x);
+    std::vector<T> factors;
+    std::function<void(int, T)> enumerate_factors = [&](int at, T val) -> void {
+      factors.emplace_back(val);
+      for (int i = at; i < repr.size(); ++i) {
+        enumerate_factors(i + 1, val * repr[i].first);
+      }
+    };
+    enumerate_factors(0, 1);
+    return factors;
+  }
 };
 
