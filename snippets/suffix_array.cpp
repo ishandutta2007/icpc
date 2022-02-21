@@ -52,7 +52,7 @@ struct SuffixArray {
     }
     for (int i = 0; i <= n; ++i) rank[sa[i]] = i;
 
-    lcp.resize(n + 1, 0);
+    lcp.resize(n, 0);
     int h = 0;
     for (int i = 0; i < n; ++i) {
       int j = sa[rank[i] - 1];
