@@ -1,6 +1,9 @@
 template<typename T, typename Comparator = std::less<T>>
 struct SparseTable2D {
  public:
+  SparseTable2D() = default;
+  explicit SparseTable2D(const std::vector<std::vector<T>>& a) { build(a); }
+
   void build(const std::vector<std::vector<T>>& a) {
     assert(a.size() > 0);
     n = a.size();
@@ -18,9 +21,9 @@ struct SparseTable2D {
         for (int r = 0; r + (1 << i) <= n; ++r) {
           for (int c = 0; c + (1 << j) <= m; ++c) {
             if (i)
-              table[i][j][r][c] = select(table[i - 1][j][r][c], table[i - 1][j][r + (1 << i - 1)][c]);
+              table[i][j][r][c] = select(table[i - 1][j][r][c], table[i - 1][j][r + (1 << (i - 1))][c]);
             else
-              table[i][j][r][c] = select(table[i][j - 1][r][c], table[i][j - 1][r][c + (1 << j - 1)]);
+              table[i][j][r][c] = select(table[i][j - 1][r][c], table[i][j - 1][r][c + (1 << (j - 1))]);
           }
         }
       }
