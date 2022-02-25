@@ -3,3 +3,4 @@ Classification?
 Try some small cases?
 Monotonicity?
 Bruteforce?
+Partial sum?
