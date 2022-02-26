@@ -82,6 +82,7 @@ nnoremap <leader>E :!g++ % -std=c++17 -O2 -Wno-unused-result -o %<<cr>
 nnoremap <leader>e :!g++ % -std=c++17 -O2 -D ALGO -I ~/.vim/icpc/include -Wno-unused-result -g -fsanitize=undefined -o %<<cr>
 nnoremap <leader>w :!./%<<cr>
 nnoremap <leader>q :!time ./%< <%<.in<cr>
+nnoremap <leader>y ggVG"+y
 
 if has('mac')
   nnoremap <leader>1 :!pbpaste >%<.in<cr>
