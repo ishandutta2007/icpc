@@ -8,6 +8,9 @@
 
 namespace {
 
+// [s, n)
+#define REP(i,s,n) for (int i = int(s); i < int(n); ++i)
+#define PER(i,s,n) for (int i = int(n) - 1; i >= int(s); --i)
 using LL = long long;
 LL gcd(LL a, LL b) { return b == 0 ? a : gcd(b, a % b); }
 template<typename T, typename U> bool enlarge(T& a, U b) { return a < b ? (a = b, true) : false; }
