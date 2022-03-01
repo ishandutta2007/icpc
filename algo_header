@@ -5,6 +5,9 @@
 #define DUMP(...)
 #define CHECK(...)
 #endif
+// [s, n)
+#define REP(i, s, n) for (int i = int(s); i < int(n); ++i)
+#define PER(i, s, n) for (int i = int(n) - 1; i >= int(s); --i)
 
 namespace {
 
