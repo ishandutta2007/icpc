@@ -334,6 +334,7 @@ Polynomial<T> conditioned_mod_power(Polynomial<T> poly, T k, int len = 0) {
   return ret;
 }
 
+// a.k.a. Multiset counting.
 template<typename T>
 Polynomial<T> mod_euler_transform(const Polynomial<T>& poly, int len = 0) {
   // https://www.luogu.com.cn/problem/P4389
