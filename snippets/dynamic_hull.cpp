@@ -4,6 +4,11 @@ struct DynamicHull {
   // Two operation types are supported:
   // - Insert a new line with slope equals to k and intercept equals to m.
   // - Given a param x, find the maximum value of k * x + m among lines_.
+  //
+  // Note:
+  // If you want to eval in floating type, use a floating type instance directly.
+  // The integral type instance may skip some lines
+  // if they only dominate an interval that does not contain an integer.
 
   struct Line {
     static constexpr T inf = std::numeric_limits<T>::max();
