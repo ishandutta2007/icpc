@@ -1,16 +1,15 @@
+template<typename T>
 struct DynamicHull {
  public:
-  using LL = long long;
-
   // Two operation types are supported:
   // - Insert a new line with slope equals to k and intercept equals to m.
   // - Given a param x, find the maximum value of k * x + m among lines_.
 
   struct Line {
-    static constexpr LL inf = std::numeric_limits<LL>::max();
-    LL k, m;
-    mutable LL p;
-    Line(LL k, LL m, LL p) : k(k), m(m), p(p) {}
+    static constexpr T inf = std::numeric_limits<T>::max();
+    T k, m;
+    mutable T p;
+    Line(T k, T m, T p) : k(k), m(m), p(p) {}
     bool is_query() const { return m == inf; }
     bool operator < (const Line &rhs) const {
       if (is_query() || rhs.is_query()) return p < rhs.p;
@@ -18,7 +17,7 @@ struct DynamicHull {
     }
   };
 
-  void insert_line(LL k, LL m) {
+  void insert_line(T k, T m) {
     auto y = lines_.insert(Line(k, m, 0));
     for (auto z = std::next(y); isect(y, z); z = lines_.erase(z));
     if (y != lines_.begin()) {
@@ -28,7 +27,7 @@ struct DynamicHull {
     }
   }
 
-  LL eval(LL x) {
+  T eval(T x) const {
     auto line = *lines_.lower_bound(Line(0, Line::inf, x));
     return line.k * x + line.m;
   }
@@ -38,12 +37,16 @@ struct DynamicHull {
   const std::multiset<Line>& lines() const { return lines_; }
 
  private:
-  using iterator = std::multiset<Line>::iterator;
+  using iterator = typename std::multiset<Line>::iterator;
 
-  LL div(LL a, LL b) {
-    return a / b - ((a ^ b) < 0 && a % b);
+  T div(T a, T b) const {
+    if constexpr(std::is_integral<T>::value) {
+      return a / b - ((a ^ b) < 0 && a % b);
+    } else {
+      return a / b;
+    }
   }
-  bool isect(iterator a, iterator b) {
+  bool isect(iterator a, iterator b) const {
     if (b == lines_.end()) { a->p = Line::inf; return false; }
     if (a->k == b->k) a->p = a->m > b->m ? Line::inf : -Line::inf;
     else a->p = div(b->m - a->m, a->k - b->k);
