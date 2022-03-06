@@ -1,10 +1,8 @@
 struct Trie {
   constexpr static int kCharsetSize = 26;
 
-  Trie() : go(kCharsetSize) {}
-
   Trie* fail = nullptr;
-  std::vector<Trie*> go;
+  std::array<Trie*, kCharsetSize> go;
 
   // OnLinkFail :: void(Trie* u, Trie* fail).
   // NOTE: u may equals to fail.
