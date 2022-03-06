@@ -47,3 +47,15 @@ bool chinese_remainder_theorem(long long k1, long long m1, long long k2, long lo
   return true;
 }
 
+template<typename T, typename U>
+std::common_type_t<T, U> ceil_div(T x, U y) {
+  auto q = x / y, r = x % y;
+  return q + ((r != 0) & ((r < 0) ^ (y > 0)));
+}
+
+template<typename T, typename U>
+std::common_type_t<T, U> floor_div(T x, U y) {
+  auto q = x / y, r = x % y;
+  return q - ((r != 0) & ((r < 0) ^ (y < 0)));
+}
+
