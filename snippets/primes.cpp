@@ -113,15 +113,26 @@ struct PrimeTable {
     g.resize(m, 0);
     for (int i = 0; i < m; ++i) g[i] = entries[i] - 1;
 
+    int w = std::sqrt(n);
+    while ((w + 1) * 1LL * (w + 1) <= n) ++w;
+    std::vector<T> small(w + 1), big(w + 1);
+    for (int i = 1, j = 0; i <= w; ++i) {
+      while (j < m && entries[j] < i) ++j;
+      assert(entries[j] == i);
+      small[i] = j;
+    }
+    for (int i = w, j = 0; i >= 1; --i) {
+      while (j < m && entries[j] < n / i) ++j;
+      assert(entries[j] == n / i);
+      big[i] = j;
+    }
+
     for (int k = 0; k < primes.size(); ++k) {
       int p = primes[k];
-      LL bar = p * 1LL * p;
-      if (bar > n) break;
-      int j = m - 1;
-      for (int i = m - 1; i >= 0 && entries[i] >= bar; --i) {
+      if (p * 1LL * p > n) break;
+      for (int i = m - 1; i >= 0 && entries[i] >= p * 1LL * p; --i) {
         LL from = entries[i] / p;
-        while (j >= 0 && entries[j] > from) --j;
-        g[i] += -g[j] + k;
+        g[i] += -g[from <= w ? small[from] : big[n / from]] + k;
       }
     }
     return g.back();
