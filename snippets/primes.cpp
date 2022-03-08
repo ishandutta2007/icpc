@@ -96,5 +96,34 @@ struct PrimeTable {
     enumerate_factors(0, 1);
     return factors;
   }
+
+  template<typename T>
+  T get_pi(T n) const {
+    // pi(n) = \sum_{i=2}^{n}[is_prime(i)].
+    // min_25 sieve.
+    // O(n^{3/4}/log(n)).
+    assert(!primes.empty());
+    assert(primes.back() * 1LL * primes.back() >= n);
+    std::vector<T> entries;
+    for (T i = 1; i <= n; i += n % i / (n / i) + 1) entries.emplace_back(n / i);
+    std::reverse(entries.begin(), entries.end());
+
+    int m = entries.size();
+    std::vector<T> g(m, 0);
+    for (int i = 0; i < m; ++i) g[i] = entries[i] - 1;
+
+    for (int k = 0; k < primes.size(); ++k) {
+      int p = primes[k];
+      if (p * 1LL * p > n) break;
+      int j = m - 1;
+      for (int i = m - 1; i >= 0; --i) {
+        if (entries[i] < p * 1LL * p) break;
+        while (j >= 0 && entries[j] > entries[i] / p) --j;
+        assert(j >= 0 && entries[j] == entries[i] / p);
+        g[i] += -g[j] + k;
+      }
+    }
+    return g.back();
+  }
 };
 
