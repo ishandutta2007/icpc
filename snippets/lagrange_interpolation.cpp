@@ -93,3 +93,30 @@ T eval_sum_over_segment(const Polynomial<T>& poly, T l, T r) {  // [l, r]
   return eval(eval_sum_from_l(poly, l), T(r));
 }
 
+// TODO: Format to T.
+template<typename Mint>
+Mint eval_by_uniform_sampling(Mint x0, Mint strip, const std::vector<Mint>& y, Mint x) {
+  int k = (int)y.size() - 1;
+  assert(k >= 0);
+  if (((x - x0) / strip).val() <= k) return y[((x - x0) / strip).val()];
+  // x_i = x_0 + i * strip.
+  // By Lagrange interpolation we have:
+  // L(x) = \sum_{i=0}^{k} y_i * l_i(x),
+  // Where l_i(x) = \Pi_{j=0, j!=i}^{k} (x-x_j)/(x_i-x_j).
+  //
+  // Since it's from unifrom sampling, x_{i+1}-x_{i}=x_{i}-x_{i-1}=strip, we have:
+  // l_{i+1}(x) = l_i(x)*(x-x_i)/(x-x_{i+1})/(i+1)*(i-k)
+  Mint l = 1;
+  for (int j = 1; j <= k; ++j) {
+    l = l * (x - (x0 + strip * j)) / (-strip * j);
+  }
+  Mint ret = 0;
+  for (int i = 0; i <= k; ++i) {
+    ret += y[i] * l;
+    if (i != k) {
+      l = l * (x - (x0 + strip * i)) / (x - (x0 + strip * (i + 1))) / (i + 1) * (i - k);
+    }
+  }
+  return ret;
+}
+
