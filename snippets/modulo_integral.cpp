@@ -10,6 +10,13 @@ struct Integral {
   Integral() = default;
   ~Integral() = default;
 
+  // Explicit conversion to other type.
+  template<typename T>
+  explicit operator T() const {
+    static_assert(std::is_same<T, int>::value || std::is_same<T, long long>::value, "");
+    return T(v_);
+  }
+
   template<typename T> T norm(T v) const {
     if constexpr(sizeof(T) > sizeof(MOD)) {
       v %= MOD;
