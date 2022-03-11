@@ -41,6 +41,7 @@ struct SuffixArray {
 
   SparseTable<int, std::less<int>> st;
 
+  // Due to implementation issue, you should not use 0 in your charset.
   explicit SuffixArray(const StringType& s) : n(s.size()), str(s), sa(n + 1), rank(n + 1) {
     if (n > 0) {
       this->len = n;
