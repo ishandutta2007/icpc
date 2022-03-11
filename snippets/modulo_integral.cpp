@@ -13,7 +13,7 @@ struct Integral {
   // Explicit conversion to other type.
   template<typename T>
   explicit operator T() const {
-    static_assert(std::is_same<T, int>::value || std::is_same<T, long long>::value, "");
+    static_assert(sizeof(T) >= sizeof(v_), "");
     return T(v_);
   }
 
