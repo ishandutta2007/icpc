@@ -112,6 +112,8 @@ struct FastFourierTransform {
     return fft(&poly[0], n, flag);
   }
 
+  static int binary_upper_bound(int w) { return 1 << binary_upper_bound_in_bits(w); }
+
  private:
   static constexpr double PI = 3.14159265358979323846;
 
@@ -120,7 +122,6 @@ struct FastFourierTransform {
     const int highbit = 31 - __builtin_clz(w);
     return highbit + 1;
   }
-  static int binary_upper_bound(int w) { return 1 << binary_upper_bound_in_bits(w); }
 
   static void prepare_bits(int num_bits) {
     if (num_bits >= omega.size()) {
