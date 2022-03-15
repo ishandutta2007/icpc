@@ -48,9 +48,7 @@ struct Polynomial final : public std::vector<T> {
 
 template<typename T>
 void ntt(Polynomial<T>& poly, int n, int inv) {
-  if (poly.size() < n) {
-    poly.resize(n, 0);
-  }
+  if (poly.size() < n) poly.resize(n, 0);
   return ntt(&poly[0], n, inv);
 }
 
