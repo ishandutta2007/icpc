@@ -155,5 +155,7 @@ void example() {
   Polynomial<double> d{1.1, 2.1, 3.1}, e{1.1, 2.1, 3.1, 4.1};
   Polynomial<double> f = FastFourierTransform::multiply(d, e);
   DUMP(f);
+
+  DUMP(FastFourierTransform::multiply(Polynomial<double>{}, Polynomial<double>{}));
 }
 
