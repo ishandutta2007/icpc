@@ -314,7 +314,7 @@ template<typename T>
 Polynomial<T> conditioned_mod_power(Polynomial<T> poly, T k, int len = 0) {
   // https://www.luogu.com.cn/problem/P5245
   CHECK(poly.size() >= 1 && poly[0] != T(0));  // In case poly[0] == T(0), find another way.
-  if (len == 0) len = poly.size();
+  if (len == 0) len = ((int)poly.size() - 1) * int(k) + 1;
   T constant = poly[0];
   if (constant != T(1)) {
     T inv_constant = T(1) / constant;
