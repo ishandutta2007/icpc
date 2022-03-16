@@ -42,7 +42,7 @@ $$H(x)=\frac{F(x)}{G(x)},$$
 
 我们考虑算出每行对应的GF, 相乘得到整体的GF. 由于不同行的操作间具有顺序, 此处我们需要在EGF体系下计算.
 
-对于一个格子, 其翻转奇数次的EGF为 $E_{odd}(x)=e^{\frac{x}{HW}}-e^{-\frac{x}{HW}}$, 翻转偶数次的EGF为 $E_{even}(x)=e^{\frac{x}{HW}}+e^{-\frac{x}{HW}}$.
+对于一个格子, 其翻转奇数次的EGF为 $E_{odd}(x)=\frac{e^{\frac{x}{HW}}-e^{-\frac{x}{HW}}}{2}$, 翻转偶数次的EGF为 $E_{even}(x)=\frac{e^{\frac{x}{HW}}+e^{-\frac{x}{HW}}}{2}$.
 
 那么通过枚举每行里 $0\rightarrow 1$ 的次数, 我们可以得到以下形式:
 
