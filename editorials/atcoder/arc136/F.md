@@ -46,8 +46,8 @@ $$H(x)=\frac{F(x)}{G(x)},$$
 
 那么通过枚举每行里 $0\rightarrow 1$ 的次数, 我们可以得到以下形式:
 
-$$F_{exp}(x)=\Pi\sum E_{odd}(x)^aE_{even}(x)^b=2^{-HW}\sum_{k=-HW}^{HW}coef_{f,k}e^{\frac{kx}{HW}},$$
-其中 $F_{exp}(x)=\sum_{i=0}^{\infty}f_i\frac{x^i}{i!}$ 是 $f$ 序列的EGF形式.
+$$F_{exp}(x)=\Pi\sum \binom{t0}{t1}\binom{t2}{t3}E_{odd}(x)^aE_{even}(x)^b=2^{-HW}\sum_{k=-HW}^{HW}coef_{f,k}e^{\frac{kx}{HW}},$$
+其中 $F_{exp}(x)=\sum_{i=0}^{\infty}f_i\frac{x^i}{i!}$ 是 $f$ 序列的EGF形式. $t_0,t_1,t_2,t_3$ 是一些枚举的变量.
 
 但我们实际上需要的是其OGF形式, 也就是 $F(x)=\sum_{i=0}^{\infty}f_ix^i$.
 
