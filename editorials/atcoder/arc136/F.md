@@ -2,7 +2,7 @@ Source: https://atcoder.jp/contests/arc136/tasks/arc136_f
 
 是一道生成函数题.
 
-与 [\[ZJOI2019\]开关](https://www.luogu.com.cn/problem/P5326) 几乎一致, 除了最后的DP部分.
+与 [\[ZJOI2019\]开关](https://www.luogu.com.cn/problem/P5326) 几乎一致, 除了是个矩阵以及具有指定初始状态.
 
 ## Problem description
 
@@ -97,6 +97,4 @@ H'(1)&=\frac{U'(1)-V'(1)}{2^{-HW}|T|}\\
 &=\frac{HW}{|T|}\sum_{k=-HW}^{HW-1}\frac{coef_{f,k}-coef_{g,k}}{k-HW},
 \end{array}$$
 
-~~然后力气大一点硬DP就完了.~~
-
-DP的时候要注意对每行先展开再乘, 由于每行展开只有 $O(W)$ 项, 整体复杂度是 $O((HW)^2)$.
+~~然后直接算.~~
