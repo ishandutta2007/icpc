@@ -46,7 +46,7 @@ $$H(x)=\frac{F(x)}{G(x)},$$
 
 那么通过枚举每行里 $0\rightarrow 1$ 的次数, 我们可以得到以下形式:
 
-$$F_{exp}(x)=\Pi\sum E_{odd}(x)^aE_{even}(x)^b=\sum_{k=-HW}^{HW}coef_{f,k}e^{\frac{kx}{HW}},$$
+$$F_{exp}(x)=\Pi\sum E_{odd}(x)^aE_{even}(x)^b=2^{-HW}\sum_{k=-HW}^{HW}coef_{f,k}e^{\frac{kx}{HW}},$$
 其中 $F_{exp}(x)=\sum_{i=0}^{\infty}f_i\frac{x^i}{i!}$ 是 $f$ 序列的EGF形式.
 
 但我们实际上需要的是其OGF形式, 也就是 $F(x)=\sum_{i=0}^{\infty}f_ix^i$.
@@ -55,10 +55,10 @@ $$F_{exp}(x)=\Pi\sum E_{odd}(x)^aE_{even}(x)^b=\sum_{k=-HW}^{HW}coef_{f,k}e^{\fr
 
 所以有
 
-$$F(x)=\sum_{k=-HW}^{HW}coef_{f,k}\frac{1}{1-\frac{k}{HW}x},$$
+$$F(x)=2^{-HW}\sum_{k=-HW}^{HW}coef_{f,k}\frac{1}{1-\frac{k}{HW}x},$$
 相应地, 有
 
-$$G(x)=\sum_{k=-HW}^{HW}coef_{g,k}\frac{1}{1-\frac{k}{HW}x}.$$
+$$G(x)=2^{-HW}\sum_{k=-HW}^{HW}coef_{g,k}\frac{1}{1-\frac{k}{HW}x}.$$
 回到式 $H(x)=\frac{F(x)}{G(x)}$, 由于 $G(x)$ 中含有 $\frac{1}{1-x}$ 项, 直接求导代 $1$ 会导致其不收敛. 所以我们对上下式同乘 $(1-x)$ 再处理:
 
 $$H'(1)=(\frac{(1-x)F(x)}{(1-x)G(x)})'|_{x=1}.$$
@@ -69,12 +69,34 @@ $$\begin{array}{ll}H'(1)&=(\frac{U(x)}{V(x)})'|_{x=1}\\
 &=\frac{U'(1)V(1)-U(1)V'(1)}{V(1)^2}.\end{array}$$
 其中
 
+$$\begin{array}{ll}U(1)&=(1-x)F(x)|_{x=1}\\
+&=2^{-HW}\sum_{k=-HW}^{HW}coef_{f,k}\frac{1-x}{1-\frac{k}{HW}x}|_{x=1}\\
+&=2^{-HW}coef_{f,HW}\\
+&=2^{-HW}|T|,
+\end{array}$$
+式中 $T$ 是目标状态集, $V(1)$ 与 $U(1)$ 具有相似的形式
+
+$$V(1)=(1-x)G(x)|_{x=1}=2^{-HW}|T|,$$
+
+以及
 $$\begin{array}{ll}
 U'(1)&=((1-x)F(x))'|_{x=1}\\
-&=(\sum_{k=-HW}^{HW}coef_{f,k}\frac{1-x}{1-\frac{k}{HW}x})'|_{x=1}\\
-&=\sum_{k=-HW}^{HW-1}coef_{f,k}(\frac{1-x}{1-\frac{k}{HW}x})'|_{x=1}\\
-&=\sum_{k=-HW}^{HW-1}coef_{f,k}\frac{1}{\frac{k}{HW}-1}.\\
+&=(2^{-HW}\sum_{k=-HW}^{HW}coef_{f,k}\frac{1-x}{1-\frac{k}{HW}x})'|_{x=1}\\
+&=2^{-HW}\sum_{k=-HW}^{HW-1}coef_{f,k}(\frac{1-x}{1-\frac{k}{HW}x})'|_{x=1}\\
+&=2^{-HW}\sum_{k=-HW}^{HW-1}coef_{f,k}\frac{1}{\frac{k}{HW}-1},\\
 \end{array}$$
+$V'(1)$ 与 $U'(1)$ 具有相似的形式
+
+$$V'(1)=((1-x)G(x))'|_{x=1}=2^{-HW}\sum_{k=-HW}^{HW-1}coef_{g,k}\frac{1}{\frac{k}{HW}-1},$$
+
+于是有
+
+$$\begin{array}{ll}
+H'(1)&=\frac{U'(1)-V'(1)}{2^{-HW}|T|}\\
+&=\frac{\sum_{k=-HW}^{HW-1}(coef_{f,k}+coef_{g,k})\frac{1}{\frac{k}{HW}-1}}{|T|}\\
+&=\frac{1}{|T|}\sum_{k=-HW}^{HW-1}(coef_{f,k}+coef_{g,k})\frac{HW}{k-HW},
+\end{array}$$
+
 ~~然后力气大一点硬DP就完了.~~
 
 DP的时候要注意对每行先展开再乘, 由于每行展开只有 $O(W)$ 项, 整体复杂度是 $O((HW)^2)$.
