@@ -93,8 +93,8 @@ $$V'(1)=((1-x)G(x))'|_{x=1}=2^{-HW}\sum_{k=-HW}^{HW-1}coef_{g,k}\frac{1}{\frac{k
 
 $$\begin{array}{ll}
 H'(1)&=\frac{U'(1)-V'(1)}{2^{-HW}|T|}\\
-&=\frac{\sum_{k=-HW}^{HW-1}(coef_{f,k}+coef_{g,k})\frac{1}{\frac{k}{HW}-1}}{|T|}\\
-&=\frac{1}{|T|}\sum_{k=-HW}^{HW-1}(coef_{f,k}+coef_{g,k})\frac{HW}{k-HW},
+&=\frac{\sum_{k=-HW}^{HW-1}(coef_{f,k}-coef_{g,k})\frac{1}{\frac{k}{HW}-1}}{|T|}\\
+&=\frac{HW}{|T|}\sum_{k=-HW}^{HW-1}\frac{coef_{f,k}-coef_{g,k}}{k-HW},
 \end{array}$$
 
 ~~然后力气大一点硬DP就完了.~~
