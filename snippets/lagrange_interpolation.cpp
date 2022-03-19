@@ -94,10 +94,10 @@ T eval_sum_over_segment(const Polynomial<T>& poly, T l, T r) {  // [l, r]
 }
 
 template<typename T>
-T eval_by_uniform_sampling(T x0, T strip, const std::vector<T>& y, T x) {
-  int k = (int)y.size() - 1;
+T eval_by_uniform_sampling(T x0, T strip, const std::vector<T>& ys, T x) {
+  int k = (int)ys.size() - 1;
   assert(k >= 0);
-  if (auto t = (long long)((x - x0) / strip); t <= k && strip * t == x - x0) return y[t];
+  if (auto t = (long long)((x - x0) / strip); t <= k && strip * t == x - x0) return ys[t];
   // x_i = x_0 + i * strip.
   // By Lagrange interpolation we have:
   // L(x) = \sum_{i=0}^{k} y_i * l_i(x),
@@ -111,7 +111,7 @@ T eval_by_uniform_sampling(T x0, T strip, const std::vector<T>& y, T x) {
   for (int j = 1; j <= k; ++j) l = l * (x - (x0 + strip * j)) / (-strip * j);
   T ret = 0;
   for (int i = 0; i <= k; ++i) {
-    ret += y[i] * l;
+    ret += ys[i] * l;
     if (i != k) l = l * (x - (x0 + strip * i)) / (x - (x0 + strip * (i + 1))) / (i + 1) * (i - k);
   }
   return ret;
