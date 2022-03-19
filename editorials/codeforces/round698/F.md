@@ -6,7 +6,7 @@ Code: Not implemented yet.
 Given $n$ segments with length $l_1,l_2,\cdots,l_n$ and an integer $k$, perform the following operation repeatedly until the maximum length over all segments does not exceed $k$:
 
 - Pick a segment with probability proportional to its length $x$.
-- Pick a real number $r\in (0,x)$ uniformly at random, then break the segment into two segments with length $r$ and $x-r$.
+- Pick a real number $r\in (0,x)$ uniformly at random, then break the segment into two segments with length $r$ and $x-r$ respectively.
 
 Calculate the expected number of operations under field $\mathtt{F}_{998244353}$.
 
