@@ -3,7 +3,7 @@ Status: Under construction.
 Code: Not implemented yet.
 
 ## Problem description
-Given $n$ segments with length $l_1,l_2,\cdots,l_n$ and an integer $k$, perform the folloring operation repeatedly until the maximum length over all segments does not exceed $k$:
+Given $n$ segments with length $l_1,l_2,\cdots,l_n$ and an integer $k$, perform the following operation repeatedly until the maximum length over all segments does not exceed $k$:
 
 - Pick a segment with probability proportional to its length $x$.
 - Pick a real number $r\in (0,x)$ uniformly, then break the segment into two segments with length $r$ and $x-r$.
