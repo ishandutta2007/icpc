@@ -62,10 +62,29 @@ Let $q_{j,m}$ be the probability that $m$ operations are peformed on segment $j$
 $$q_{j,m}=\sum_{i=0}^{\lfloor\frac{l_j}{k}\rfloor}(-1)^i\binom{m+1}{i}(1-\frac{ik}{l_j})^m.$$
 
 
-Therefore, probability that one failsto finish the task within $m$ rounds is
+Therefore, probability that one fails to finish the task within $m$ rounds is
 
 $$1-\sum_{j_1+j_2+\cdots+j_n=m}\frac{m!}{j_1!j_2!\cdots j_n!}\Pi_{r=1}^{n}(1-q_{r,j_r})(\frac{l_j}{L})^{j_r},$$
 where $L=\sum_{r=1}^{n}l_r$.
+
+Let 
+
+$$Q_{r}(x)=\sum_{i=0}^{\infty}\frac{1-q_{r,i}}{i!}(\frac{l_rx}{L})^i,$$
+and
+
+$$P_{exp}(x)=e^x-\Pi_{r=1}^{n}Q_{r}(x),$$
+then, $P(1)$, where $P(x)$ is the OGF version of $P_{exp}(x)$, is the final result.
+
+Let's focus on rearrange $Q_r(x)$:
+
+$$\begin{array}{ll}
+Q_{r}(x)&=\sum_{i=0}^{\infty}\frac{1-q_{r,i}}{i!}(\frac{l_rx}{L})^i\\
+&=\sum_{i=0}^{\infty}\frac{1}{i!}(1-\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\binom{i+1}{j}(1-\frac{jk}{l_r})^i)(\frac{l_rx}{L})^i\\
+&=e^{\frac{l_rx}{L}}-\sum_{i=0}^{\infty}\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\binom{i+1}{j}(1-\frac{jk}{l_r})^i)(\frac{l_rx}{L})^i\\
+&=e^{\frac{l_rx}{L}}-\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=0}^{\infty}\binom{i+1}{j}(1-\frac{jk}{l_r})^i)(\frac{l_rx}{L})^i\\
+
+\end{array}$$
+
 
 A trick: If there is a EGF term $x^De^{Cx}$, then the corresponding OGF will be 
 
