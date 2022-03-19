@@ -46,8 +46,9 @@ Thus,
 $$\begin{array}{ll}
 p_t&=t!s^t(F(\frac{1}{s};t)-F(\frac{1}{s}-1;t))\\
 &=s^t(\sum_{i=0}^{\lfloor \frac{1}{s}\rfloor}(-1)^i\binom{t}{i}(\frac{1}{s}-i)^t-\sum_{i=0}^{\lfloor \frac{1}{s}\rfloor-1}(-1)^i\binom{t}{i}(\frac{1}{s}-1-i)^t)\\
-&=s^t((-1)^{\lfloor \frac{1}{s}\rfloor}\binom{t}{\lfloor \frac{1}{s}\rfloor}(\frac{1}{s}-\lfloor \frac{1}{s}\rfloor)^t+\sum_{i=0}^{\lfloor \frac{1}{s}\rfloor-1}(-1)^i\binom{t}{i}((\frac{1}{s}-i)^t-(\frac{1}{s}-1-i)^t))\\
-&=s^t((-1)^{z}\binom{t}{z}(\frac{1}{s}-z)^t+\sum_{i=0}^{z-1}(-1)^i\binom{t}{i}((\frac{1}{s}-i)^t-(\frac{1}{s}-1-i)^t))
+&=\sum_{i=0}^{z}(-1)^i\binom{t}{i}(1-is)^t-\sum_{i=0}^{z-1}(-1)^i\binom{t}{i}(1-(i+1)s)^t\\
+&=\sum_{i=0}^{z}(-1)^i\binom{t}{i}(1-is)^t+\sum_{i=1}^{z}(-1)^i\binom{t}{i-1}(1-is)^t\\
+&=\sum_{i=0}^{z}(-1)^i\binom{t+1}{i}(1-is)^t,
 \end{array}$$
 where $z=\lfloor\frac{1}{s}\rfloor$.
 
