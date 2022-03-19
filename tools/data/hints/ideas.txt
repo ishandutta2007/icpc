@@ -4,3 +4,4 @@ Try some small cases?
 Monotonicity?
 Bruteforce?
 Partial sum?
+Take a difference?
