@@ -17,7 +17,7 @@ Calculate the expected number of operations under field $\mathtt{F}_{998244353}$
 - $1\le\sum_{i}l_i\le 2000$
 
 ## Solution
-### The first part: $n=1$
+### A simpler version: $n=1$
 Let $X_0=0\lt X_1\lt X_2\lt\cdots\lt X_t\lt l$ be random variables corresponding to the positions of $t$ operations.
 
 To simplify notation, let $s=\frac{k}{l}$. 
@@ -48,8 +48,30 @@ p_t&=t!s^t(F(\frac{1}{s};t)-F(\frac{1}{s}-1;t))\\
 &=s^t(\sum_{i=0}^{\lfloor \frac{1}{s}\rfloor}(-1)^i\binom{t}{i}(\frac{1}{s}-i)^t-\sum_{i=0}^{\lfloor \frac{1}{s}\rfloor-1}(-1)^i\binom{t}{i}(\frac{1}{s}-1-i)^t)\\
 &=\sum_{i=0}^{z}(-1)^i\binom{t}{i}(1-is)^t-\sum_{i=0}^{z-1}(-1)^i\binom{t}{i}(1-(i+1)s)^t\\
 &=\sum_{i=0}^{z}(-1)^i\binom{t}{i}(1-is)^t+\sum_{i=1}^{z}(-1)^i\binom{t}{i-1}(1-is)^t\\
-&=\sum_{i=0}^{z}(-1)^i\binom{t+1}{i}(1-is)^t,
+&=\sum_{i=0}^{z}(-1)^i\binom{t+1}{i}(1-is)^t,\tag{1.1}
 \end{array}$$
+
+^be26c4
+
 where $z=\lfloor\frac{1}{s}\rfloor$.
 
-TBD QwQ.
+### The complete version
+
+Let $q_{j,m}$ be the probability that $m$ operations are peformed on segment $j$ but there still exists segments produced by segment $j$ with length greater than $k$. It's just symbol rewriting of [[#^be26c4|formula 1.1]]:
+
+$$q_{j,m}=\sum_{i=0}^{\lfloor\frac{l_j}{k}\rfloor}(-1)^i\binom{m+1}{i}(1-\frac{ik}{l_j})^m.$$
+
+
+Therefore, probability that one failsto finish the task within $m$ rounds is
+
+$$1-\sum_{j_1+j_2+\cdots+j_n=m}\frac{m!}{j_1!j_2!\cdots j_n!}\Pi_{r=1}^{n}(1-q_{r,j_r})(\frac{l_j}{L})^{j_r},$$
+where $L=\sum_{r=1}^{n}l_r$.
+
+A trick: If there is a EGF term $x^De^{Cx}$, then the corresponding OGF will be 
+
+$$\begin{array}{ll}
+\sum_{i=0}^{\infty}\frac{(D+i)!}{i!}C^ix^{D+i}
+&=D!\sum_{i=0}^{\infty}\binom{D+i}{i}C^ix^{D+i}\\
+&=D!x^{D}\sum_{i=0}^{\infty}\binom{D+i}{i}(Cx)^i\\
+&=\frac{D!x^{D}}{(1-Cx)^{D+1}}.
+\end{array}$$
