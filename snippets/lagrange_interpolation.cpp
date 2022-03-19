@@ -101,10 +101,10 @@ T eval_by_uniform_sampling(T x0, T strip, const std::vector<T>& ys, T x) {
   // x_i = x_0 + i * strip.
   // By Lagrange interpolation we have:
   // L(x) = \sum_{i=0}^{k} y_i * l_i(x),
-  // Where l_i(x) = \Pi_{j=0, j!=i}^{k} (x-x_j)/(x_i-x_j).
+  // where l_i(x) = \Pi_{j=0, j!=i}^{k} (x-x_j)/(x_i-x_j).
   //
   // Since it's from unifrom sampling, x_{i+1}-x_{i}=x_{i}-x_{i-1}=strip, we have:
-  // l_{i+1}(x) = l_i(x)*(x-x_i)/(x-x_{i+1})/(i+1)*(i-k)
+  // l_{i+1}(x) = l_i(x)*(x-x_i)/(x-x_{i+1})/(i+1)*(i-k).
   //
   // O(klog(A)).
   T l = 1;
