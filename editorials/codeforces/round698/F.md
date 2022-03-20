@@ -80,11 +80,16 @@ Let's focus on rearrange $Q_r(x)$:
 $$\begin{array}{ll}
 Q_{r}(x)&=\sum_{i=0}^{\infty}\frac{1-q_{r,i}}{i!}(\frac{l_rx}{L})^i\\
 &=\sum_{i=0}^{\infty}\frac{1}{i!}(1-\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\binom{i+1}{j}(1-\frac{jk}{l_r})^i)(\frac{l_rx}{L})^i\\
-&=e^{\frac{l_rx}{L}}-\sum_{i=0}^{\infty}\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\binom{i+1}{j}(1-\frac{jk}{l_r})^i)(\frac{l_rx}{L})^i\\
-&=e^{\frac{l_rx}{L}}-\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=0}^{\infty}\binom{i+1}{j}(1-\frac{jk}{l_r})^i)(\frac{l_rx}{L})^i\\
+&=e^{\frac{l_rx}{L}}-\sum_{i=0}^{\infty}\frac{1}{i!}\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\binom{i+1}{j}(1-\frac{jk}{l_r})^i(\frac{l_rx}{L})^i\\
+&=e^{\frac{l_rx}{L}}-\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=0}^{\infty}\frac{1}{i!}\binom{i+1}{j}(1-\frac{jk}{l_r})^i(\frac{l_rx}{L})^i\\
+&=e^{\frac{l_rx}{L}}-\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=0}^{\infty}\frac{1}{i!}\binom{i+1}{j}(\frac{l_r-jk}{L}x)^i\\
+&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=j-1}^{\infty}\frac{i+1}{j!(i+1-j)!}(\frac{l_r-jk}{L}x)^i\\
+&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=j-1}^{\infty}(\frac{i+1-j}{j!(i+1-j)!}(\frac{l_r-jk}{L}x)^i+\frac{j}{j!(i+1-j)!}(\frac{l_r-jk}{L}x)^i)\\
+&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j(\sum_{i=j}^{\infty}\frac{1}{j!(i-j)!}(\frac{l_r-jk}{L}x)^i+\sum_{i=j-1}^{\infty}\frac{1}{(j-1)!(i+1-j)!}(\frac{l_r-jk}{L}x)^i)\\
+&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j(\frac{(\frac{l_r-jk}{L}x)^{j}}{j!}e^{\frac{l_r-jk}{L}x}+\frac{(\frac{l_r-jk}{L}x)^{j-1}}{(j-1)!}e^{\frac{l_r-jk}{L}x})\\
+&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j(\frac{(\frac{l_r-jk}{L})^{j}}{j!}x^j+\frac{(\frac{l_r-jk}{L})^{j-1}}{(j-1)!}x^{j-1})e^{\frac{l_r-jk}{L}x}.\\
 
 \end{array}$$
-
 
 A trick: If there is a EGF term $x^De^{Cx}$, then the corresponding OGF will be 
 
@@ -94,3 +99,8 @@ $$\begin{array}{ll}
 &=D!x^{D}\sum_{i=0}^{\infty}\binom{D+i}{i}(Cx)^i\\
 &=\frac{D!x^{D}}{(1-Cx)^{D+1}}.
 \end{array}$$
+So that $P_{exp}(x)=\sum_{i}\sum_{j}coef_{i,j}x^ie^{jx}$ can be done in $O(n^2Llog(L))$, with NTT techs.
+
+Then, it's easy to calculate $P(1)$, all done.
+
+In the official editorial the complexity is $O(nLlog(nL))$, not sure how to achieve it.
