@@ -57,9 +57,12 @@ where $z=\lfloor\frac{1}{s}\rfloor$.
 
 ### The complete version
 
-Let $q_{j,m}$ be the probability that $m$ operations are peformed on segment $j$ but there still exists segments produced by segment $j$ with length greater than $k$. It's just symbol rewriting of [[#^be26c4|formula 1.1]]:
+Let $q_{j,m}$ be the probability that $m$ operations are peformed on segment $j$ but there still exists segments produced by segment $j$ with length greater than $k$. So we have:
 
-$$q_{j,m}=\sum_{i=0}^{\lfloor\frac{l_j}{k}\rfloor}(-1)^i\binom{m+1}{i}(1-\frac{ik}{l_j})^m.$$
+$$\begin{array}{ll}
+q_{j,m}&=1-\sum_{i=0}^{\lfloor\frac{l_j}{k}\rfloor}(-1)^i\binom{m+1}{i}(1-\frac{ik}{l_j})^m\\
+&=-\sum_{i=1}^{\lfloor\frac{l_j}{k}\rfloor}(-1)^i\binom{m+1}{i}(1-\frac{ik}{l_j})^m
+\end{array}$$
 
 
 Therefore, probability that one fails to finish the task within $m$ rounds is
@@ -79,15 +82,15 @@ Let's focus on rearrange $Q_r(x)$:
 
 $$\begin{array}{ll}
 Q_{r}(x)&=\sum_{i=0}^{\infty}\frac{1-q_{r,i}}{i!}(\frac{l_rx}{L})^i\\
-&=\sum_{i=0}^{\infty}\frac{1}{i!}(1-\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\binom{i+1}{j}(1-\frac{jk}{l_r})^i)(\frac{l_rx}{L})^i\\
-&=e^{\frac{l_rx}{L}}-\sum_{i=0}^{\infty}\frac{1}{i!}\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\binom{i+1}{j}(1-\frac{jk}{l_r})^i(\frac{l_rx}{L})^i\\
-&=e^{\frac{l_rx}{L}}-\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=0}^{\infty}\frac{1}{i!}\binom{i+1}{j}(1-\frac{jk}{l_r})^i(\frac{l_rx}{L})^i\\
-&=e^{\frac{l_rx}{L}}-\sum_{j=0}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=0}^{\infty}\frac{1}{i!}\binom{i+1}{j}(\frac{l_r-jk}{L}x)^i\\
-&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=j-1}^{\infty}\frac{i+1}{j!(i+1-j)!}(\frac{l_r-jk}{L}x)^i\\
-&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=j-1}^{\infty}(\frac{i+1-j}{j!(i+1-j)!}(\frac{l_r-jk}{L}x)^i+\frac{j}{j!(i+1-j)!}(\frac{l_r-jk}{L}x)^i)\\
-&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j(\sum_{i=j}^{\infty}\frac{1}{j!(i-j)!}(\frac{l_r-jk}{L}x)^i+\sum_{i=j-1}^{\infty}\frac{1}{(j-1)!(i+1-j)!}(\frac{l_r-jk}{L}x)^i)\\
-&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j(\frac{(\frac{l_r-jk}{L}x)^{j}}{j!}e^{\frac{l_r-jk}{L}x}+\frac{(\frac{l_r-jk}{L}x)^{j-1}}{(j-1)!}e^{\frac{l_r-jk}{L}x})\\
-&=e^{\frac{l_rx}{L}}-\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j(\frac{(\frac{l_r-jk}{L})^{j}}{j!}x^j+\frac{(\frac{l_r-jk}{L})^{j-1}}{(j-1)!}x^{j-1})e^{\frac{l_r-jk}{L}x}.\\
+&=\sum_{i=0}^{\infty}\frac{1}{i!}(1+\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\binom{i+1}{j}(1-\frac{jk}{l_r})^i)(\frac{l_rx}{L})^i\\
+&=e^{\frac{l_rx}{L}}+\sum_{i=0}^{\infty}\frac{1}{i!}\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\binom{i+1}{j}(1-\frac{jk}{l_r})^i(\frac{l_rx}{L})^i\\
+&=e^{\frac{l_rx}{L}}+\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=0}^{\infty}\frac{1}{i!}\binom{i+1}{j}(1-\frac{jk}{l_r})^i(\frac{l_rx}{L})^i\\
+&=e^{\frac{l_rx}{L}}+\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=0}^{\infty}\frac{1}{i!}\binom{i+1}{j}(\frac{l_r-jk}{L}x)^i\\
+&=e^{\frac{l_rx}{L}}+\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=j-1}^{\infty}\frac{i+1}{j!(i+1-j)!}(\frac{l_r-jk}{L}x)^i\\
+&=e^{\frac{l_rx}{L}}+\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j\sum_{i=j-1}^{\infty}(\frac{i+1-j}{j!(i+1-j)!}(\frac{l_r-jk}{L}x)^i+\frac{j}{j!(i+1-j)!}(\frac{l_r-jk}{L}x)^i)\\
+&=e^{\frac{l_rx}{L}}+\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j(\sum_{i=j}^{\infty}\frac{1}{j!(i-j)!}(\frac{l_r-jk}{L}x)^i+\sum_{i=j-1}^{\infty}\frac{1}{(j-1)!(i+1-j)!}(\frac{l_r-jk}{L}x)^i)\\
+&=e^{\frac{l_rx}{L}}+\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j(\frac{(\frac{l_r-jk}{L}x)^{j}}{j!}e^{\frac{l_r-jk}{L}x}+\frac{(\frac{l_r-jk}{L}x)^{j-1}}{(j-1)!}e^{\frac{l_r-jk}{L}x})\\
+&=e^{\frac{l_rx}{L}}+\sum_{j=1}^{\lfloor\frac{l_r}{k}\rfloor}(-1)^j(\frac{(\frac{l_r-jk}{L})^{j}}{j!}x^j+\frac{(\frac{l_r-jk}{L})^{j-1}}{(j-1)!}x^{j-1})e^{\frac{l_r-jk}{L}x}.\\
 
 \end{array}$$
 
