@@ -1,9 +1,6 @@
-template<int MOD>
-constexpr int get_primitive_root() {
-  if constexpr(MOD == 998244353) return 3;
-  else if constexpr(MOD == 924844033) return 5;
-  assert(false);
-}
+template<int MOD> struct PrimitiveRoot {};
+template<> struct PrimitiveRoot<998244353> { static constexpr int value = 3; };
+template<> struct PrimitiveRoot<924844033> { static constexpr int value = 5; };
 
 template<int MOD = 998244353>
 void ntt(Integral<MOD> A[], int n, int inv) {
@@ -12,7 +9,7 @@ void ntt(Integral<MOD> A[], int n, int inv) {
   // MOD == a * b ^ k + 1, n <= b ^ k.
   // 998244353 == (7 * 17) * 2 ^ 23 + 1.
   // This code works only when b == 2.
-  constexpr int primitive_root = get_primitive_root<MOD>();
+  constexpr int primitive_root = PrimitiveRoot<MOD>::value;
   Integral<MOD> w = 1, d = Integral<MOD>(primitive_root).power((MOD - 1) / n), t;
   int i, j, c, s;
   if (inv == -1) {
