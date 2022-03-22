@@ -107,3 +107,5 @@ So that $P_{exp}(x)=\sum_{i}\sum_{j}coef_{i,j}x^ie^{jx}$ can be done in $O(nL^2l
 Then, it's easy to calculate $P(1)$, all done.
 
 UPD: $O(nL^2log(L))$ is a little slow to pass.
+
+UPD: Be careful that there exists $pow(0,0)$ issue.
