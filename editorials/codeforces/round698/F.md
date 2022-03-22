@@ -102,8 +102,8 @@ $$\begin{array}{ll}
 &=D!x^{D}\sum_{i=0}^{\infty}\binom{D+i}{i}(Cx)^i\\
 &=\frac{D!x^{D}}{(1-Cx)^{D+1}}.
 \end{array}$$
-So that $P_{exp}(x)=\sum_{i}\sum_{j}coef_{i,j}x^ie^{jx}$ can be done in $O(n^2L^2log(L))$, with NTT techs.
+So that $P_{exp}(x)=\sum_{i}\sum_{j}coef_{i,j}x^ie^{jx}$ can be done in $O(nL^2log(L))$, with NTT techs.
 
 Then, it's easy to calculate $P(1)$, all done.
 
-UPD: $O(n^2L^2log(L))$ is a little slow to pass.
+UPD: $O(nL^2log(L))$ is a little slow to pass.
