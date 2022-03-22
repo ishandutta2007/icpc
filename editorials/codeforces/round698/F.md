@@ -1,6 +1,6 @@
 [Link](https://codeforces.com/contest/1477/problem/F)
 Status: Under construction.
-Code: Not implemented yet.
+Code: TLEing.
 
 ## Problem description
 Given $n$ segments with length $l_1,l_2,\cdots,l_n$ and an integer $k$, perform the following operation repeatedly until the maximum length over all segments does not exceed $k$:
@@ -107,3 +107,5 @@ So that $P_{exp}(x)=\sum_{i}\sum_{j}coef_{i,j}x^ie^{jx}$ can be done in $O(n^2Ll
 Then, it's easy to calculate $P(1)$, all done.
 
 In the official editorial the complexity is $O(nLlog(nL))$, not sure how to achieve it.
+
+UPD: $O(n^2Llog(L))$ is a little slow to pass.
