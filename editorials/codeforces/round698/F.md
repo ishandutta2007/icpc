@@ -1,6 +1,4 @@
 [Link](https://codeforces.com/contest/1477/problem/F)
-Status: Under construction.
-Code: TLEing.
 
 ## Problem description
 Given $n$ segments with length $l_1,l_2,\cdots,l_n$ and an integer $k$, perform the following operation repeatedly until the maximum length over all segments does not exceed $k$:
@@ -102,10 +100,8 @@ $$\begin{array}{ll}
 &=D!x^{D}\sum_{i=0}^{\infty}\binom{D+i}{i}(Cx)^i\\
 &=\frac{D!x^{D}}{(1-Cx)^{D+1}}.
 \end{array}$$
-So that $P_{exp}(x)=\sum_{i}\sum_{j}coef_{i,j}x^ie^{jx}$ can be done in $O(nL^2log(L))$, with NTT techs.
+So that $P_{exp}(x)=\sum_{i}\sum_{j}coef_{i,j}x^ie^{jx}$ can be done in $O(nL^2log(L))$, with NTT techs (and some constant speed-ups).
 
 Then, it's easy to calculate $P(1)$, all done.
 
-UPD: $O(nL^2log(L))$ is a little slow to pass.
-
-UPD: Be careful that there exists $pow(0,0)$ issue.
+Note: Be careful that there exists $pow(0,0)$ issue.
