@@ -10,6 +10,8 @@ struct TwoSat {
     add_edge(y << 1 | !fy, x << 1 | fx);
   }
 
+  void add_edge(int u, int v) { graph[u].emplace_back(Edge{.v = v}); }
+
   bool solve() {
     for (int i = 0; i < num_variables; ++i) if (!mark[i << 1] && !mark[i << 1 | 1]) {
       stack.clear();
@@ -39,8 +41,6 @@ struct TwoSat {
     int v;
   };
   std::vector<std::vector<Edge>> graph;
-
-  void add_edge(int u, int v) { graph[u].emplace_back(Edge{.v = v}); }
 
   bool dfs(int u) {
     if (mark[u ^ 1]) return false;
