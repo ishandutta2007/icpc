@@ -80,7 +80,7 @@ nnoremap <leader>r :bufdo e<cr>
 " Algo usage
 nnoremap <leader>E :!g++ % -std=c++17 -O2 -Wno-unused-result -o %<<cr>
 nnoremap <leader>e :!g++ % -std=c++17 -O2 -D ALGO -I ~/.vim/icpc/include -Wno-unused-result -g -fsanitize=undefined -o %<<cr>
-" nnoremap <leader>e :!g++ % -std=c++17 -D ALGO -I ~/.vim/icpc/include -Wno-unused-result -g -fsanitize=address -o %<<cr>
+nnoremap <leader>g :!g++ % -std=c++17 -D ALGO -I ~/.vim/icpc/include -Wno-unused-result -g -fsanitize=address -o %<<cr>
 nnoremap <leader>w :!./%<<cr>
 nnoremap <leader>q :!time ./%< <%<.in<cr>
 nnoremap <leader>y ggVG"+y
