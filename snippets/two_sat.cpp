@@ -10,8 +10,6 @@ struct TwoSat {
     add_edge(y << 1 | !fy, x << 1 | fx);
   }
 
-  void add_edge(int u, int v) { graph[u].emplace_back(Edge{.v = v}); }
-
   bool solve() {
     for (int i = 0; i < num_variables; ++i) if (!mark[i << 1] && !mark[i << 1 | 1]) {
       stack.clear();
@@ -31,6 +29,17 @@ struct TwoSat {
     for (int i = 0; i < num_variables; ++i) solution[i] = mark[i << 1 | 1];
     return solution;
   }
+
+  int add_variable() {
+    int id = num_variables++;
+    mark.emplace_back(false);
+    mark.emplace_back(false);
+    graph.emplace_back();
+    graph.emplace_back();
+    return id;
+  }
+
+  void add_edge(int u, int v) { graph[u].emplace_back(Edge{.v = v}); }
 
  private:
   int num_variables = 0;
