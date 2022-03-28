@@ -18,6 +18,7 @@ struct CostFlow {
   explicit CostFlow(int n) : n(n), vis(n), d(n), head(n, -1), cur(n) {}
 
   void add_edge(int u, int v, T cap, T cost) {
+    assert(cost >= 0);
     g.emplace_back(Edge{.v = v, .next = head[u], .cap = cap, .cost = cost});
     head[u] = (int)g.size() - 1;
     g.emplace_back(Edge{.v = u, .next = head[v], .cap = 0, .cost = -cost});
