@@ -184,6 +184,26 @@ Polynomial<T> operator%(Polynomial<T> lhs, Polynomial<T> rhs) {
 }
 
 template<typename T>
+Polynomial<T> gcd(Polynomial<T> a, Polynomial<T> b) {
+  while (b.size() > 1 || b.get(0) != T(0)) {
+    a = a % b;
+    std::swap(a, b);
+  }
+  // NOTE: Not guarantee to be monic polynomial.
+  // Do an extra division if needed.
+  return a;
+}
+
+template<typename T>
+Polynomial<T> exgcd(const Polynomial<T>& a, const Polynomial<T>& b, Polynomial<T>& x, Polynomial<T>& y) {
+  if (b.empty() || (b.size() == 1 && b.get(0) == T(0))) return x = {1}, y = {0}, a;
+  Polynomial<T> g = exgcd(b, a % b, y, x);
+  y -= div(a, b) * x;
+  // NOTE: Not guarantee to be monic polynomial.
+  return g;
+}
+
+template<typename T>
 T eval(const Polynomial<T>& poly, T a) {  // Returns Poly(a).
   T ret = 0;
   T w = 1;
