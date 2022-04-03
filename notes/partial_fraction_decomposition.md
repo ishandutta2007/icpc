@@ -27,14 +27,10 @@ $$\frac{P(x)}{Q(x)}=\frac{r(x)Q(x)+\sum_j p_j(x)\Pi_{i!=j} q_i(x)}{Q(x)},$$
 只看分子, 有
 
 $$P(x)=r(x)Q(x)+\sum_j p_j(x)\Pi_{i!=j} q_i(x),$$
-两侧对 $q_j(x)$ 取模可得
+两侧对 $q_j(x)$ 取模得
 
-$$P(x) \equiv p_j(x) \mod q_j(x).$$
-综上,
-
-$$\frac{P(x)}{Q(x)}=r(x)+\sum_{j}\frac{p_j(x)}{q_j(x)}=r(x)+\sum_j\frac{P(x)\mod q_j(x)}{q_j(x)}.$$
-
-若已知 $Q(x)$ 的分解形式 $Q(x)=\Pi_j q_j(x)$, 则分式本身的分解式可用类似于拉格朗日多项式多点求值的技术, 在 $O(deg\cdot log^2(deg))$ 时间内求出.
+$$P(x) \equiv p_j(x)\Pi_{i!=j}q_i(x) \mod q_j(x).$$
+这并没有什么用.
 
 ## Reference
 
