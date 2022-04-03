@@ -1,0 +1,44 @@
+**不可约多项式(irreducible polynomial)** 或称**质式**, 是指不可被分解成两个非常数多项式之乘积的非常数多项式. 不可约的性质取决于系数所属于的域或环. 例如, 多项式 $x^2-2$ 在整数上不可约, 但在实数上是可约的, 且分解式为 $(x-\sqrt 2)(x+\sqrt 2)$.
+
+
+
+**有理函数(rational function)** 是可以表示为以下形式的函数:
+
+$$f(x)=\frac{a_mx^m+a_{m-1}x^{m-1}+\cdots+a_1x+a_0}{b_nx^n+b_{n-1}x^{n-1}+\cdots+b_1x+b_0}=\frac{P_m(x)}{Q_n(x)};\ m,n\in \mathbb{N}_0,\ b_i\mbox{ 不全为 }0.$$
+
+
+
+**部分分式分解** 或 **部分分式展开** 是将有理函数分解成许多次数较低的有理函数的和的形式, 来降低分子或分母多项式的次数. 分解后的分式需满足以下条件:
+
+- 分式的分母需为不可约多项式 (irreducible polynomial) 或其乘幂.
+- 分式的分子多项式次数需比其分母多项式次数要低.
+
+具体地说, 部分分式分解就是将 $\frac{P(x)}{Q(x)}$变成等式右边的形式:
+
+$$\frac{P(x)}{Q(x)}=r(x)+\sum_{j}\frac{p_j(x)}{q_j(x)},$$
+其中, $r(x)$ 是个多项式, $q_j(x)$ 是某个不可约多项式的幂, 并且满足 $Q(x)=\Pi_j q_j(x)$, 而 $p_j(x)$ 是某个度数小于 $q_j(x)$ 的度数的多项式.
+
+(另, 若 $P(x)$ 的度数小于 $Q(x)$ 的度数, 那直接有 $r(x)=0$.)
+
+对右侧通分可得
+
+$$\frac{P(x)}{Q(x)}=\frac{r(x)Q(x)+\sum_j p_j(x)\Pi_{i!=j} q_i(x)}{Q(x)},$$
+
+只看分子, 有
+
+$$P(x)=r(x)Q(x)+\sum_j p_j(x)\Pi_{i!=j} q_i(x),$$
+两侧对 $q_j(x)$ 取模可得
+
+$$P(x) \equiv p_j(x) \mod q_j(x).$$
+综上,
+
+$$\frac{P(x)}{Q(x)}=r(x)+\sum_{j}\frac{p_j(x)}{q_j(x)}=r(x)+\sum_j\frac{P(x)\mod q_j(x)}{q_j(x)}.$$
+
+若已知 $Q(x)$ 的分解形式 $Q(x)=\Pi_j q_j(x)$, 则分式本身的分解式可用类似于拉格朗日多项式多点求值的技术, 在 $O(deg\cdot log^2(deg))$ 时间内求出.
+
+## Reference
+
+- [Partial fraction decomposition(wiki)](https://en.wikipedia.org/wiki/Partial_fraction_decomposition)
+- [部分分式分解(wiki)](https://zh.wikipedia.org/wiki/部分分式分解)
+- [有理函数(wiki)](https://zh.wikipedia.org/wiki/有理函數)
+- [不可约多项式(wiki)](https://zh.wikipedia.org/wiki/不可约多项式)
