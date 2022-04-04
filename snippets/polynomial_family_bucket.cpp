@@ -38,6 +38,7 @@ struct Polynomial final : public std::vector<T> {
   Polynomial(std::initializer_list<T> initializer_list) : std::vector<T>(std::move(initializer_list)) {}
   Polynomial(std::vector<T> vec) : std::vector<T>(std::move(vec)) {}
   int size() const { return std::vector<T>::size(); }
+  int deg() const { return size() - 1; }  // Here we use -1 to represent -\infty.
   T get(int pos) const { return pos >= 0 && pos < size() ? (*this)[pos] : T(0); }
   T& touch(int pos) { if (pos >= size()) std::vector<T>::resize(pos + 1, T(0)); return (*this)[pos]; }
   Polynomial mod(int n) const { return Polynomial(std::vector<T>(this->data(), this->data() + std::min(n, size()))); }
@@ -51,7 +52,7 @@ void ntt(Polynomial<T>& poly, int n, int inv) {
 
 template<typename T>
 void norm(Polynomial<T>& p) {
-  while (p.size() > 1 && p.back() == T(0)) p.pop_back();
+  while (p.size() > 0 && p.back() == T(0)) p.pop_back();
 }
 
 template<typename T>
@@ -109,7 +110,6 @@ int get_ntt_len(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
 
 template<typename T>
 Polynomial<T> operator*(Polynomial<T> lhs, Polynomial<T> rhs) {
-  CHECK(lhs.size() + rhs.size() > 0);
   const int L = get_ntt_len(lhs, rhs);
   lhs.resize(L, 0);
   rhs.resize(L, 0);
@@ -167,7 +167,7 @@ template<typename T>
 Polynomial<T> div(Polynomial<T> lhs, Polynomial<T> rhs) {  // Division with remainder.
   norm(lhs);
   norm(rhs);
-  if (lhs.size() < rhs.size()) return Polynomial<T>(1, T(0));
+  if (lhs.size() < rhs.size()) return Polynomial<T>{};
   std::reverse(lhs.begin(), lhs.end());
   std::reverse(rhs.begin(), rhs.end());
   int len = (int)lhs.size() - 1 - (int)rhs.size() + 1 + 1;
@@ -185,7 +185,7 @@ Polynomial<T> operator%(Polynomial<T> lhs, Polynomial<T> rhs) {
 
 template<typename T>
 Polynomial<T> gcd(Polynomial<T> a, Polynomial<T> b) {
-  while (b.size() > 1 || b.get(0) != T(0)) {
+  while (b.deg() >= 0) {
     a = a % b;
     std::swap(a, b);
   }
@@ -196,7 +196,7 @@ Polynomial<T> gcd(Polynomial<T> a, Polynomial<T> b) {
 
 template<typename T>
 Polynomial<T> exgcd(const Polynomial<T>& a, const Polynomial<T>& b, Polynomial<T>& x, Polynomial<T>& y) {
-  if (b.empty() || (b.size() == 1 && b.get(0) == T(0))) return x = {1}, y = {0}, a;
+  if (b.deg() < 0) return x = {1}, y = {0}, a;
   Polynomial<T> g = exgcd(b, a % b, y, x);
   y -= div(a, b) * x;
   // NOTE: Not guarantee to be monic polynomial.
@@ -253,7 +253,7 @@ std::vector<T> multiple_point_eval(const Polynomial<T>& poly, const std::vector<
 template<typename T>
 Polynomial<T> derivate(Polynomial<T> poly) {
   if (poly.size() <= 1) {
-    return Polynomial<T>(1, 0);
+    return Polynomial<T>{};
   }
   for (int i = 1; i < poly.size(); ++i) {
     poly[i - 1] = poly[i] * i;
@@ -265,7 +265,7 @@ Polynomial<T> derivate(Polynomial<T> poly) {
 
 template<typename T>
 Polynomial<T> integrate(Polynomial<T> poly) {
-  if (poly.size() == 0) {
+  if (poly.deg() < 0) {
     return poly;
   }
   poly.emplace_back(0);
@@ -313,7 +313,7 @@ Polynomial<T> mod_exp(Polynomial<T> poly, int len = 0) {
   // https://www.luogu.com.cn/problem/P4726
   if (len == 0) len = poly.size();
   if (len > poly.size()) poly.resize(len);
-  CHECK(poly.size() == 0 || poly[0] == 0);
+  CHECK(poly.get(0) == T(0));
   const int L = binary_upper_bound(len - 1);
   poly.resize(L, 0);
   Polynomial<T> p(1, 1);
@@ -330,7 +330,7 @@ Polynomial<T> mod_exp(Polynomial<T> poly, int len = 0) {
 template<typename T>
 Polynomial<T> conditioned_mod_power(Polynomial<T> poly, T k, int len = 0) {
   // https://www.luogu.com.cn/problem/P5245
-  CHECK(poly.size() >= 1 && poly[0] != T(0));  // In case poly[0] == T(0), find another way.
+  CHECK(poly.get(0) != T(0)); // In case poly.get(0) == T(0), find another way.
   if (len == 0) len = ((int)poly.size() - 1) * int(k) + 1;
   T constant = poly[0];
   if (constant != T(1)) {
@@ -384,7 +384,7 @@ template<typename T>
 Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>& y) {
   // https://en.wikipedia.org/wiki/Lagrange_polynomial
   // O(nlog^2(n)).
-  if (x.empty()) return Polynomial<T>(1, T(0));
+  if (x.empty()) return Polynomial<T>{};
 
   int m = x.size();
   std::vector<Polynomial<T>> bucket(m * 2 - 1);
