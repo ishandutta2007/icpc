@@ -27,7 +27,7 @@ def convert(source, target):
 @main.command()
 @click.option('--data-dir', required=True)
 def generate_all(data_dir):
-    for markdown_path in glob.glob(data_dir + "/**/*.md"):
+    for markdown_path in glob.glob(data_dir + "/**/*.md", recursive=True):
         logging.info('Processing {}'.format(markdown_path))
         generated_dir = pathlib.Path(markdown_path).parent / 'generated'
         output_path = generated_dir / (pathlib.Path(markdown_path).name + ".ipynb")
