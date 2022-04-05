@@ -40,6 +40,8 @@ $$\frac{F(x)}{G(x)}=r(x)+\sum_{i=1}^{k}\sum_{j=1}^{b_i}\frac{p_{ij}(x)}{q_{i}^j}
 
 ## 特定形式的分解过程
 
+### 情形一
+
 给定两多项式 $P(x)$ 和 $Q(x)=(x-\alpha_1)(x-\alpha_2)\cdots(x-\alpha_n)$, 其中 $\alpha_1,\alpha_2,\cdots,\alpha_n$ 是两两不同的常量, 且 $deg(P(x))\lt n$. 首先假定有如下形式的分解:
 
 $$\frac{P(x)}{Q(x)}=\frac{c_1}{x-\alpha_1}+\frac{c_2}{x-\alpha_2}+\cdots+\frac{c_n}{x-\alpha_n},$$
@@ -48,9 +50,36 @@ $$\frac{P(x)}{Q(x)}=\frac{c_1}{x-\alpha_1}+\frac{c_2}{x-\alpha_2}+\cdots+\frac{c
 $$\frac{P(x)}{Q(x)}=\sum_{i=1}^{n}\frac{P(\alpha_i)}{Q'(\alpha_i)}\frac{1}{x-\alpha_i},$$
 其中, $Q'(x)$ 表示对 $Q(x)$ 求导. 那么在已知所有 $\alpha_i$ 的情况下, 我们只需要对 $P(x)$ 和 $Q'(x)$ 分别做一次多项式多点求值, 就可以得到具体的分解形式. 时间复杂度为 $O(n\log^2(n))$.
 
-注意若 $deg(P(x))\ge deg(Q(x))$, 先做一次多项式长除法把余数提出, 再进行上述过程.
+(注意若 $deg(P(x))\ge deg(Q(x))$, 先做一次多项式长除法把余数提出, 再进行上述过程).
 
 ~~对于分母有重根或有度数高于 $1$ 的不可约多项式因子的情形, 没太研究明白怎么做, 应该还是高斯消元就可以了.~~
+
+### 情形二
+
+若 $P(x)=1$, $Q(x)= \Pi_{i=1}^n\frac{1}{1-\beta_{i}x}, \forall \beta_i\ne 0$. 该情形常见于生成函数理论中. 那么同样, 我们先假定有如下分解式:
+
+$$\begin{array}{ll}
+\frac{P(x)}{Q(x)}&=\frac{1}{Q(x)}\\
+&=\frac{c_1}{1-\beta_1 x}+\frac{c_2}{1-\beta_2 x}+\cdots+\frac{c_n}{1-\beta_n x}\\
+&=\frac{\sum_{i=1}^{n}c_i\Pi_{j!=i}(1-\beta_j x)}{Q(x)}
+\end{array},$$
+只看分子, 有
+
+$$1=\sum_{i=1}^{n}c_i\Pi_{j!=i}(1-\beta_j x),$$
+将 $x=\beta_k^{-1}$ 代入上式, 得到:
+
+$$\begin{array}{ll}
+1&=\sum_{i=1}^{n}c_i\Pi_{j!=i}(1-\beta_j\beta_k^{-1})\\
+&=c_k\Pi_{j!=k}(1-\beta_j\beta_k^{-1}),
+\end{array}$$
+
+移项并整理符号得到
+
+$$c_i=(\Pi_{j!=i}({1-\beta_j\beta_i^{-1}}))^{-1},$$
+于是得到一个 $O(n^2)$ 所有 $c_i$ 的做法.
+
+情形一与情形二在域上可互相转化.
+
 
 ## Reference
 
