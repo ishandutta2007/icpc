@@ -1,7 +1,8 @@
 import click
 import logging
-import subprocess
 import notedown
+import subprocess
+
 
 @click.group()
 def main():
