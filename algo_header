@@ -13,7 +13,6 @@ namespace {
 
 using LL = long long;
 LL gcd(LL a, LL b) { return b == 0 ? a : gcd(b, a % b); }
-LL power(LL a, LL b) { LL ret = 1; for ( ; b; b >>= 1, a *= a) if (b & 1) ret *= a; return ret; }
 template<typename T, typename U> bool enlarge(T& a, U b) { return a < b ? (a = b, true) : false; }
 template<typename T, typename U> bool minify(T& a, U b) { return a > b ? (a = b, true) : false; }
 
