@@ -1,5 +1,5 @@
 template<typename T>
-T eval_by_uniform_sampling(T x0, T strip, const std::vector<T>& ys, T x) {
+T interpolate_by_uniform_sampling(T x0, T strip, const std::vector<T>& ys, T x) {
   int k = (int)ys.size() - 1;
   assert(k >= 0);
   if (auto t = (long long)((x - x0) / strip); t <= k && strip * t == x - x0) return ys[t];

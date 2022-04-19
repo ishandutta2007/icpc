@@ -70,7 +70,7 @@ T eval(const Polynomial<T>& a, const T& x) {
 }
 
 template<typename T>
-T interpolation(const std::vector<T>& x, const std::vector<T>& y, const T& p) {
+T interpolate(const std::vector<T>& x, const std::vector<T>& y, const T& p) {
   return eval(lagrange_polynomial(x, y), p);
 }
 
