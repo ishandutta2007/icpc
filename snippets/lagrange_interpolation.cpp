@@ -7,21 +7,31 @@ void norm(Polynomial<T>& p) {
 }
 
 template<typename T>
-Polynomial<T> operator+(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
-  Polynomial<T> ret = lhs;
-  ret.resize(std::max(lhs.size(), rhs.size()), T(0));
-  for (int i = 0; i < rhs.size(); ++i) ret[i] += rhs[i];
-  norm(ret);
-  return ret;
+Polynomial<T>& operator+=(Polynomial<T>& lhs, const Polynomial<T>& rhs) {
+  lhs.resize(std::max(lhs.size(), rhs.size()), T(0));
+  for (int i = 0; i < rhs.size(); ++i) lhs[i] += rhs[i];
+  norm(lhs);
+  return lhs;
 }
 
 template<typename T>
-Polynomial<T> operator-(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
-  Polynomial<T> ret = lhs;
-  ret.resize(std::max(lhs.size(), rhs.size()), T(0));
-  for (int i = 0; i < rhs.size(); ++i) ret[i] -= rhs[i];
-  norm(ret);
-  return ret;
+Polynomial<T> operator+(Polynomial<T> lhs, const Polynomial<T>& rhs) {
+  lhs += rhs;
+  return lhs;
+}
+
+template<typename T>
+Polynomial<T>& operator-=(Polynomial<T>& lhs, const Polynomial<T>& rhs) {
+  lhs.resize(std::max(lhs.size(), rhs.size()), T(0));
+  for (int i = 0; i < rhs.size(); ++i) lhs[i] -= rhs[i];
+  norm(lhs);
+  return lhs;
+}
+
+template<typename T>
+Polynomial<T> operator-(Polynomial<T> lhs, const Polynomial<T>& rhs) {
+  lhs -= rhs;
+  return lhs;
 }
 
 template<typename T>
