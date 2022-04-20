@@ -92,3 +92,5 @@ T eval_sum_over_segment(const Polynomial<T>& poly, T l, T r) {  // [l, r]
   return eval(eval_sum_from_l(poly, l), T(r));
 }
 
+// using Poly = Polynomial<Mint>;
+
