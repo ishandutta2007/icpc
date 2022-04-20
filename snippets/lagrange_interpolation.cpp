@@ -3,7 +3,7 @@ using Polynomial = std::vector<T>;
 
 template<typename T>
 void norm(Polynomial<T>& p) {
-  while (p.size() > 1 && p.back() == T(0)) p.pop_back();
+  while (!p.empty() && p.back() == T(0)) p.pop_back();
 }
 
 template<typename T>
@@ -26,8 +26,7 @@ Polynomial<T> operator-(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
 
 template<typename T>
 Polynomial<T> operator*(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
-  CHECK(lhs.size() + rhs.size() > 0);
-  Polynomial<T> ret(lhs.size() + rhs.size() - 1, T(0));
+  Polynomial<T> ret(std::max((int)lhs.size() + (int)rhs.size() - 1, 0), T(0));
   for (int i = 0; i < lhs.size(); ++i)
     for (int j = 0; j < rhs.size(); ++j)
       ret[i + j] += lhs[i] * rhs[j];
@@ -45,8 +44,8 @@ template<typename T>
 Polynomial<T> lagrange_polynomial(const std::vector<T>& x, const std::vector<T>& y) {
   // https://en.wikipedia.org/wiki/Lagrange_polynomial
   // O(n^2log(A))
-  CHECK(x.size() > 0);
-  int degree = x.size() - 1;
+  if (x.empty()) return Polynomial<T>{};
+  int degree = (int)x.size() - 1;
   std::vector<std::vector<T>> f(degree + 1);
   f[0] = y;
   for (int i = 1; i <= degree; ++i)
