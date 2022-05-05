@@ -178,7 +178,7 @@ Polynomial<T> div(Polynomial<T> lhs, Polynomial<T> rhs) {  // Division with rema
 }
 
 template<typename T>
-Polynomial<T> operator%(Polynomial<T> lhs, Polynomial<T> rhs) {
+Polynomial<T> operator%(const Polynomial<T>& lhs, const Polynomial<T>& rhs) {
   Polynomial<T> Q = div(lhs, rhs);
   return lhs - Q * rhs;
 }
