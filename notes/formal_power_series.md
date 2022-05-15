@@ -28,7 +28,6 @@ $ln(F(x))=-\sum_{i=1}^{\infty}{\frac{(1-F(x))^i}{i}}$
 
 $e^{F(x)}=\sum_{i=0}^{\infty}{\frac{F(x)^i}{i!}}$
 
-泰勒展开的算子形式: $e^{tD}F(x)=F(x+t)$, 其中 $D=\frac{d}{dx}$, $F(x)$ 为形式幂级数(实际上, 条件为解析函数).
 
 ## 一些特殊情形下 EGF 与 OGF 的转化
 
@@ -39,3 +38,36 @@ $e^{F(x)}=\sum_{i=0}^{\infty}{\frac{F(x)^i}{i!}}$
 $F_{exp}(x)=\sum_{i}A_ie^{C_ix}\Leftrightarrow F(x)=\sum_{i}\frac{A_i}{1-C_ix}$.
 
 $F_{exp}(x)=\sum_{i}x^{D_i}e^{C_ix}\Leftrightarrow F(x)=\sum_{i}\frac{D_i!x^{D_i}}{(1-C_ix)^{D_i+1}}$.
+
+
+## Taylor shift
+[source](https://codeforces.com/blog/entry/99646)
+
+泰勒展开的算子形式: $e^{tD}F(x)=F(x+t)$, 其中 $D=\frac{d}{dx}$, $F(x)$ 为形式幂级数(实际上, 条件为解析函数).
+
+定义形式幂级数环上的两个线性算子:
+
+Borel 算子: $\mathcal{B}(x^i)=\frac{x^i}{i!}$.
+
+Laplace 算子: $\mathcal{L}(x^i)=i!x^i$.
+
+容易看出有 $\mathcal{B}(\mathcal{L}(F(x)))=\mathcal{L}(\mathcal{B}(F(x)))=F(x)$ 成立.
+
+另一个重要的观察是,
+
+$$D^i\mathcal{B}(x^j)=\frac{x^{j-i}}{(j-i)!}=\mathcal{B}(x^{j-i}),$$
+
+泛化可得:
+
+$$D^i\mathcal{B}(F(x))=\mathcal{B}(x^{-i}F(x))$$
+
+对任意的形式幂级数 $F(x)$ 成立. 这里我们定义 对于所有的 $i\gt j$ 有 $(j-i)!=\infty$. 因此有 $\mathcal{B}(x^k)=0,\forall k\lt 0$.
+
+由于Borel算子的线性性, 可以更进一步泛化得到:
+
+$$G(D)\mathcal{B}(F(x))=\mathcal{B}(G(x^{-1})F(x))$$
+对任意的形式幂级数 $F(x)$ 和 $G(x)$ 成立.
+
+结合第一条性质以及泰勒展开, 我们得到:
+
+$$F(x+a)=e^{aD}F(x)=e^{aD}\mathcal{B}(\mathcal{L}(F(x)))=\mathcal{B}(e^{ax^{-1}}\mathcal{L}(F(x))).$$

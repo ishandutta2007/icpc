@@ -20,7 +20,7 @@ def convert_internal(source, target):
             cell["id"] = str(cell_count)
             cell_count += 1
     with open(target, 'w') as output_handle:
-        json.dump(data, output_handle)
+        json.dump(data, output_handle, indent=4)
 
 
 
