@@ -28,6 +28,8 @@ $ln(F(x))=-\sum_{i=1}^{\infty}{\frac{(1-F(x))^i}{i}}$
 
 $e^{F(x)}=\sum_{i=0}^{\infty}{\frac{F(x)^i}{i!}}$
 
+泰勒展开的算子形式: $e^{tD}F(x)=F(x+t)$, 其中 $D=\frac{d}{dx}$, $F(x)$ 为形式幂级数(实际上, 条件为解析函数).
+
 ## 一些特殊情形下 EGF 与 OGF 的转化
 
 首先定义 $F_{exp}(x)=\sum_{i=0}^{\infty}\frac{f_ix^i}{i!}$ 和 $F(x)=\sum_{i=0}^{\infty}f_ix^i$.

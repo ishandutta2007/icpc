@@ -84,6 +84,7 @@ nnoremap <leader>g :!g++ % -std=c++17 -D ALGO -I ~/.vim/icpc/include -Wno-unused
 nnoremap <leader>w :!./%<<cr>
 nnoremap <leader>q :!time ./%< <%<.in<cr>
 nnoremap <leader>y ggVG"+y
+nnoremap <leader>z :!python3 % <%<.in<cr>
 
 if has('mac')
   nnoremap <leader>1 :!pbpaste >%<.in<cr>
