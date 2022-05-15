@@ -463,5 +463,47 @@ void double_online_divide_and_conquer(OnLeaf&& on_leaf, int l, int r, const Poly
   double_online_divide_and_conquer(std::forward<OnLeaf>(on_leaf), mid + 1, r, A, B);
 }
 
+// \mathcal{L}(x^i) = x^i * i!, which is a linear operator.
+template<typename T>
+Polynomial<T> laplace_transform(Polynomial<T> poly) {
+  T c = 1;
+  for (int i = 0; i < poly.size(); ++i, c *= i) poly[i] *= c;
+  return poly;
+}
+
+// \mathcal{B}(x^i) = x^i / i!, which is a linear operator.
+// \mathcal{B}(\mathcal{L}(F(x))) = \mathcal{L}(\mathcal{B}(F(x))) = F(x).
+// D^i\mathcal{B}(x^j) = \mathcal{B}(x^{j-i}).
+// G(D)\mathcal{B}(F(x)) = \mathcal{B}(G(x^{-1})F(x)).
+template<typename T>
+Polynomial<T> borel_transform(Polynomial<T> poly) {
+  int n = poly.size();
+  T c = 1;
+  for (int i = 2; i < n; ++i) c *= i;
+  c = T(1) / c;
+  for (int i = n - 1; i >= 0; c *= i, --i) poly[i] *= c;
+  return poly;
+}
+
+// Transform P(x)=\sum_{i}a_ix^i to P(x + t)=\sum_{i}b_ix^i.
+template<typename T>
+Polynomial<T> taylor_shift(const Polynomial<T>& P, T t) {
+  // P(x + t) = e^{tD}P(x)
+  // = e^{tD}\mathcal{B}(\mathcal{L}(P(x)))
+  // = \mathcal{B}(e^{t/x}\mathcal{L}(P(x)))
+  int deg = P.deg();
+  Polynomial<T> Q;
+  T c = 1;
+  for (int i = 0; i <= deg; ++i, c *= t) Q.touch(deg - i) = c;
+  c = 1;
+  for (int i = 2; i <= deg; ++i) c *= i;
+  c = T(1) / c;
+  for (int i = deg; i >= 0; c *= i, --i) Q.touch(deg - i) *= c;
+  Polynomial<T> W = Q * laplace_transform(P);
+  Polynomial<T> R;
+  for (int i = 0; i <= deg; ++i) R.touch(i) = W.get(i + deg);
+  return borel_transform(R);
+}
+
 using Poly = Polynomial<Integral<MOD>>;
 
