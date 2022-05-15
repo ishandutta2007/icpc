@@ -41,6 +41,9 @@ $F_{exp}(x)=\sum_{i}x^{D_i}e^{C_ix}\Leftrightarrow F(x)=\sum_{i}\frac{D_i!x^{D_i
 
 
 ## Taylor shift
+
+以下讨论一个从 $F(x)=\sum_{i=0}^{n-1}a_ix^i$ 变换到 $F(x+t)=\sum_{i=0}^{n-1}b_ix^i$ 的办法.
+
 [source](https://codeforces.com/blog/entry/99646)
 
 泰勒展开的算子形式: $e^{tD}F(x)=F(x+t)$, 其中 $D=\frac{d}{dx}$, $F(x)$ 为形式幂级数(实际上, 条件为解析函数).
@@ -70,4 +73,4 @@ $$G(D)\mathcal{B}(F(x))=\mathcal{B}(G(x^{-1})F(x))$$
 
 结合第一条性质以及泰勒展开, 我们得到:
 
-$$F(x+a)=e^{aD}F(x)=e^{aD}\mathcal{B}(\mathcal{L}(F(x)))=\mathcal{B}(e^{ax^{-1}}\mathcal{L}(F(x))).$$
+$$F(x+t)=e^{tD}F(x)=e^{tD}\mathcal{B}(\mathcal{L}(F(x)))=\mathcal{B}(e^{tx^{-1}}\mathcal{L}(F(x))).$$
