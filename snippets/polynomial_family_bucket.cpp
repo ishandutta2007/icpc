@@ -492,7 +492,7 @@ Polynomial<T> taylor_shift(const Polynomial<T>& P, T t) {
   // = e^{tD}\mathcal{B}(\mathcal{L}(P(x)))
   // = \mathcal{B}(e^{t/x}\mathcal{L}(P(x)))
   int deg = P.deg();
-  Polynomial<T> Q;
+  Polynomial<T> Q(deg + 1);
   T c = 1;
   for (int i = 0; i <= deg; ++i, c *= t) Q.touch(deg - i) = c;
   c = 1;
@@ -500,7 +500,7 @@ Polynomial<T> taylor_shift(const Polynomial<T>& P, T t) {
   c = T(1) / c;
   for (int i = deg; i >= 0; c *= i, --i) Q.touch(deg - i) *= c;
   Polynomial<T> W = Q * laplace_transform(P);
-  Polynomial<T> R;
+  Polynomial<T> R(deg + 1);
   for (int i = 0; i <= deg; ++i) R.touch(i) = W.get(i + deg);
   return borel_transform(R);
 }
