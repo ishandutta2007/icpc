@@ -485,7 +485,7 @@ Polynomial<T> borel_transform(Polynomial<T> poly) {
   return poly;
 }
 
-// Transform P(x)=\sum_{i}a_ix^i to P(x + t)=\sum_{i}b_ix^i.
+// Transform P(x)=\sum_{i}a_{i}x^{i} to P(x + t)=\sum_{i}b_{i}x^{i}.
 template<typename T>
 Polynomial<T> taylor_shift(const Polynomial<T>& P, T t) {
   // P(x + t) = e^{tD}P(x)
