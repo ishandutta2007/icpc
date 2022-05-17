@@ -68,6 +68,7 @@ struct Binomial final {
   std::vector<Integral<MOD>> fact, inv_fact;
 
   explicit Binomial(int n = 0) : fact(n + 1), inv_fact(n + 1) {
+    assert(n < MOD);
     fact[0] = 1;
     for (int i = 1; i <= n; ++i) fact[i] = fact[i - 1] * i;
     inv_fact[n] = fact[n].inv();
