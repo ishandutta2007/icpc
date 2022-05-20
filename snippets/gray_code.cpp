@@ -18,7 +18,7 @@ struct GrayCode {
   template<typename T = int>
   static T next(T mask, int n) {
     assert(n > 0);
-    if (mask == T(1) << (n - 1)) return 0;
+    if (mask == T{1} << (n - 1)) return 0;
     int parity = __builtin_parityll(mask);
     if (parity == 0) return mask ^ 1;
     return mask ^ (mask & -mask) << 1;
@@ -27,7 +27,7 @@ struct GrayCode {
   template<typename T = int>
   static T prev(T mask, int n) {
     assert(n > 0);
-    if (mask == 0) return T(1) << (n - 1);
+    if (mask == 0) return T{1} << (n - 1);
     int parity = __builtin_parityll(mask);
     if (parity == 1) return mask ^ 1;
     return mask ^ (mask & -mask) << 1;
