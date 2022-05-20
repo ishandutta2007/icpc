@@ -19,28 +19,18 @@ struct GrayCode {
   static T next(T mask, int n) {
     assert(n > 0);
     if (mask == T(1) << (n - 1)) return 0;
-    int cnt = 0;
-    for (int i = 0; i < n; ++i) cnt += mask >> i & 1;
-    if (~cnt & 1) return mask ^ 1;
-    for (int i = 0; i < n; ++i) if (mask >> i & 1) {
-      mask ^= T(1) << (i + 1);
-      break;
-    }
-    return mask;
+    int parity = __builtin_parityll(mask);
+    if (parity == 0) return mask ^ 1;
+    return mask ^ (mask & -mask) << 1;
   }
 
   template<typename T = int>
   static T prev(T mask, int n) {
     assert(n > 0);
     if (mask == 0) return T(1) << (n - 1);
-    int cnt = 0;
-    for (int i = 0; i < n; ++i) cnt += mask >> i & 1;
-    if (cnt & 1) return mask ^ 1;
-    for (int i = 0; i < n; ++i) if (mask >> i & 1) {
-      mask ^= T(1) << (i + 1);
-      break;
-    }
-    return mask;
+    int parity = __builtin_parityll(mask);
+    if (parity == 1) return mask ^ 1;
+    return mask ^ (mask & -mask) << 1;
   }
 };
 
