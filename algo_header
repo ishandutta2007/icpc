@@ -5,14 +5,10 @@
 #define DUMP(...)
 #define CHECK(...)
 #endif
-// [s, n)
-#define REP(i, s, n) for (int i = int(s); i < int(n); ++i)
-#define PER(i, s, n) for (int i = int(n) - 1; i >= int(s); --i)
 
 namespace {
 
 using LL = long long;
-LL gcd(LL a, LL b) { return b == 0 ? a : gcd(b, a % b); }
 template<typename T, typename U> bool enlarge(T& a, U b) { return a < b ? (a = b, true) : false; }
 template<typename T, typename U> bool minify(T& a, U b) { return a > b ? (a = b, true) : false; }
 
