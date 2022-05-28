@@ -24,6 +24,10 @@ struct Discretization {
   int upper_bound(T x) const {
     return std::upper_bound(ss.begin(), ss.end(), x) - ss.begin();
   }
+  const T& value(int pos) const {
+    assert(0 <= pos && pos < ss.size());
+    return ss[pos];
+  }
   int size() const { return ss.size(); }
   const std::vector<T>& data() const { return ss; }
 
