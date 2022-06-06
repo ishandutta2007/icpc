@@ -1,11 +1,11 @@
-template<typename T, int num_dimensions>
+template<typename T, int NUM_DIMENSIONS>
 struct MultiDimensionalVector {
-  using type = std::vector<typename MultiDimensionalVector<T, num_dimensions - 1>::type>;
+  using type = std::vector<typename MultiDimensionalVector<T, NUM_DIMENSIONS - 1>::type>;
 
   static type create() { return type{}; }
   template<typename... Args>
   static type create(int dim, Args&&... args) {
-    return type(dim, MultiDimensionalVector<T, num_dimensions - 1>::create(std::forward<Args>(args)...));
+    return type(dim, MultiDimensionalVector<T, NUM_DIMENSIONS - 1>::create(std::forward<Args>(args)...));
   }
 };
 
@@ -17,6 +17,6 @@ struct MultiDimensionalVector<T, 0> {
   static type create(T value) { return std::move(value); }
 };
 
-template<typename T, int num_dimensions>
-using MDV = MultiDimensionalVector<T, num_dimensions>;
+template<typename T, int NUM_DIMENSIONS>
+using MDV = MultiDimensionalVector<T, NUM_DIMENSIONS>;
 
