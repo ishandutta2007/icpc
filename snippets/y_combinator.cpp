@@ -2,7 +2,7 @@ template<typename Func>
 class YCombinatorResult {
  public:
   template<typename T>
-  explicit YCombinatorResult(T&& func): func_(std::forward<T>(func)) {}
+  explicit YCombinatorResult(T&& func) : func_(std::forward<T>(func)) {}
 
   template<typename... Args>
   decltype(auto) operator()(Args&&... args) {
