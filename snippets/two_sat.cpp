@@ -3,7 +3,7 @@ struct TwoSat {
   explicit TwoSat(int n = 0) : num_variables(n), mark(num_variables << 1, false), graph(num_variables << 1) {}
 
   // clause_1 \cap clause_2 \cap ... \cap clause_m,
-  // where clause is in the form of `(x_fx \cap y_fy)`,
+  // where clause is in the form of `(x_fx \cup y_fy)`,
   // x and y are both boolean variables, and x_fx means x takes the boolean value fx.
   void add_clause(int x, bool fx, int y, bool fy) {
     add_edge(x << 1 | !fx, y << 1 | fy);
