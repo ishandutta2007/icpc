@@ -38,6 +38,10 @@ class GraphPloter {
   struct Point {
     double x, y;
 
+    static Point from_angle(double theta) {
+      return Point(std::cos(theta), std::sin(theta));
+    }
+
     Point() = default;
     Point(double x, double y) : x(x), y(y) {}
 
@@ -76,9 +80,11 @@ class GraphPloter {
 
     std::uniform_real_distribution<double> udw(0.0, width_);
     std::uniform_real_distribution<double> udh(0.0, height_);
+
     for (int i = 0; i < n_; ++i) {
       locations_[i] = Point(udw(rng_), udh(rng_));
     }
+
     // TODO: Not quite plannar. Need a bug fix next time.
     const int kMaxIteration = 100;
     InverseLinearTemperatureModel temperature_model(-std::min(width_, height_) * 1.0 / kMaxIteration, std::min(width_, height_) / 10.0);
@@ -115,7 +121,8 @@ class GraphPloter {
 
   double get_attractive_force(double length) const {
     assert(optimal_distance_ > 0.0);
-    return length * length / optimal_distance_;
+    constexpr double kElasticModulus = 3.0;
+    return length * length / optimal_distance_ * kElasticModulus;
   }
 
   void calculate_attractive_forces() {
@@ -126,7 +133,7 @@ class GraphPloter {
         if (locations_[u] == locations_[v]) continue;
         Point delta = locations_[v] - locations_[u];
         double dist = delta.length();
-        attractive_forces_[u] += delta * (get_attractive_force(dist) / dist * 2);
+        attractive_forces_[u] += delta * (get_attractive_force(dist) / dist);
       }
     }
   }
