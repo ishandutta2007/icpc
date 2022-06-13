@@ -71,7 +71,8 @@ class GraphPloter {
 
   void initialize() {
     if (n_ == 0) return;
-    optimal_distance_ = std::sqrt(width_ * height_ / n_);
+    constexpr double kNormalizationFactor = 0.5;
+    optimal_distance_ = kNormalizationFactor * std::sqrt(width_ * height_ / n_);
 
     std::uniform_real_distribution<double> udw(0.0, width_);
     std::uniform_real_distribution<double> udh(0.0, height_);
@@ -125,7 +126,7 @@ class GraphPloter {
         if (locations_[u] == locations_[v]) continue;
         Point delta = locations_[v] - locations_[u];
         double dist = delta.length();
-        attractive_forces_[u] += delta * (get_attractive_force(dist) / dist);
+        attractive_forces_[u] += delta * (get_attractive_force(dist) / dist * 2);
       }
     }
   }
