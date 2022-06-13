@@ -23,11 +23,10 @@ class GraphPloter {
     }
     of.close();
 
-    const std::string cmd = "gnuplot -e \"set term dumb 59 26;\
-                             set autoscale;\
+    const std::string cmd = "gnuplot -presist -e \"\
                              plot 'edges.dat' using 1:2 with lines lc rgb 'black' lw 2 notitle,\
                              'edges.dat' using 1:2:(0.6) with circles fill solid lc rgb 'black' notitle,\
-                             'edges.dat' using 1:2:3 with labels tc rgb 'white' offset (0,0)\"";
+                             'edges.dat' using 1:2:3 with labels tc rgb 'white' offset (0,0) notitle\"";
     system(cmd.c_str());
   }
  private:
