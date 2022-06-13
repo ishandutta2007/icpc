@@ -2,7 +2,7 @@
 
 #pragma once
 
-namespace plot {
+namespace {
 
 template<typename Edge>
 class GraphPloter {
@@ -147,3 +147,7 @@ class GraphPloter {
 };
 
 }  // namespace
+
+#define PLOT(...) { \
+  GraphPloter(__VA_ARGS__).plot(); \
+}

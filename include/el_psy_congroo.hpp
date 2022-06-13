@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "graph_ploter.hpp"
 
 #pragma once
 
