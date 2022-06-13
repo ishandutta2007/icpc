@@ -19,6 +19,7 @@ class GraphPloter {
       for (const Edge& e : graph_[u]) if (u < e.v) {
         of << locations_[u].x << " " << locations_[u].y << " " << u << "\n";
         of << locations_[e.v].x << " " << locations_[e.v].y << " " << e.v << "\n";
+        of << "\n";  // Empty line matters in gnuplot.
       }
     }
     of.close();
