@@ -3,6 +3,7 @@
 #include "el_psy_congroo.hpp"
 #else
 #define DUMP(...)
+#define PLOT(...)
 #define CHECK(...)
 #endif
 
