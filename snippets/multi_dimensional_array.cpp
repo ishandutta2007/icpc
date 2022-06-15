@@ -1,29 +1,13 @@
+template<typename T, int... DIMS> struct MultiDimensionalArrayFactory;
+template<typename T, int DIM0, int... DIMS>
+struct MultiDimensionalArrayFactory<T, DIM0, DIMS...> {
+  using type = std::array<typename MultiDimensionalArrayFactory<T, DIMS...>::type, DIM0>;
+};
+template<typename T, int DIM0>
+struct MultiDimensionalArrayFactory<T, DIM0> {
+  using type = std::array<T, DIM0>;
+};
+
 template<typename T, int... DIMS>
-struct MultiDimensionalArray {};
-
-template<typename T, int DIM, int... DIMS>
-struct MultiDimensionalArray<T, DIM, DIMS...> {
-  using type = std::array<typename MultiDimensionalArray<T, DIMS...>::type, DIM>;
-
-  static type create() { return type{}; }
-  template<typename... Args>
-  static type create(Args&&... args) {
-    type ret{};
-    ret.fill(MultiDimensionalArray<T, DIMS...>::create(std::forward<Args>(args)...));
-    return ret;
-  }
-};
-
-template<typename T, int DIM>
-struct MultiDimensionalArray<T, DIM> {
-  using type = std::array<T, DIM>;
-
-  static type create() { return type{}; }
-  template<typename... Args>
-  static type create(Args&&... args) {
-    type ret{};
-    ret.fill(T(std::forward<Args>(args)...));
-    return ret;
-  }
-};
+using ArrayND = typename MultiDimensionalArrayFactory<T, DIMS...>::type;
 
