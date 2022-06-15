@@ -98,11 +98,11 @@ std::string debug_concat(Head&& head, Tail&&... tail) {
 #define DUMP(...) { \
   std::stringstream _D_ss; \
   _D_ss << "[" << #__VA_ARGS__ << "]:" << debug_concat(__VA_ARGS__); \
-  std::cerr << _D_ss.str() << std::endl; \
+  std::cerr << "\033[32m" << _D_ss.str() << "\033[0m" << std::endl; \
 }
 #define CHECK(...) { \
   if (!(__VA_ARGS__)) { \
-    std::cerr << "[__LINE__ " << __LINE__ << "] [" << #__VA_ARGS__ << "]: false" << std::endl; \
+    std::cerr << "\033[31m" << "[__LINE__ " << __LINE__ << "] [" << #__VA_ARGS__ << "]: false" << "\033[0m" << std::endl; \
     exit(-1); \
   } \
 }
