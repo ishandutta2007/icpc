@@ -11,7 +11,8 @@ struct TwoSat {
   }
 
   bool solve() {
-    for (int i = 0; i < num_variables; ++i) if (!mark[i << 1] && !mark[i << 1 | 1]) {
+    // NOTE: Process asymmetrical variables preferentially.
+    for (int i = num_variables - 1; i >= 0; --i) if (!mark[i << 1] && !mark[i << 1 | 1]) {
       stack.clear();
       if (!dfs(i << 1)) {
         while (!stack.empty()) {
