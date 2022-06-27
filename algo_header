@@ -10,8 +10,10 @@
 namespace {
 
 using LL = long long;
-template<typename T, typename U> bool enlarge(T& a, U b) { return a < b ? (a = b, true) : false; }
-template<typename T, typename U> bool minify(T& a, U b) { return a > b ? (a = b, true) : false; }
+template<typename T, typename U> bool enlarge(T& a, U b) { \
+  return a < b ? (a = b, true) : false; }
+template<typename T, typename U> bool minify(T& a, U b) { \
+  return a > b ? (a = b, true) : false; }
 
 
 struct Solver {
