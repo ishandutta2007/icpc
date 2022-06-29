@@ -56,7 +56,7 @@ set path=., ",/usr/include,/usr/local/include
 set autochdir
 set tags=./.tags;.tags
 
-set cinoptions=g0,:0,(0,W4,N-s,j1
+set cinoptions=g1,:0,(0,W4,N-s,j1
 set completeopt=menu,longest
 setglobal complete-=t
 setglobal complete-=i
