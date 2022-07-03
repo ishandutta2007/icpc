@@ -15,7 +15,7 @@ struct BabyStepGiantStep {
     LL m = std::ceil(std::sqrt(n));
     a %= n;
     b %= n;
-    std::map<LL, LL> map;
+    std::unordered_map<LL, LL> map;
     for (LL j = 0, w = 1; j < m; w = w * a % n, ++j) {
       if (w == b) return j;
       map[w] = j;
