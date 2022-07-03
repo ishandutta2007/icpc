@@ -1,3 +1,4 @@
+// NOTE: MIGHT NOT BE SO RIGHT.
 struct BabyStepGiantStep {
  public:
   // Given a cyclic group G of order n, a generator a of the group,
