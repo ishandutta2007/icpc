@@ -93,17 +93,28 @@ bool polar_cmp(const VecT<T>& a, const VecT<T>& b) {
 }
 
 template<typename T>
-PointT<std::common_type_t<T, double>> intersection_line_line(
-    const PointT<T>& p, const PointT<T>& pp, const PointT<T>& q, const PointT<T>& qq) {
-  using R = std::common_type_t<T, double>;
-  const VecT<T> u = p - q, v = pp - p, w = qq - q;
-  const R ratio = det(w, u) / static_cast<R>(det(v, w));
-  return PointT<R>(p.x + v.x * ratio, p.y + v.y * ratio);
+bool on_point_line(const PointT<T>& p, const PointT<T>& a1, const PointT<T>& a2) {
+  return cmpT(det(a1 - p, a2 - p)) == 0;
 }
 
 template<typename T>
+bool has_intersection_line_line(
+    const PointT<T>& p, const PointT<T>& pp, const PointT<T>& q, const PointT<T>& qq) {
+  return cmpT(det(pp - p, qq - q)) != 0 || on_point_line(p, q, qq);
+}
+
+template<typename T, typename R = std::common_type_t<T, double>>
+PointT<R> intersection_line_line(
+    const PointT<T>& p, const PointT<T>& pp, const PointT<T>& q, const PointT<T>& qq) {
+  const VecT<T> u = p - q, v = pp - p, w = qq - q;
+  const T dom = det(v, w);
+  if (cmpT(dom) == 0) return PointT<R>(p.x, p.y);  // collinear.
+  const R ratio = det(w, u) / static_cast<R>(dom);
+  return PointT<R>(p.x + v.x * ratio, p.y + v.y * ratio);
+}
+
+template<typename T, typename R = std::common_type_t<T, double>>
 PointT<std::common_type_t<T, double>> projection_point_line(const PointT<T>& p, const PointT<T>& a, const PointT<T>& b) {
-  using R = std::common_type_t<T, double>;
   const VecT<T> v = b - a;
   const R ratio = dot(v, p - a) / static_cast<R>(dot(v, v));
   return PointT<R>(a.x + v.x * ratio, a.y + v.y * ratio);
@@ -173,8 +184,15 @@ using Polygon = std::vector<Point>;
 inline int dcmp(double x) { return cmpT(x); }
 
 void geom_test() {
+  CHECK(has_intersection_line_line(PointT<int>(1, 0), PointT<int>(0, 1), \
+                                   PointT<int>(0, 0), PointT<int>(1, 1)));
+  CHECK(has_intersection_line_line(PointT<int>(0, 0), PointT<int>(1, 1), \
+                                   PointT<int>(8, 8), PointT<int>(9, 9)));
+  CHECK(!has_intersection_line_line(PointT<int>(0, 0), PointT<int>(1, 1), \
+                                    PointT<int>(8, 0), PointT<int>(9, 1)));
   CHECK(PointT<double>(0.5, 0.5) ==
-        intersection_line_line(PointT<int>(1, 0), PointT<int>(0, 1), PointT<int>(0, 0), PointT<int>(1, 1)));
+        intersection_line_line(PointT<int>(1, 0), PointT<int>(0, 1), \
+                               PointT<int>(0, 0), PointT<int>(1, 1)));
   DUMP(projection_point_line(PointT<int>(1, 1), PointT<int>(0, 0), PointT<int>(3, -2)));
   DUMP(distance_point_segment(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
   DUMP(distance_point_line(PointT<int>(1, 1), PointT<int>(9, -7), PointT<int>(3, -2)));
