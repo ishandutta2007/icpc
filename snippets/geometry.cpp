@@ -207,7 +207,8 @@ std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
   std::vector<bool> del(n);
   while (!stack.empty()) {
     const int i = stack.back(); stack.pop_back();
-    if (del[i] || n - (int)result.size() < 3 || !same_sign(i, area_sign)) continue;
+    if (del[i] || n - (int)result.size() < 3) continue;
+    assert(same_sign(i, area_sign));
     const int j = next[i];
     const int k = prev[i];
     auto inside = [&](int r) -> bool {
@@ -217,7 +218,7 @@ std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
       return a * area_sign >= 0 && b * area_sign >= 0 && c * area_sign >= 0;
     };
     bool is_ear = true;
-    for (int r : concave_ids) {
+    for (int r : concave_ids) if (r != j && r != k) {
       is_ear &= !inside(r);
       if (!is_ear) break;
     }
@@ -226,10 +227,14 @@ std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
       del[i] = true;
       prev[j] = k;
       next[k] = j;
-      stack.emplace_back(j);
-      stack.emplace_back(k);
-      if (same_sign(j, -area_sign)) concave_ids.emplace(j); else concave_ids.erase(j);
-      if (same_sign(k, -area_sign)) concave_ids.emplace(k); else concave_ids.erase(k);
+      if (same_sign(j, area_sign)) {
+        concave_ids.erase(j);
+        stack.emplace_back(j);
+      }
+      if (same_sign(k, area_sign)) {
+        concave_ids.erase(k);
+        stack.emplace_back(k);
+      }
     }
   }
   return result;
