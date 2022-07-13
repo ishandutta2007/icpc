@@ -200,6 +200,8 @@ std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
     if (del[i] || n - (int)result.size() < 3) continue;
     const int j = next[i];
     const int k = prev[i];
+    const T triangle_area = det(polygon[j] - polygon[i], polygon[k] - polygon[i]);
+    if (cmpT(triangle_area) != area_sign) continue;
     auto inside = [&](int r) -> bool {
       const int a = cmpT(det(polygon[i] - polygon[r], polygon[j] - polygon[r]));
       const int b = cmpT(det(polygon[j] - polygon[r], polygon[k] - polygon[r]));
