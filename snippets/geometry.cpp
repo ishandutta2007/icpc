@@ -182,26 +182,29 @@ std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
   // Based on the two ears theorem.
   // Non-convex polygons are supported.
   // O(n^2).
-  int n = polygon.size();
+  const int n = polygon.size();
   std::vector<int> prev(n), next(n);
   std::vector<int> stack;
+  T area = 0;
   for (int i = 0; i < n; ++i) {
     prev[i] = (i + n - 1) % n;
     next[i] = (i + 1) % n;
     stack.emplace_back(i);
+    area += det(polygon[i], polygon[next[i]]);
   }
+  const int area_sign = cmpT(area);
   std::vector<std::array<int, 3>> result;
   std::vector<bool> del(n);
   while (!stack.empty()) {
-    int i = stack.back(); stack.pop_back();
+    const int i = stack.back(); stack.pop_back();
     if (del[i] || n - (int)result.size() < 3) continue;
-    int j = next[i];
-    int k = prev[i];
+    const int j = next[i];
+    const int k = prev[i];
     auto inside = [&](int r) -> bool {
       const int a = cmpT(det(polygon[i] - polygon[r], polygon[j] - polygon[r]));
       const int b = cmpT(det(polygon[j] - polygon[r], polygon[k] - polygon[r]));
       const int c = cmpT(det(polygon[k] - polygon[r], polygon[i] - polygon[r]));
-      return (a >= 0 && b >= 0 && c >= 0) || (a <= 0 && b <= 0 && c <= 0);
+      return a * area_sign >= 0 && b * area_sign >= 0 && c * area_sign >= 0;
     };
     bool is_ear = true;
     for (int r = next[j]; r != k && is_ear; r = next[r]) {
