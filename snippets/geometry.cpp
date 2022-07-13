@@ -181,7 +181,7 @@ template<typename T>
 std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
   // Based on the two ears theorem.
   // Non-convex polygons are supported.
-  // O(n^2).
+  // O(nm), where n is the number of points, and m is the number of concave points.
   const int n = polygon.size();
   std::vector<int> prev(n), next(n);
   T area = 0;
