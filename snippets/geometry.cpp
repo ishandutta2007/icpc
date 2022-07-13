@@ -201,7 +201,7 @@ std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
       const int a = cmpT(det(polygon[i] - polygon[r], polygon[j] - polygon[r]));
       const int b = cmpT(det(polygon[j] - polygon[r], polygon[k] - polygon[r]));
       const int c = cmpT(det(polygon[k] - polygon[r], polygon[i] - polygon[r]));
-      return a == 0 || b == 0 || c == 0 || (a == b && b == c);
+      return (a >= 0 && b >= 0 && c >= 0) || (a <= 0 && b <= 0 && c <= 0);
     };
     bool is_ear = true;
     for (int r = next[j]; r != k && is_ear; r = next[r]) {
