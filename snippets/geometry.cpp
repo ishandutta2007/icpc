@@ -177,6 +177,48 @@ bool in_point_polygon(const PointT<T>& o, const PolygonT<T>& poly, bool flag) {
   return t & 1;
 }
 
+template<typename T>
+std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
+  // Based on the two ears theorem.
+  // Non-convex polygons are supported.
+  // O(n^2).
+  int n = polygon.size();
+  std::vector<int> prev(n), next(n);
+  std::vector<int> stack;
+  for (int i = 0; i < n; ++i) {
+    prev[i] = (i + n - 1) % n;
+    next[i] = (i + 1) % n;
+    stack.emplace_back(i);
+  }
+  std::vector<std::array<int, 3>> result;
+  std::vector<bool> del(n);
+  while (!stack.empty()) {
+    int i = stack.back(); stack.pop_back();
+    if (del[i] || n - (int)result.size() < 3) continue;
+    int j = next[i];
+    int k = prev[i];
+    auto inside = [&](int r) -> bool {
+      const int a = cmpT(det(polygon[i] - polygon[r], polygon[j] - polygon[r]));
+      const int b = cmpT(det(polygon[j] - polygon[r], polygon[k] - polygon[r]));
+      const int c = cmpT(det(polygon[k] - polygon[r], polygon[i] - polygon[r]));
+      return a == 0 || b == 0 || c == 0 || (a == b && b == c);
+    };
+    bool is_ear = true;
+    for (int r = next[j]; r != k && is_ear; r = next[r]) {
+      is_ear &= !inside(r);
+    }
+    if (is_ear) {
+      result.emplace_back(std::array<int, 3>{i, j, k});
+      del[i] = true;
+      prev[j] = k;
+      next[k] = j;
+      stack.emplace_back(j);
+      stack.emplace_back(k);
+    }
+  }
+  return result;
+}
+
 using Vector = VecT<double>;
 using Point = Vector;
 using Polygon = std::vector<Point>;
@@ -219,5 +261,6 @@ void geom_test() {
   DUMP(PointT<bool>(false, false));
   CHECK(PointT<long double>(0.0, 1.0) == PointT<long double>(1.0, 0.0).rotated(M_PI / 2));
   CHECK(PointT<double>(0.4, 0.4) == lerp(PointT<int>(0, 0), PointT<int>(1, 1), 0.4));
+  DUMP(triangulate(Polygon{Point(0, 0), Point(10, 0), Point(10, 10), Point(0, 10)}));
 }
 
