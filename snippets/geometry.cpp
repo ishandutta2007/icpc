@@ -184,24 +184,32 @@ std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
   // O(n^2).
   const int n = polygon.size();
   std::vector<int> prev(n), next(n);
-  std::vector<int> stack;
   T area = 0;
   for (int i = 0; i < n; ++i) {
     prev[i] = (i + n - 1) % n;
     next[i] = (i + 1) % n;
-    stack.emplace_back(i);
     area += det(polygon[i], polygon[next[i]]);
   }
+  auto same_sign = [&](int i, int target_sign) -> bool {
+    const int j = next[i];
+    const int k = prev[i];
+    const T triangle_area = det(polygon[j] - polygon[i], polygon[k] - polygon[i]);
+    return cmpT(triangle_area) == target_sign;
+  };
   const int area_sign = cmpT(area);
+  std::set<int> concave_ids;
+  std::vector<int> stack;
+  for (int i = 0; i < n; ++i) {
+    if (same_sign(i, -area_sign)) concave_ids.emplace(i);
+    else if (same_sign(i, area_sign)) stack.emplace_back(i);
+  }
   std::vector<std::array<int, 3>> result;
   std::vector<bool> del(n);
   while (!stack.empty()) {
     const int i = stack.back(); stack.pop_back();
-    if (del[i] || n - (int)result.size() < 3) continue;
+    if (del[i] || n - (int)result.size() < 3 || !same_sign(i, area_sign)) continue;
     const int j = next[i];
     const int k = prev[i];
-    const T triangle_area = det(polygon[j] - polygon[i], polygon[k] - polygon[i]);
-    if (cmpT(triangle_area) != area_sign) continue;
     auto inside = [&](int r) -> bool {
       const int a = cmpT(det(polygon[i] - polygon[r], polygon[j] - polygon[r]));
       const int b = cmpT(det(polygon[j] - polygon[r], polygon[k] - polygon[r]));
@@ -209,8 +217,9 @@ std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
       return a * area_sign >= 0 && b * area_sign >= 0 && c * area_sign >= 0;
     };
     bool is_ear = true;
-    for (int r = next[j]; r != k && is_ear; r = next[r]) {
+    for (int r : concave_ids) {
       is_ear &= !inside(r);
+      if (!is_ear) break;
     }
     if (is_ear) {
       result.emplace_back(std::array<int, 3>{i, j, k});
@@ -219,6 +228,8 @@ std::vector<std::array<int, 3>> triangulate(const PolygonT<T>& polygon) {
       next[k] = j;
       stack.emplace_back(j);
       stack.emplace_back(k);
+      if (same_sign(j, -area_sign)) concave_ids.emplace(j); else concave_ids.erase(j);
+      if (same_sign(k, -area_sign)) concave_ids.emplace(k); else concave_ids.erase(k);
     }
   }
   return result;
