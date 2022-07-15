@@ -107,7 +107,7 @@ struct PrimeTable {
     entries.clear();
     g.clear();
 
-    for (T i = 1; i <= n; i += n % i / (n / i) + 1) entries.emplace_back(n / i);
+    for (T i = 1; i <= n; i = n / (n / i) + 1) entries.emplace_back(n / i);
     std::reverse(entries.begin(), entries.end());
     int m = entries.size();
     g.resize(m, 0);
@@ -126,13 +126,15 @@ struct PrimeTable {
       assert(entries[j] == n / i);
       big[i] = j;
     }
+    auto get_index = [&](int x) -> int {
+      return x <= w ? small[x] : big[n / x];
+    };
 
     for (int k = 0; k < primes.size(); ++k) {
       int p = primes[k];
       if (p * 1LL * p > n) break;
       for (int i = m - 1; i >= 0 && entries[i] >= p * 1LL * p; --i) {
-        LL from = entries[i] / p;
-        g[i] += -g[from <= w ? small[from] : big[n / from]] + k;
+        g[i] += -g[get_index(entries[i] / p)] + k;
       }
     }
     return g.back();
