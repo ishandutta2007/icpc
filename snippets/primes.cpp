@@ -126,7 +126,7 @@ struct PrimeTable {
       assert(entries[j] == n / i);
       big[i] = j;
     }
-    auto get_index = [&](int x) -> int {
+    auto get_index = [&](T x) -> int {
       return x <= w ? small[x] : big[n / x];
     };
 
