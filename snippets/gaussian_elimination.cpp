@@ -76,7 +76,7 @@ struct GaussianElimination {
       constexpr T eps = 1e-8;
       return std::abs(x) > std::abs(y) + eps;
     } else {
-      return x != 0;
+      return (x != 0) > (y != 0);
     }
   }
 
