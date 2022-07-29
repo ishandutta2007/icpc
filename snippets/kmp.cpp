@@ -12,17 +12,18 @@ struct KnuthMorrisPratt {
     }
   }
 
+  template<typename CharType>
+  int fit(int base, const CharType& c) const {
+    if (base + 1 == next.size()) base = next[base];
+    while (base >= 0 && str[base + 1] != c) base = next[base];
+    return base + (str[base + 1] == c);
+  }
+
   int count_occurrence(const String& s) const {
     int ret = 0;
     for (int i = 0, j = -1; i < s.length(); ++i) {
-      while (j >= 0 && s[i] != str[j + 1]) j = next[j];
-      if (s[i] == str[j + 1]) {
-        ++j;
-        if (j + 1 == str.length()) {
-          j = next[j];
-          ++ret;
-        }
-      }
+      j = fit(j, s[i]);
+      if (j + 1 == str.length()) ++ret;
     }
     return ret;
   }
