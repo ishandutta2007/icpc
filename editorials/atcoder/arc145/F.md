@@ -64,7 +64,7 @@ h(t) &= \Pi_{i=0}^{\frac{P}{c(t)}-1}(1+\omega^{ic(t)}u)^{c(t)}\\
 
 总结一下得到:
 
-$$g(t)=[u^N]h(t)^Q=[u^N](1-(-u)^{\frac{P}{gcd(t,P)}})^{gcd(t,P)},$$
+$$g(t)=[u^N]h(t)^Q=[u^N](1-(-u)^{\frac{P}{gcd(t,P)}})^{gcd(t,P)\cdot Q},$$
 
 再进行二项式展开.
 
