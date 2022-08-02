@@ -80,15 +80,15 @@ $$\begin{array}{ll}
 &= \frac{1}{P}\sum_{c|P}g(c)\sum_{j=1}^{P}\omega^{-ij}[gcd(j,P)=c]\\
 &= \frac{1}{P}\sum_{c|P}g(c)\sum_{j=1}^{\frac{P}{c}}\omega^{-ijc}[gcd(j,\frac{P}{c})=1]\\
 &= \frac{1}{P}\sum_{c|P}g(c)\sum_{j=1}^{\frac{P}{c}}\omega^{-ijc}\sum_{d|gcd(j,\frac{P}{c})}\mu(d)\\
-&= \frac{1}{P}\sum_{c|P}g(c)\sum_{d|\frac{P}{c}}\mu(d)\sum_{j=1}^{\frac{P}{cd}}\omega^{-ijcd}\\
-&= \frac{1}{P}\sum_{c|P}g(c)\sum_{d|\frac{P}{c}}\mu(d)\frac{1-\omega^{-iP}}{1-\omega^{-icd}}.
+&= \frac{1}{P}\sum_{c|P}g(c)\sum_{d|\frac{P}{c}}\mu(d)\sum_{j=1}^{\frac{P}{cd}}\omega^{-ijcd}.
 \end{array}$$
 
-如果 $1-\omega^{-icd}\ne 0$, 那么上式的最后一项是 $0$. 所以只用考虑 $1-\omega^{-icd}=0$ 的情况, 此时上式的最后一项等于1, 于是:
+如果 $1-\omega^{-icd}\ne 0$, 那么上式的最后一项是 $\sum_{j=1}^{\frac{P}{cd}}\omega^{-ijcd}=\frac{1-\omega^{-iP}}{1-\omega^{-icd}}=0$. 所以只用考虑 $1-\omega^{-icd}=0$ 的情况, 此时:
 
 $$\begin{array}{ll}
-[x^i]f(x) &= \frac{1}{P}\sum_{c|P}g(c)\sum_{d|\frac{P}{c}}\mu(d)[\omega^{-icd}=1]\\
-&= \frac{1}{P}\sum_{c|P}g(c)\sum_{d|\frac{P}{c}}\mu(d)[P | icd].
+[x^i]f(x) &= \frac{1}{P}\sum_{c|P}g(c)\sum_{d|\frac{P}{c}}\mu(d)\sum_{j=1}^{\frac{P}{cd}}\omega^{-ijcd}\\
+&= \frac{1}{P}\sum_{c|P}g(c)\sum_{d|\frac{P}{c}}\mu(d)\frac{P}{cd}[\omega^{-icd}=1]\\
+&= \frac{1}{P}\sum_{c|P}g(c)\sum_{d|\frac{P}{c}}\mu(d)\frac{P}{cd}[P | icd].
 \end{array}$$
 ## 当 $P\nmid M$
 
