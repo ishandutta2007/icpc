@@ -33,7 +33,7 @@ f(x)&=[u^N]\Pi_{i=0}^{PQ-1}(1+x^iu) \mod (x^P - 1)\\
 
 由于 $P$  很小, 我们来试试看单位根魔法.
 
-定义符号 $\omega$, 满足 $\omega^{P}-1=0$ 且对于整数 $t\in [0,P-1]$, 有 $\omega^{tP}-1\ne 0$.
+定义符号 $\omega$, 满足 $\omega^{P}-1=0$ 且对于整数 $t\in [0,P-1]$, 有 $\omega^{t}-1\ne 0$.
 
 定义函数 $g(t)$:
 $$g(t)=f(\omega^t)=[u^N](\Pi_{i=0}^{P-1}(1+\omega^{it}u))^Q \mod (\omega^{tP} - 1)=[u^N](\Pi_{i=0}^{P-1}(1+\omega^{it}u))^Q.$$
