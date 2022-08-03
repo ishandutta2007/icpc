@@ -105,13 +105,15 @@ https://www.luogu.com.cn/problem/P5206
 
 ### Core formula
 
-$\omega_n$: $n$次单位根 s.t. $\omega_n^n=1$ (e.g. 复数域上的$e^{\frac{2\pi i}{n}}$).
+$\omega_n$: $n$次单位根 s.t. $\omega_n^n=1$ (e.g. 复数域上的$e^{\frac{2\pi i}{n}}$, 有限循环群的生成元(原根)).
 
-$\frac{1}{n}\sum_{k=0}^{n-1}\omega_n^{vk} = [v\equiv 0\mod n]$
+$\frac{1}{n}\sum_{k=0}^{n-1}\omega_n^{vk} = [v\equiv 0\mod n] = [n | v]$.
 
 Given $f[m]=\sum_{k=0}^{n-1}\omega_n^{mk}g[k]$, we have:
 
-$g[m]=\frac{1}{n}\sum_{k=0}^{n-1}\omega_n^{-mk}f[k]$.
+$g[m]=\frac{1}{n}\sum_{k=0}^{n-1}\omega_n^{-mk}f[k]$. 
+
+(BTW, this is exactly the discrete fourier transform).
 
 ### Applications
 
