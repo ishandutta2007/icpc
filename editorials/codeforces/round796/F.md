@@ -49,9 +49,43 @@ $$E(n,m)=\sum_{k=0}^{m+1}(-1)^k\binom{n+1}{k}(m+1-k)^n.$$
 $$f_{N,S}(K)=\binom{N-1}{S}f_{N-S,0}(K-S).$$
 简记 $N'=N-S$ 及 $K'=K-S$.
 
-$f_{N',0}(K')$ 表示长度为 $N'$ 的排列, 恰好有 $K'$ 个位置 $i$ 满足 $p_i\lt p_{i+1}$, 且不存在 $p_i+1=p_{i+1}$ 的方案数. 让我们容斥掉第二个限制:
+$f_{N',0}(K')$ 表示长度为 $N'$ 的排列, 恰好有 $K'$ 个位置 $i$ 满足 $p_i\lt p_{i+1}$, 且不存在 $p_i+1=p_{i+1}$ 的方案数.
+
+由
 
 $$\begin{array}{ll}
-f_{N',0}(K') &= \sum_{j=0}^{K'}(-1)^{j}\binom{N'-j-1}{j}E(N'-j,K'-j).
+E(N',K') &= \sum_{j=0}^{K'}\binom{N'-1}{j}f_{N'-j,0}(K'-j)
+\end{array}
+$$
+容斥得:
+$$\begin{array}{ll}
+f_{N',0}(K') &= \sum_{j=0}^{K'}(-1)^{j}\binom{N'-1}{j}E(N'-j,K'-j)\\
+(\mbox{symmetricity}) &= \sum_{j=0}^{N'-1}(-1)^{j}\binom{N'-1}{j}E(N'-j,N'-1-K')\\
+&= \sum_{j=0}^{N'-1}(-1)^{j}\binom{N'-1}{j}[\frac{x^{N'-j}}{(N'-j)!}][t^{N'-1-K'}]\frac{t-1}{t-e^{(t-1)x}}\\
+&= \sum_{j=0}^{N'-1}(-1)^{j}\frac{(N'-1)!}{j!(N'-1-j)!}[\frac{x^{N'-j}}{(N'-j)!}][t^{N'-1-K'}]\frac{t-1}{t-e^{(t-1)x}}\\
+&= (N'-1)!\sum_{j=0}^{N'-1}\frac{(-1)^{j}}{j!}[x^{N'-j}][t^{N'-1-K'}]\frac{(N'-j)(t-1)}{t-e^{(t-1)x}}\\
+&= (N'-1)![t^{N'-1-K'}]\sum_{j=0}^{N'-1}\frac{(-1)^{j}}{j!}[x^{N'-j-1}]\frac{\partial}{\partial{x}}\frac{(t-1)}{t-e^{(t-1)x}}.
 \end{array}$$
-然后不会了.
+
+关于最后一项的偏微分, 首先是说, 对形式幂级数 $f(x)$ 有以下式子成立:
+
+$$\frac{\partial}{\partial{x}}f(x)=\sum_{i=0}^{\infty}\frac{\partial}{\partial{x}}f_ix^i=\sum_{i=1}^{\infty}if_ix^{i-1}.$$
+然后我们再算一次函数本身的偏微分:
+
+$$\begin{array}{ll}
+\frac{\partial}{\partial{x}}\frac{(t-1)}{t-e^{(t-1)x}}
+&= \frac{-(t-1)\frac{\partial}{\partial{x}}(t-e^{(t-1)x})}{(t-e^{(t-1)x})^2}\\
+&= \frac{-(t-1)(-(t-1)e^{(t-1)x})}{(t-e^{(t-1)x})^2}\\
+&= \frac{(t-1)^2e^{(t-1)x}}{(t-e^{(t-1)x})^2}.
+\end{array}$$
+
+将其代入得:
+
+$$\begin{array}{ll}
+f_{N',0}(K') &= (N'-1)![t^{N'-1-K'}]\sum_{j=0}^{N'-1}\frac{(-1)^{j}}{j!}[x^{N'-j-1}]\frac{\partial}{\partial{x}}\frac{(t-1)}{t-e^{(t-1)x}}\\
+&= (N'-1)![t^{N'-1-K'}]\sum_{j=0}^{N'-1}\frac{(-1)^{j}}{j!}[x^{N'-j-1}]\frac{(t-1)^2e^{(t-1)x}}{(t-e^{(t-1)x})^2}\\
+(\mbox{using\ } e^{-x}=\sum_{i}^{\infty}\frac{{-1}^i}{i!}x^i) &= (N'-1)![t^{N'-1-K'}]\sum_{j=0}^{N'-1}[x^j]e^{-x}[x^{N'-j-1}]\frac{(t-1)^2e^{(t-1)x}}{(t-e^{(t-1)x})^2}\\
+&= (N'-1)![t^{N'-1-K'}][x^{N'-1}]\frac{(t-1)^2e^{(t-2)x}}{(t-e^{(t-1)x})^2}.
+\end{array}$$
+
+最后一项过于复杂, 寄.
