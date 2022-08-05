@@ -28,20 +28,25 @@ Eulerian number $E(n,m)$ 表示有多少长度为 $n$ 的排列 $p_1,p_2,\cdots,
 
 整体来说, Eulerian number 可由一个 bivariate generating function 描述.
 
-固定 $n$ 的话有:
+固定 $n$ 的话是个 Ordinary generating function:
 
-$$E_n(t)=\sum_{m=0}^n E(n,m)t^m,$$
+$$\begin{array}{ll}
+E_n(t)&=\sum_{m=0}^n E(n,m)t^m\\
+&=(1-t)^{n+1}\sum_{k=0}^{n}(k+1)^nt^k.\\
+\end{array}$$
 
-而关于 $n$ 的部分需要用指数生成函数描述:
+而关于 $n$ 的部分需要用 Exponential generating function 描述:
 
-$$E(x,t) = \sum_{n=0}^{\infty}E_n(t)\cdot \frac{x^n}{n!}=\frac{t-1}{t-e^{(t-1)x}}.$$
+$$E(x,t) = \sum_{n=0}^{\infty}E_n(t)\frac{x^n}{n!}=\frac{t-1}{t-e^{(t-1)x}}.$$
 一般的记法为:
 
 $$E(n,m)=\genfrac<>{0}{}{n}{m}=[\frac{x^n}{n!}][t^m]E(x,t).$$
 
-显式的算式是存在的:
+显式的算式:
 
-$$E(n,m)=\sum_{k=0}^{m+1}(-1)^k\binom{n+1}{k}(m+1-k)^n.$$
+$$\begin{array}{ll}E(n,m) &= \sum_{k=0}^{m+1}(-1)^k\binom{n+1}{k}(m+1-k)^n\\
+&= \sum_{k=0}^{m}(-1)^k\binom{n+1}{k}(m+1-k)^n
+\end{array}$$
 # 正文
 
 令 $f_{N,S}(K)$ 表示原问题的答案. 我们考虑用二项式直接算 $p_i+1=p_{i+1}$ 的部分:
