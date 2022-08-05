@@ -84,7 +84,7 @@ $$\begin{array}{ll}
 $$\begin{array}{ll}
 f_{N',0}(K') &= (N'-1)![t^{N'-1-K'}]\sum_{j=0}^{N'-1}\frac{(-1)^{j}}{j!}[x^{N'-j-1}]\frac{\partial}{\partial{x}}\frac{(t-1)}{t-e^{(t-1)x}}\\
 &= (N'-1)![t^{N'-1-K'}]\sum_{j=0}^{N'-1}\frac{(-1)^{j}}{j!}[x^{N'-j-1}]\frac{(t-1)^2e^{(t-1)x}}{(t-e^{(t-1)x})^2}\\
-(\mbox{using\ } e^{-x}=\sum_{i}^{\infty}\frac{{-1}^i}{i!}x^i) &= (N'-1)![t^{N'-1-K'}]\sum_{j=0}^{N'-1}[x^j]e^{-x}[x^{N'-j-1}]\frac{(t-1)^2e^{(t-1)x}}{(t-e^{(t-1)x})^2}\\
+(\mbox{using\ } e^{-x}=\sum_{i}^{\infty}\frac{(-1)^i}{i!}x^i) &= (N'-1)![t^{N'-1-K'}]\sum_{j=0}^{N'-1}[x^j]e^{-x}[x^{N'-j-1}]\frac{(t-1)^2e^{(t-1)x}}{(t-e^{(t-1)x})^2}\\
 &= (N'-1)![t^{N'-1-K'}][x^{N'-1}]\frac{(t-1)^2e^{(t-2)x}}{(t-e^{(t-1)x})^2}.
 \end{array}$$
 
