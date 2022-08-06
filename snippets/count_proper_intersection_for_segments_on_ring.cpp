@@ -10,6 +10,7 @@ struct CountProperIntersectionForSegmentsOnRing {
     ++num_segments;
   }
 
+  // Assume no collinear segments.
   long long count() {
     long long ret = 0;
     std::sort(events.begin(), events.end());
