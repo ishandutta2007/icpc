@@ -1,14 +1,16 @@
+template<typename T, typename Comparator = std::greater<T>>
 struct Smawk {
  public:
-  // Solve <max, +> convolution.
+  // Solve <max,+> convolution.
   // In O(n) time if one of the input array is concave.
   // In O(n^2) otherwise.
   // https://codeforces.com/blog/entry/98663
   //
-  // <max, +> convolution means:
+  // <max,+> convolution means:
   // Given two arrays A and B, find an array C where
   // C_i = max_{j+k=i} (A_j + B_k).
-  template<typename T>
+  //
+  // Use `Smawk<T, std::less<T>>` for <min,+> convolution instead.
   static std::vector<T> convolution(
       const std::vector<T>& A, const std::vector<T>& B) {
     if (concave_validation(B)) return convolution_with_concave_shape(A, B);
@@ -16,38 +18,39 @@ struct Smawk {
     return brute_convolution(A, B);
   }
 
-  template<typename T>
   static std::vector<T> convolution_with_concave_shape(
       const std::vector<T>& any_shape, const std::vector<T>& concave_shape) {
-    // assert(concave_validation(concave_shape));
+    assert(concave_validation(concave_shape));
     int n = any_shape.size(), m = concave_shape.size();
     if (n == 0 || m == 0) return {};
-    auto func = [&](int i, int j) {
+    auto calc = [&](int i, int j) {
       return any_shape[j] + concave_shape[i - j];
     };
-    auto cmp = [&](int i, int j, int k) {
+    Comparator cmp;
+    auto f = [&](int i, int j, int k) {
       if(i < k) return false;
       if(i - j >= m) return true;
-      return func(i, j) <= func(i, k);
+      return !cmp(calc(i, j), calc(i, k));
     };
-    const std::vector<int> best = smawk(cmp, n + m - 1, n);
+    const std::vector<int> best = smawk(f, n + m - 1, n);
     std::vector<T> ret(n + m - 1);
-    for(int i = 0; i < n + m - 1; i++) ret[i] = func(i, best[i]);
+    for(int i = 0; i < n + m - 1; i++) ret[i] = calc(i, best[i]);
     return ret;
   }
 
-  template<typename T>
   static bool concave_validation(const std::vector<T>& B) {
-    // The second derivative should be non-positive.
-    int m = B.size();
+    // The second derivative should be:
+    // - non-positive if Comparator is std::greater<T>.
+    // - non-negative if Comparator is std::less<T>.
+    const T expected_sign = Comparator{}(1, -1) ? -1 : 1;
     for (int i = 1; i + 1 < B.size(); ++i) {
-      if (B[i] - B[i - 1] < B[i + 1] - B[i]) return false;
+      T dfdxx = B[i + 1] + B[i - 1] - B[i] * 2;
+      if (dfdxx * expected_sign < 0) return false;
     }
     return true;
   }
 
-  template<typename T>
-  static std::vector<T> brute_convoluiton(
+  static std::vector<T> brute_convolution(
       const std::vector<T>& A, const std::vector<T>& B) {
     int n = A.size();
     int m = B.size();
@@ -58,13 +61,12 @@ struct Smawk {
       for (int j = std::max(i - m + 1, 0); j <= std::min(i, n - 1); ++j) {
         tmp.emplace_back(A[j] + B[i - j]);
       }
-      C[i] = *std::max_element(tmp.begin(), tmp.end());
+      C[i] = *std::min_element(tmp.begin(), tmp.end(), Comparator{});
     }
     return C;
   }
 
  private:
-  // SMAWK for max.
   template<typename F>
   static std::vector<int> smawk(
       F&& f, const std::vector<int>& rows, const std::vector<int>& cols) {
@@ -115,9 +117,9 @@ struct Smawk {
   }
 
   // max SMAWK
-  // F(i, j, k) checks if M[i][j] <= M[i][k]
+  // f(i, j, k) checks if M[i][j] <= M[i][k]
   // another interpretations is:
-  // F(i, j, k) checks if M[i][k] is at least as good as M[i][j]
+  // f(i, j, k) checks if M[i][k] is at least as good as M[i][j]
   // higher == better
   // when comparing 2 columns as vectors
   // for j < k, column j can start better than column k
