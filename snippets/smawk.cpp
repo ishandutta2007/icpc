@@ -1,13 +1,23 @@
 struct Smawk {
  public:
+  // Solve <max, +> convolution.
+  // In O(n) time if one of the input array is concave.
+  // In O(n^2) otherwise.
   // https://codeforces.com/blog/entry/98663
-  // Solve <max, +> convolution in O(n) time if one of the input is concave.
   //
   // <max, +> convolution means:
   // Given two arrays A and B, find an array C where
   // C_i = max_{j+k=i} (A_j + B_k).
   template<typename T>
-  static std::vector<T> max_plus_convolution_with_concave_shape(
+  static std::vector<T> convolution(
+      const std::vector<T>& A, const std::vector<T>& B) {
+    if (concave_validation(B)) return convolution_with_concave_shape(A, B);
+    if (concave_validation(A)) return convolution_with_concave_shape(B, A);
+    return brute_convolution(A, B);
+  }
+
+  template<typename T>
+  static std::vector<T> convolution_with_concave_shape(
       const std::vector<T>& any_shape, const std::vector<T>& concave_shape) {
     // assert(concave_validation(concave_shape));
     int n = any_shape.size(), m = concave_shape.size();
@@ -26,29 +36,38 @@ struct Smawk {
     return ret;
   }
 
-  // O(m^2) validation. Invoke it if needed.
   template<typename T>
   static bool concave_validation(const std::vector<T>& B) {
-    // B is concave <=> B_{p} + B_{q} >= B_{p-r} + B_{q+r} for any p<=q and r.
-    //
-    // <=> B_{p} - B_{p-r} >= B_{q+r} - B_{q}
+    // The second derivative should be non-positive.
     int m = B.size();
-    std::vector<T> bounds(m, -std::numeric_limits<T>::max());
-    for (int i = m - 1; i >= 0; --i) {
-      for (int r = 0; i + r < m; ++r) {
-        bounds[r] = std::max(bounds[r], B[i + r] - B[i]);
-      }
-      for (int r = 0; i - r >= 0; ++r) {
-        if (B[i] - B[i - r] < bounds[r]) return false;
-      }
+    for (int i = 1; i + 1 < B.size(); ++i) {
+      if (B[i] - B[i - 1] < B[i + 1] - B[i]) return false;
     }
     return true;
+  }
+
+  template<typename T>
+  static std::vector<T> brute_convoluiton(
+      const std::vector<T>& A, const std::vector<T>& B) {
+    int n = A.size();
+    int m = B.size();
+    if (n == 0 || m == 0) return {};
+    std::vector<T> C(n + m - 1);
+    for (int i = 0; i < C.size(); ++i) {
+      std::vector<T> tmp;
+      for (int j = std::max(i - m + 1, 0); j <= std::min(i, n - 1); ++j) {
+        tmp.emplace_back(A[j] + B[i - j]);
+      }
+      C[i] = *std::max_element(tmp.begin(), tmp.end());
+    }
+    return C;
   }
 
  private:
   // SMAWK for max.
   template<typename F>
-  static std::vector<int> smawk(F&& f, const std::vector<int>& rows, const std::vector<int>& cols) {
+  static std::vector<int> smawk(
+      F&& f, const std::vector<int>& rows, const std::vector<int>& cols) {
     std::vector<int> ans(rows.size(), -1);
     if(std::max(rows.size(), cols.size()) <= 2) {
       for(int i = 0; i < rows.size(); ++i) {
@@ -109,22 +128,6 @@ struct Smawk {
     std::iota(rows.begin(), rows.end(), 0);
     std::iota(cols.begin(), cols.end(), 0);
     return smawk(f, rows, cols);
-  }
-
-  template<typename T>
-  static std::vector<T> brute_max_plus_convoluiton(const std::vector<T>& A, const std::vector<T>& B) {
-    int n = A.size();
-    int m = B.size();
-    if (n == 0 || m == 0) return {};
-    std::vector<T> C(n + m - 1);
-    for (int i = 0; i < C.size(); ++i) {
-      std::vector<LL> tmp;
-      for (int j = std::max(i - m + 1, 0); j <= std::min(i, n - 1); ++j) {
-        tmp.emplace_back(A[j] + B[i - j]);
-      }
-      C[i] = *std::max_element(tmp.begin(), tmp.end());
-    }
-    return C;
   }
 };
 
