@@ -12,6 +12,8 @@ $\binom{n}{m}=\frac{n!}{m!(n-m)!}$
 
 上指标求和: $\sum_{i=0}^{n}{\binom{i}{m}}=\binom{n+1}{m+1}$
 
+定义 $f_{A,i}=\sum_{j=0}^{A}\binom{i}{j}$, 有递推式 $f_{A,i+1}=2f_{A,i}-\binom{i}{A}$ 成立. 证明概要: 考虑走网格, 从 $i$ 的终点们各走一步.
+
 斐波那契: $\forall n\ge 0, \sum_{i=0}^{n}\binom{n-i}{i}=fib_{n}$. Where $fib_0=fib_1=1,fib_i=fib_{i-1}+fib_{i-2}, \forall i\ge 2$.
 
 范德蒙德卷积: 
