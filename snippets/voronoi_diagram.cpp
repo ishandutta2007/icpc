@@ -77,7 +77,7 @@ struct Fortune {
       if(e.id >= 0) {
         add_point_event(e.id);
       }else if(valid[-e.id]) {
-        remove(e.it);
+        remove_vertex_event(e.it);
       }
     }
   }
@@ -181,8 +181,7 @@ struct Fortune {
     update(a); update(b); update(c);
   }
 
-  // handle a vertex event
-  void remove(Beach::iterator it) {
+  void remove_vertex_event(Beach::iterator it) {
     auto a = std::prev(it);
     auto b = std::next(it);
     line.erase(it);
