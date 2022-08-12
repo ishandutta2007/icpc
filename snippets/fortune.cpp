@@ -40,7 +40,8 @@ Point get_circumcenter(const Point& a, Point b, Point c) {
 }
 
 // https://codeforces.com/blog/entry/85638
-// An O(nlog(n)) algorithm of building the Voronoi Diagram.
+// An O(nlog(n)) algorithm of delaunay triangulation given a point set,
+// which is the dual graph of the voronoi diagram.
 struct Fortune {
  public:
   explicit Fortune(const std::vector<Point>& p) {
@@ -82,7 +83,7 @@ struct Fortune {
     }
   }
 
-  // The Voronoi Diagram.
+  // The graph formed by delaunay edges.
   template<typename Edge>
   std::vector<std::vector<Edge>> build_graph() const {
     std::vector<std::vector<Edge>> graph(n);
