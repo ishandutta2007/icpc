@@ -94,6 +94,39 @@ struct Fortune {
     return graph;
   }
 
+  // Find all the triangles in O(|edges|^{3/2}) time.
+  std::vector<std::tuple<int, int, int>> get_triangulation_result() const {
+    std::vector<int> deg(n);
+    for (const auto& [u, v] : edges) {
+      deg[u]++;
+      deg[v]++;
+    }
+    struct Edge {
+      int v;
+    };
+    std::vector<std::vector<Edge>> graph(n);
+    for (auto [u, v] : edges) {
+      if (u > v) std::swap(u, v);
+      if (deg[u] < deg[v]) std::swap(u, v);
+      graph[u].emplace_back(Edge{.v = v});
+    }
+    std::vector<std::tuple<int, int, int>> ret;
+    std::vector<int> label(n, -1);
+    for (int u = 0; u < n; ++u) {
+      for (const Edge& e : graph[u]) {
+        label[e.v] = u;
+      }
+      for (const Edge& e : graph[u]) {
+        for (const Edge& ee : graph[e.v]) {
+          if (label[ee.v] == u) {
+            ret.emplace_back(u, e.v, ee.v);
+          }
+        }
+      }
+    }
+    return ret;
+  }
+
  private:
   static constexpr DType inf = std::numeric_limits<DType>::max();
   static DType sweepx;  // x coordinate of sweep-line
